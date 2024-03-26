@@ -18,6 +18,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+<<<<<<< HEAD
         Handler(Looper.getMainLooper()).postDelayed({
 
             val pref = getSharedPreferences("wellnessVetLogin", Context.MODE_PRIVATE)
@@ -36,5 +37,7 @@ class SplashActivity : AppCompatActivity() {
             finish()
 
         }, 3000)
+=======
+>>>>>>> a9967a055d249a59a54af5456743e6730ef9a0ed
     }
 }
