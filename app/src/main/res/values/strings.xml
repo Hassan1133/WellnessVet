@@ -9,4 +9,8 @@
     <string name="login">Login</string>
     <string name="or">oR</string>
     <string name="login_as_doctor">Login as Doctor</string>
+
+    <string name="doctor_login">Doctor Login</string>
+    <string name="we_share_this_information_with_the_patient">We share this information with the patient</string>
+    <string name="login_as_patient">Login as Patient</string>
 </resources>
