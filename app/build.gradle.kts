@@ -53,4 +53,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 //    OTP View
     implementation (libs.otp)
+
+    //    clk progress library
+    implementation(libs.clkProgressBar)
+
 }
