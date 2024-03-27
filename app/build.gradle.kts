@@ -49,4 +49,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+//    OTP View
+    implementation ("com.github.appsfeature:otp-view:1.0")
 }
