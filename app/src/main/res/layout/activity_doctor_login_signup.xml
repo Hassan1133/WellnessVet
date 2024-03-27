@@ -62,7 +62,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:text="@string/we_share_this_information_with_the_patient"
+            android:text="@string/we_share_this_information_with_the_user"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
@@ -165,7 +165,7 @@
             android:layout_below="@+id/orText"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:text="@string/login_as_patient"
+            android:text="@string/login_as_user"
             android:textColor="@color/dark_navy_blue"
             app:cornerRadius="6dp"
             app:strokeColor="@color/dark_navy_blue" />

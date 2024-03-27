@@ -11,6 +11,6 @@
     <string name="login_as_doctor">Login as Doctor</string>
 
     <string name="doctor_login">Doctor Login</string>
-    <string name="we_share_this_information_with_the_patient">We share this information with the patient</string>
-    <string name="login_as_patient">Login as Patient</string>
+    <string name="we_share_this_information_with_the_user">We share this information with the user</string>
+    <string name="login_as_user">Login as User</string>
 </resources>
