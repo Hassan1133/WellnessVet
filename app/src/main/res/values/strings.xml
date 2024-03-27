@@ -13,4 +13,14 @@
     <string name="doctor_login">Doctor Login</string>
     <string name="we_share_this_information_with_the_user">We share this information with the user</string>
     <string name="login_as_user">Login as User</string>
+
+    <string name="doctor_profile">Doctor Profile</string>
+    <string name="doctor_name">Name</string>
+    <string name="doctor_city">City</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="save">Save</string>
+    <string name="doctor_name_hint">Enter your name</string>
+    <string name="doctor_city_hint">Enter your city</string>
 </resources>
