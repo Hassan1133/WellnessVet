@@ -10,6 +10,6 @@ import com.wellness.vet.app.R
 class DoctorDashBoardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_doctor_dash_board)
+
     }
 }
