@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:paddingBottom="20dp"
+    android:background="@color/white"
     tools:context=".activities.user.UserLoginSignupActivity">
 
     <!-- RelativeLayout is used to arrange child views relative to each other -->
@@ -20,6 +21,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/headerLayout"
             android:layout_width="match_parent"
+            android:backgroundTint="@color/white"
             android:layout_height="60dp">
 
             <RelativeLayout
@@ -139,6 +141,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:backgroundTint="@color/orange"
+            android:textColor="@color/white"
             android:text="@string/login"
             app:cornerRadius="6dp" />
 
