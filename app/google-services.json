@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39792745383",
+    "project_id": "wellnessvet-47dee",
+    "storage_bucket": "wellnessvet-47dee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39792745383:android:902a7c5a1ac61c13ab3482",
+        "android_client_info": {
+          "package_name": "com.wellness.vet.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhiBDe-Xpopiay-6oUHPLGVCxNDquUbtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
