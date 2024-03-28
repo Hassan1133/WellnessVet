@@ -23,4 +23,11 @@
     <string name="save">Save</string>
     <string name="doctor_name_hint">Enter your name</string>
     <string name="doctor_city_hint">Enter your city</string>
+    <string name="user_profile">User Profile</string>
+    <string name="set_up_your_profile">Set up your Profile</string>
+    <string name="add_necessary_info_to_complete_setup">Add Necessary info to complete setup</string>
+    <string name="your_name">Your Name</string>
+    <string name="e_g_jawad_ali">e.g Jawad Ali</string>
+    <string name="city">City</string>
+    <string name="e_g_faisalabad">e.g Faisalabad</string>
 </resources>

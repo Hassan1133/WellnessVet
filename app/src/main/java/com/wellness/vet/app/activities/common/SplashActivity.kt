@@ -11,6 +11,7 @@ import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.doctor.DoctorDashBoardActivity
 import com.wellness.vet.app.activities.user.UserDashBoardActivity
 import com.wellness.vet.app.activities.user.UserLoginSignupActivity
+import com.wellness.vet.app.activities.user.UserProfileActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -29,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
             } else if (docCheck) {
                 Intent(this, DoctorDashBoardActivity::class.java)
             } else {
-                Intent(this, UserLoginSignupActivity::class.java)
+                Intent(this, UserProfileActivity::class.java)
             }
 
             startActivity(intent)
