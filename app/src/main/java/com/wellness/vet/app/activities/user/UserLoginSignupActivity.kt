@@ -16,6 +16,7 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.otpview.OTPListener
 import com.wellness.vet.app.R
+import com.wellness.vet.app.activities.doctor.DoctorLoginSignupActivity
 import com.wellness.vet.app.databinding.ActivityUserLoginSignupBinding
 import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.main_utils.LoadingDialog
@@ -45,6 +46,7 @@ class UserLoginSignupActivity : AppCompatActivity(), OnClickListener {
     private fun init() {
         auth = FirebaseAuth.getInstance()
         binding.loginBtn.setOnClickListener(this)
+        binding.loginAsDoctorBtn.setOnClickListener(this)
         appSharedPreferences = AppSharedPreferences(this@UserLoginSignupActivity)
 
         // Set up callbacks for phone number verification
@@ -94,6 +96,16 @@ class UserLoginSignupActivity : AppCompatActivity(), OnClickListener {
                     loadingDialog = LoadingDialog.showLoadingDialog(this@UserLoginSignupActivity)
                     login()
                 }
+            }
+
+            R.id.loginAsDoctorBtn -> {
+                startActivity(
+                    Intent(
+                        this@UserLoginSignupActivity,
+                        DoctorLoginSignupActivity::class.java
+                    )
+                )
+                finish()
             }
         }
     }
