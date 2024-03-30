@@ -33,8 +33,8 @@
     <string name="e_g_jawad_ali">e.g Jawad Ali</string>
     <string name="city">City</string>
     <string name="e_g_faisalabad">e.g Faisalabad</string>
-    <string name="start_time">Start Time</string>
-    <string name="end_time">End Time</string>
-    <string name="fees">Fees</string>
-    <string name="enter_fees">Enter Your Fees</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="chats">Chats</string>
+    <string name="find_doctor">Find Doctor</string>
+    <string name="appointments">Appointments</string>
 </resources>
