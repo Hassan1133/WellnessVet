@@ -17,6 +17,7 @@ import com.google.firebase.auth.PhoneAuthProvider
 import com.otpview.OTPListener
 import com.wellness.vet.app.R
 import com.wellness.vet.app.databinding.ActivityUserLoginSignupBinding
+import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.main_utils.LoadingDialog
 import java.util.concurrent.TimeUnit
 
@@ -28,6 +29,7 @@ class UserLoginSignupActivity : AppCompatActivity(), OnClickListener {
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private lateinit var loadingDialog: Dialog
+    private lateinit var appSharedPreferences: AppSharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,15 +45,13 @@ class UserLoginSignupActivity : AppCompatActivity(), OnClickListener {
     private fun init() {
         auth = FirebaseAuth.getInstance()
         binding.loginBtn.setOnClickListener(this)
+        appSharedPreferences = AppSharedPreferences(this@UserLoginSignupActivity)
 
         // Set up callbacks for phone number verification
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                 // Called when verification is completed successfully
                 LoadingDialog.hideLoadingDialog(loadingDialog)
-                Log.d("GFG", "onVerificationCompleted Success")
-                startActivity(Intent(applicationContext, UserProfileActivity::class.java))
-                finish()
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
@@ -136,6 +136,9 @@ class UserLoginSignupActivity : AppCompatActivity(), OnClickListener {
         auth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
                 // If sign-in is successful, start UserProfileActivity
+                appSharedPreferences.put("userPhoneNo", task.result.user?.phoneNumber.toString())
+                appSharedPreferences.put("userUid", task.result.user?.uid.toString())
+                appSharedPreferences.put("userLogin", true)
                 startActivity(Intent(this, UserProfileActivity::class.java))
                 finish()
             } else {

@@ -13,6 +13,7 @@ constraintlayout = "2.1.4"
 otpView = "1.0"
 googleServices = "4.4.1"
 firebaseAuth = "22.3.1"
+firebaseDatabase = "20.3.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -27,6 +28,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 otp = { module = "com.github.appsfeature:otp-view", version.ref = "otpView" }
+firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
