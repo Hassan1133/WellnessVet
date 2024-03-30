@@ -5,8 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.doctor.DoctorProfileActivity">
-
+    tools:context=".activities.doctor.DoctorTimeFeesActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/headerLayout"
@@ -68,30 +67,30 @@
                 android:textSize="14sp" />
 
             <RelativeLayout
-                android:id="@+id/nameRelative"
+                android:id="@+id/startTimeRelative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/setUpProfileSubHeading">
 
                 <!-- TextView displaying "Phone number" -->
                 <TextView
-                    android:id="@+id/nameHeading"
+                    android:id="@+id/startTimeHeading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginEnd="20dp"
-                    android:text="@string/doctor_name"
+                    android:text="@string/start_time"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <!-- TextInputLayout to contain the input field for phone number -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/nameLayout"
+                    android:id="@+id/startTimeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_below="@+id/nameHeading"
+                    android:layout_below="@+id/startTimeHeading"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="20dp"
@@ -100,11 +99,11 @@
 
                     <!-- TextInputEditText for entering phone number -->
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/name"
+                        android:id="@+id/startTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_txt_bg"
-                        android:hint="@string/doctor_name_hint"
+                        android:hint="@string/start_time"
                         android:inputType="text"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint_color"
@@ -114,103 +113,103 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/cityRelative"
+                android:id="@+id/endTimeRelative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/nameRelative">
+                android:layout_below="@+id/startTimeRelative">
 
                 <!-- TextView displaying "Phone number" -->
                 <TextView
-                    android:id="@+id/cityHeading"
+                    android:id="@+id/endHeading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginEnd="20dp"
-                    android:text="@string/doctor_city"
+                    android:text="@string/end_time"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
+                <!-- TextInputLayout to contain the input field for phone number -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cityLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:id="@+id/endLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/cityHeading"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/endHeading"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="20dp"
-                    android:textColorHint="@color/hint_color"
-                    app:boxCornerRadiusBottomEnd="6dp"
-                    app:boxCornerRadiusBottomStart="6dp"
-                    app:boxCornerRadiusTopEnd="6dp"
-                    app:boxCornerRadiusTopStart="6dp"
-                    app:boxStrokeColor="@color/hint_color"
-                    app:boxStrokeWidthFocused="1dp"
-                    app:endIconTint="@color/hint_color"
                     app:hintEnabled="false"
                     app:hintTextColor="@color/hint_color">
 
-                    <AutoCompleteTextView
-                        android:id="@+id/city"
+                    <!-- TextInputEditText for entering phone number -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/endTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/e_g_faisalabad"
-                        android:inputType="none"
-                        android:textColor="@color/hint_color"
+                        android:background="@drawable/edit_txt_bg"
+                        android:hint="@string/enter_end_time"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint_color"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/genderRelative"
+                android:id="@+id/feesRelative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cityRelative">
+                android:layout_below="@+id/endTimeRelative">
 
                 <!-- TextView displaying "Phone number" -->
                 <TextView
-                    android:id="@+id/genderHeading"
+                    android:id="@+id/feesHeading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginEnd="20dp"
-                    android:text="@string/gender"
+                    android:text="@string/fees"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <RadioGroup
-                    android:id="@+id/genderRadioGroup"
+                <!-- TextInputLayout to contain the input field for phone number -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/feesLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/genderHeading"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="20dp">
-                    <RadioButton android:id="@+id/radioMale"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/male"
-                        android:checked="true"/>
-                    <RadioButton android:id="@+id/radioFemale"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="@string/female"/>
-                </RadioGroup>
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/feesHeading"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    app:hintEnabled="false"
+                    app:hintTextColor="@color/hint_color">
 
+                    <!-- TextInputEditText for entering phone number -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/fees"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_txt_bg"
+                        android:hint="@string/enter_fees"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint_color"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
             </RelativeLayout>
+
 
             <RelativeLayout
                 android:id="@+id/saveRelative"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/genderRelative">
+                android:layout_below="@id/feesRelative">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/saveProfile"
@@ -220,7 +219,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_centerInParent="true"
                     android:backgroundTint="@color/orange"
-                    android:text="@string/save_next"
+                    android:text="@string/save"
                     android:textSize="16sp"
                     app:cornerRadius="6dp"/>
 

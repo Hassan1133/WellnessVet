@@ -8,6 +8,8 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.doctor.DoctorDashBoardActivity
+import com.wellness.vet.app.activities.doctor.DoctorProfileActivity
+import com.wellness.vet.app.activities.doctor.DoctorTimeFeesActivity
 import com.wellness.vet.app.activities.user.UserDashBoardActivity
 import com.wellness.vet.app.activities.user.UserLoginSignupActivity
 import com.wellness.vet.app.activities.user.UserProfileActivity
@@ -30,11 +32,25 @@ class SplashActivity : AppCompatActivity() {
             val userLoginCheck = appSharedPreferences.getBoolean("userLogin")
             val userProfileCheck = appSharedPreferences.getBoolean("userProfileAdded")
             val docLoginCheck = appSharedPreferences.getBoolean("doctorLogin")
+            val docProfileCheck = appSharedPreferences.getBoolean("doctorProfileAdded")
+            val docTimeCheck = appSharedPreferences.getBoolean("doctorTimeAdded")
 
-            val intent: Intent = if (userLoginCheck && userProfileCheck) {
-                Intent(this, UserDashBoardActivity::class.java)
-            } else if (userLoginCheck) {
-                Intent(this, UserProfileActivity::class.java)
+            var intent: Intent = Intent()
+
+            if (userLoginCheck) {
+                intent = if (userProfileCheck) {
+                    Intent(this, UserDashBoardActivity::class.java)
+                } else {
+                    Intent(this, UserProfileActivity::class.java)
+                }
+            } else if (docLoginCheck) {
+                intent = if (docProfileCheck && docTimeCheck) {
+                    Intent(this, DoctorDashBoardActivity::class.java)
+                } else if (docProfileCheck) {
+                    Intent(this, DoctorTimeFeesActivity::class.java)
+                } else {
+                    Intent(this, DoctorProfileActivity::class.java)
+                }
             } else {
                 Intent(this, UserLoginSignupActivity::class.java)
             }
