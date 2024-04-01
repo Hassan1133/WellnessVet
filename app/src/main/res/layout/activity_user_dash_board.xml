@@ -93,9 +93,9 @@
         app:itemActiveIndicatorStyle="@color/transparent"
         app:itemIconSize="16dp"
         app:itemIconTint="@color/bottom_nav_colors"
-        app:itemTextColor="@color/bottom_nav_colors"
         app:itemPaddingBottom="10dp"
         app:itemPaddingTop="10dp"
+        app:itemTextColor="@color/bottom_nav_colors"
         app:menu="@menu/user_bottom_nav" />
 
 

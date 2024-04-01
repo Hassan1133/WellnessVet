@@ -37,4 +37,9 @@
     <string name="chats">Chats</string>
     <string name="find_doctor">Find Doctor</string>
     <string name="appointments">Appointments</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="fees">Fees</string>
+    <string name="enter_fees">Enter Fees</string>
+    <string name="doctor">Doctor</string>
 </resources>
