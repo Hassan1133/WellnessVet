@@ -35,7 +35,7 @@ class SplashActivity : AppCompatActivity() {
             val docProfileCheck = appSharedPreferences.getBoolean("doctorProfileAdded")
             val docTimeCheck = appSharedPreferences.getBoolean("doctorTimeAdded")
 
-            var intent: Intent = Intent()
+            var intent = Intent(this, UserLoginSignupActivity::class.java)
 
             if (userLoginCheck) {
                 intent = if (userProfileCheck) {
@@ -52,7 +52,7 @@ class SplashActivity : AppCompatActivity() {
                     Intent(this, DoctorProfileActivity::class.java)
                 }
             } else {
-                Intent(this, UserLoginSignupActivity::class.java)
+                intent = Intent(this, UserLoginSignupActivity::class.java)
             }
 
             startActivity(intent)

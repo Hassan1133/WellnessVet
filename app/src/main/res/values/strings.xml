@@ -42,4 +42,6 @@
     <string name="fees">Fees</string>
     <string name="enter_fees">Enter Fees</string>
     <string name="doctor">Doctor</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
