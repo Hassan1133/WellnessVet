@@ -33,7 +33,7 @@ class DoctorProfileActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityDoctorProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        init()
+        init()
     }
 
     private fun init() {

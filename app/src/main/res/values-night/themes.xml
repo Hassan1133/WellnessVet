@@ -5,4 +5,14 @@
         <item name="colorPrimary">@color/dark_navy_blue</item>
         <item name="android:windowDisablePreview">true</item>
     </style>
+
+    <!--    style of search view-->
+    <style name="search_view_style">
+        <item name="android:textColorHint">@color/hint_color</item>
+        <item name="android:editTextColor">@color/black</item>
+        <item name="android:colorControlNormal">@color/hint_color</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_shape</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
 </resources>

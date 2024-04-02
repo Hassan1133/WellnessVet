@@ -103,7 +103,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_txt_bg"
-                        android:hint="@string/start_time"
+                        android:hint="@string/enter_start_time"
                         android:inputType="text"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint_color"
@@ -202,6 +202,52 @@
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/clinicRelative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/feesRelative">
+
+                <!-- TextView displaying "Phone number" -->
+                <TextView
+                    android:id="@+id/clinicHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/clinic_location"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/clinicLocationLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/clinicHeading"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    app:endIconDrawable="@drawable/add_location"
+                    app:endIconMode="custom"
+                    app:hintEnabled="false"
+                    app:hintTextColor="@color/hint_color">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/clinicLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:hint="@string/enter_clinic_location"
+                        android:textColor="@color/hint_color"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
             </RelativeLayout>
 
 
@@ -209,7 +255,7 @@
                 android:id="@+id/saveRelative"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/feesRelative">
+                android:layout_below="@id/clinicRelative">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/saveProfile"

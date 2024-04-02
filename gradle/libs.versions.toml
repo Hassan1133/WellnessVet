@@ -16,6 +16,8 @@ googleServices = "4.4.1"
 firebaseAuth = "22.3.1"
 firebaseDatabase = "20.3.1"
 firebaseDatabaseKtx = "20.3.1"
+googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
+playServicesMaps = "18.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,8 +35,10 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 otp = { module = "com.github.appsfeature:otp-view", version.ref = "otpView" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+googleAndroidLibrariesMapsplatformSecretsGradlePlugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleAndroidLibrariesMapsplatformSecretsGradlePlugin" }
 
