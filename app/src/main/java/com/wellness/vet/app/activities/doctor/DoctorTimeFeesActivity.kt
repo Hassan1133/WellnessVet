@@ -1,5 +1,6 @@
 package com.wellness.vet.app.activities.doctor
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -8,13 +9,15 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.common.MapsActivity
 import com.wellness.vet.app.databinding.ActivityDoctorTimeFeesBinding
+import com.wellness.vet.app.main_utils.AppConstants.Companion.DOCTOR_REF
+import com.wellness.vet.app.main_utils.AppConstants.Companion.PROFILE_REF
 import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.main_utils.LoadingDialog
 import com.wellness.vet.app.main_utils.LocationPermissionUtils
@@ -40,6 +43,7 @@ class DoctorTimeFeesActivity : AppCompatActivity(),OnClickListener {
         init()
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun init() {
         networkManager = NetworkManager(this@DoctorTimeFeesActivity)
         permissionUtils = LocationPermissionUtils(this@DoctorTimeFeesActivity)
@@ -47,31 +51,42 @@ class DoctorTimeFeesActivity : AppCompatActivity(),OnClickListener {
 
         binding.startTime.setOnClickListener {
             val cal = Calendar.getInstance()
-            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-                binding.startTime.setText(SimpleDateFormat("HH:mm").format(cal.time))
+                binding.startTime.setText(SimpleDateFormat("hh:mm a").format(cal.time))
             }
-            TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+            TimePickerDialog(
+                this,
+                timeSetListener,
+                cal.get(Calendar.HOUR_OF_DAY),
+                cal.get(Calendar.MINUTE),
+                false
+            ).show()
         }
 
 
         binding.endTime.setOnClickListener {
             val cal = Calendar.getInstance()
-            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-                binding.endTime.setText(SimpleDateFormat("HH:mm").format(cal.time))
+                binding.endTime.setText(SimpleDateFormat("hh:mm a").format(cal.time))
             }
-            TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+            TimePickerDialog(
+                this,
+                timeSetListener,
+                cal.get(Calendar.HOUR_OF_DAY),
+                cal.get(Calendar.MINUTE),
+                false
+            ).show()
         }
 
         binding.saveProfile.setOnClickListener(this)
         appSharedPreferences = AppSharedPreferences(this@DoctorTimeFeesActivity)
-//        doctorProfileDatabaseRef =
-//            FirebaseDatabase.getInstance().getReference(AppConstants.DOCTOR_REF).child(
-//                appSharedPreferences.getString("doctorUid")!!
-//            ).child(AppConstants.PROFILE_REF)
+        doctorProfileDatabaseRef = FirebaseDatabase.getInstance().getReference(DOCTOR_REF).child(
+            appSharedPreferences.getString("doctorUid")!!
+        ).child(PROFILE_REF)
 
         binding.clinicLocationLayout.setEndIconOnClickListener {
             val intent: Intent = Intent(this@DoctorTimeFeesActivity, MapsActivity::class.java)
