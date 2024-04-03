@@ -92,7 +92,7 @@ class DoctorProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setDataToModel(name: String, phone: String, city: String, gender: String) {
         val doctorProfile = DoctorProfileModel()
-        doctorProfile.name = name
+        doctorProfile.name = "Dr. $name"
         doctorProfile.phoneNo = phone
         doctorProfile.city = city
         doctorProfile.gender = gender

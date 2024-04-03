@@ -23,7 +23,7 @@
     <string name="save">Save</string>
     <string name="search">Search...</string>
     <string name="save_next">Save and Next</string>
-    <string name="doctor_name_hint">enter your name</string>
+    <string name="doctor_name_hint">enter your name without Dr title</string>
     <string name="doctor_city_hint">enter your city</string>
     <string name="enter_start_time">enter start Time</string>
     <string name="enter_end_time">enter end time</string>

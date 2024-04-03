@@ -126,7 +126,10 @@ class DoctorTimeFeesActivity : AppCompatActivity(),OnClickListener {
                     setDataToModel(
                         binding.startTime.text.toString(),
                         binding.endTime.text.toString(),
-                        binding.fees.text.toString()
+                        binding.fees.text.toString(),
+                        binding.clinicLocation.text.toString(),
+                        selectedClinicLatitude,
+                        selectedClinicLongitude
                     )
                     loadingDialog = LoadingDialog.showLoadingDialog(this@DoctorTimeFeesActivity)
                 }
@@ -134,17 +137,37 @@ class DoctorTimeFeesActivity : AppCompatActivity(),OnClickListener {
         }
     }
 
-    private fun setDataToModel(startTime: String, endTime: String, fees: String) {
+    private fun setDataToModel(
+        startTime: String,
+        endTime: String,
+        fees: String,
+        clinicLocation: String,
+        clinicLatitude: Double,
+        clinicLongitude: Double
+    ) {
         val doctorProfileTimeModel = DoctorProfileTimeModel()
         doctorProfileTimeModel.startTime = startTime
         doctorProfileTimeModel.endTime = endTime
         doctorProfileTimeModel.fees = fees
+        doctorProfileTimeModel.clinicLocation = clinicLocation
+        doctorProfileTimeModel.clinicLatitude = clinicLatitude
+        doctorProfileTimeModel.clinicLongitude = clinicLongitude
 
         saveDataToDb(doctorProfileTimeModel)
     }
 
     private fun saveDataToDb(doctorProfileTimeModel: DoctorProfileTimeModel) {
-        doctorProfileDatabaseRef.setValue(doctorProfileTimeModel).addOnSuccessListener {
+
+        val doctorMap = hashMapOf<String, Any>(
+            "startTime" to doctorProfileTimeModel.startTime,
+            "endTime" to doctorProfileTimeModel.endTime,
+            "fees" to doctorProfileTimeModel.fees,
+            "clinicLocation" to doctorProfileTimeModel.clinicLocation,
+            "clinicLatitude" to doctorProfileTimeModel.clinicLatitude,
+            "clinicLongitude" to doctorProfileTimeModel.clinicLongitude,
+        )
+
+        doctorProfileDatabaseRef.updateChildren(doctorMap).addOnSuccessListener {
             LoadingDialog.hideLoadingDialog(loadingDialog)
             Toast.makeText(
                 this@DoctorTimeFeesActivity, "Profile Data Added Successfully", Toast.LENGTH_SHORT
