@@ -14,12 +14,21 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.otpview.OTPListener
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.doctor.DoctorLoginSignupActivity
 import com.wellness.vet.app.databinding.ActivityUserLoginSignupBinding
+import com.wellness.vet.app.main_utils.AppConstants
+import com.wellness.vet.app.main_utils.AppConstants.Companion.PROFILE_REF
+import com.wellness.vet.app.main_utils.AppConstants.Companion.USER_REF
 import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.main_utils.LoadingDialog
+import com.wellness.vet.app.models.UserProfileModel
 import java.util.concurrent.TimeUnit
 
 class UserLoginSignupActivity : AppCompatActivity(), OnClickListener {
@@ -31,6 +40,7 @@ class UserLoginSignupActivity : AppCompatActivity(), OnClickListener {
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private lateinit var loadingDialog: Dialog
     private lateinit var appSharedPreferences: AppSharedPreferences
+    private lateinit var userRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +58,7 @@ class UserLoginSignupActivity : AppCompatActivity(), OnClickListener {
         binding.loginBtn.setOnClickListener(this)
         binding.loginAsDoctorBtn.setOnClickListener(this)
         appSharedPreferences = AppSharedPreferences(this@UserLoginSignupActivity)
+        userRef = FirebaseDatabase.getInstance().getReference(USER_REF)
 
         // Set up callbacks for phone number verification
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -151,8 +162,8 @@ class UserLoginSignupActivity : AppCompatActivity(), OnClickListener {
                 appSharedPreferences.put("userPhoneNo", task.result.user?.phoneNumber.toString())
                 appSharedPreferences.put("userUid", task.result.user?.uid.toString())
                 appSharedPreferences.put("userLogin", true)
-                startActivity(Intent(this, UserProfileActivity::class.java))
-                finish()
+
+                checkUserExistOrNot(task.result.user?.uid.toString())
             } else {
                 // If sign-in fails, display error message
                 if (task.exception is FirebaseAuthInvalidCredentialsException) {
@@ -160,5 +171,51 @@ class UserLoginSignupActivity : AppCompatActivity(), OnClickListener {
                 }
             }
         }
+    }
+
+    private fun checkUserExistOrNot(userId: String) {
+        userRef.child(userId).child(PROFILE_REF)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Handle data retrieval success
+                    if (dataSnapshot.exists()) {
+
+                        val userProfileModel: UserProfileModel? = dataSnapshot.getValue(
+                            UserProfileModel::class.java
+                        )
+                        getUserProfileData(userProfileModel!!)
+                        appSharedPreferences.put("userProfileAdded", true)
+                        startActivity(
+                            Intent(
+                                this@UserLoginSignupActivity, UserDashBoardActivity::class.java
+                            )
+                        )
+                        finish()
+                    } else {
+                        // Data doesn't exist
+                        startActivity(
+                            Intent(
+                                this@UserLoginSignupActivity, UserProfileActivity::class.java
+                            )
+                        )
+                        finish()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Toast.makeText(
+                        this@UserLoginSignupActivity,
+                        databaseError.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
+    private fun getUserProfileData(userProfileModel: UserProfileModel) {
+        appSharedPreferences.put("userName", userProfileModel.name)
+        appSharedPreferences.put("userCity", userProfileModel.city)
+        appSharedPreferences.put("userGender", userProfileModel.gender)
+
     }
 }

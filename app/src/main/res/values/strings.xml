@@ -21,10 +21,13 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="save">Save</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="search">Search...</string>
     <string name="save_next">Save and Next</string>
     <string name="doctor_name_hint">enter your name without Dr title</string>
     <string name="doctor_city_hint">enter your city</string>
+    <string name="logout_message">Are you sure you want to Logout ?</string>
     <string name="enter_start_time">enter start Time</string>
     <string name="enter_end_time">enter end time</string>
     <string name="user_profile">User Profile</string>
@@ -49,4 +52,5 @@
     <string name="clinic_location">Clinic Location</string>
     <string name="enter_clinic_location">enter clinic location</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="name">Name</string>
 </resources>

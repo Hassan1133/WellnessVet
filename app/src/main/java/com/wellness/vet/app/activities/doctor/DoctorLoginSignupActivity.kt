@@ -13,11 +13,19 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.otpview.OTPListener
 import com.wellness.vet.app.R
 import com.wellness.vet.app.databinding.ActivityDoctorLoginSignupBinding
+import com.wellness.vet.app.main_utils.AppConstants.Companion.DOCTOR_REF
+import com.wellness.vet.app.main_utils.AppConstants.Companion.PROFILE_REF
 import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.main_utils.LoadingDialog
+import com.wellness.vet.app.models.DoctorDetailProfileModel
 import java.util.concurrent.TimeUnit
 
 class DoctorLoginSignupActivity : AppCompatActivity(), View.OnClickListener {
@@ -29,6 +37,7 @@ class DoctorLoginSignupActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private lateinit var loadingDialog: Dialog
     private lateinit var appSharedPreferences: AppSharedPreferences
+    private lateinit var doctorRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +53,7 @@ class DoctorLoginSignupActivity : AppCompatActivity(), View.OnClickListener {
         auth = FirebaseAuth.getInstance()
         binding.loginBtn.setOnClickListener(this)
         appSharedPreferences = AppSharedPreferences(this@DoctorLoginSignupActivity)
+        doctorRef = FirebaseDatabase.getInstance().getReference(DOCTOR_REF)
 
         // Set up callbacks for phone number verification
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -136,8 +146,9 @@ class DoctorLoginSignupActivity : AppCompatActivity(), View.OnClickListener {
                 appSharedPreferences.put("doctorPhoneNo", task.result.user?.phoneNumber.toString())
                 appSharedPreferences.put("doctorUid", task.result.user?.uid.toString())
                 appSharedPreferences.put("doctorLogin", true)
-                startActivity(Intent(this, DoctorProfileActivity::class.java))
-                finish()
+
+                checkDoctorProfileExistOrNot(task.result.user?.uid.toString())
+
             } else {
                 // If sign-in fails, display error message
                 if (task.exception is FirebaseAuthInvalidCredentialsException) {
@@ -145,5 +156,49 @@ class DoctorLoginSignupActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun checkDoctorProfileExistOrNot(doctorId: String) {
+        doctorRef.child(doctorId).child(PROFILE_REF)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Handle data retrieval success
+                    if (dataSnapshot.exists()) {
+
+                       val detailProfileModel : DoctorDetailProfileModel? = dataSnapshot.getValue(DoctorDetailProfileModel::class.java)
+                        getDoctorProfileData(detailProfileModel!!)
+                        appSharedPreferences.put("doctorProfileAdded", true)
+                        appSharedPreferences.put("doctorTimeAdded", true)
+                        startActivity(
+                            Intent(
+                                this@DoctorLoginSignupActivity, DoctorDashBoardActivity::class.java
+                            )
+                        )
+                        finish()
+                    } else {
+                        // Data doesn't exist
+                        startActivity(
+                            Intent(
+                                this@DoctorLoginSignupActivity, DoctorProfileActivity::class.java
+                            )
+                        )
+                        finish()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Toast.makeText(this@DoctorLoginSignupActivity, databaseError.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    private fun getDoctorProfileData(detailProfileModel: DoctorDetailProfileModel) {
+        appSharedPreferences.put("doctorName", detailProfileModel.name)
+        appSharedPreferences.put("doctorCity", detailProfileModel.city)
+        appSharedPreferences.put("doctorGender", detailProfileModel.gender)
+        appSharedPreferences.put("doctorClinicLocation", detailProfileModel.clinicLocation)
+        appSharedPreferences.put("doctorStartTime", detailProfileModel.startTime)
+        appSharedPreferences.put("doctorEndTime", detailProfileModel.endTime)
+        appSharedPreferences.put("doctorFees", detailProfileModel.fees)
     }
 }

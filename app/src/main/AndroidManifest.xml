@@ -18,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WellnessVet"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.user.ShowUserProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.doctor.ShowDoctorProfileActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -35,7 +41,7 @@
             android:configChanges="orientation"
             android:exported="false"
             android:screenOrientation="portrait"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity"/>
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
             android:name=".activities.doctor.DoctorDashBoardActivity"
             android:configChanges="orientation"
