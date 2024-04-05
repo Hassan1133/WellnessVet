@@ -13,7 +13,7 @@ import com.wellness.vet.app.adapters.ViewPagerAdapter
 import com.wellness.vet.app.databinding.ActivityUserDashBoardBinding
 import com.wellness.vet.app.fragments.user.UserAppointmentFragment
 import com.wellness.vet.app.fragments.user.UserChatFragment
-import com.wellness.vet.app.fragments.user.UserFindFragment
+import com.wellness.vet.app.fragments.user.UserFindDoctorFragment
 import com.wellness.vet.app.main_utils.AppSharedPreferences
 
 class UserDashBoardActivity : AppCompatActivity(), OnClickListener {
@@ -32,7 +32,7 @@ class UserDashBoardActivity : AppCompatActivity(), OnClickListener {
         binding.profile.setOnClickListener(this)
 
         val listOfFragments =
-            listOf(UserChatFragment(), UserFindFragment(), UserAppointmentFragment())
+            listOf(UserChatFragment(), UserFindDoctorFragment(), UserAppointmentFragment())
         binding.viewPager.adapter = ViewPagerAdapter(this, listOfFragments)
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
