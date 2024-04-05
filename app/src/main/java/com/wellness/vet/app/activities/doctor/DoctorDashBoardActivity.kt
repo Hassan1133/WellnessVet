@@ -26,9 +26,14 @@ class DoctorDashBoardActivity : AppCompatActivity(), OnClickListener {
         init()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getUserNameData()
+    }
     private fun init() {
         appSharedPreferences = AppSharedPreferences(this@DoctorDashBoardActivity)
         binding.logoutBtn.setOnClickListener(this)
+        binding.profile.setOnClickListener(this)
         val listOfFragments = listOf(DoctorChatFragment(), DoctorAppointmentFragment())
         binding.viewPager.adapter = ViewPagerAdapter(this, listOfFragments)
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -69,6 +74,7 @@ class DoctorDashBoardActivity : AppCompatActivity(), OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.logoutBtn -> showLogoutDialog()
+            R.id.profile -> startActivity(Intent(this@DoctorDashBoardActivity, ShowDoctorProfileActivity::class.java))
         }
     }
 

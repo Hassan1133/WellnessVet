@@ -172,7 +172,12 @@ class DoctorTimeFeesActivity : AppCompatActivity(),OnClickListener {
             Toast.makeText(
                 this@DoctorTimeFeesActivity, "Profile Data Added Successfully", Toast.LENGTH_SHORT
             ).show()
-            appSharedPreferences.put("doctorTimeAdded", true)
+            updateSharedPref(
+                doctorProfileTimeModel.startTime,
+                doctorProfileTimeModel.endTime,
+                doctorProfileTimeModel.fees,
+                doctorProfileTimeModel.clinicLocation
+            )
             startActivity(Intent(this@DoctorTimeFeesActivity, DoctorDashBoardActivity::class.java))
             finish()
         }.addOnFailureListener {
@@ -181,6 +186,16 @@ class DoctorTimeFeesActivity : AppCompatActivity(),OnClickListener {
                 this@DoctorTimeFeesActivity, it.message, Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun updateSharedPref(
+        startTime: String, endTime: String, fees: String, clinicLocation: String
+    ) {
+        appSharedPreferences.put("doctorTimeAdded", true)
+        appSharedPreferences.put("doctorClinicLocation", clinicLocation)
+        appSharedPreferences.put("doctorStartTime", startTime)
+        appSharedPreferences.put("doctorEndTime", endTime)
+        appSharedPreferences.put("doctorFees", fees)
     }
 
     private fun isValid(): Boolean {

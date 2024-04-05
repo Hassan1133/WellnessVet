@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
     tools:context=".activities.doctor.DoctorDashBoardActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/headerCardView"
         android:layout_width="match_parent"
+        android:backgroundTint="@color/white"
         android:layout_height="wrap_content">
 
         <RelativeLayout
@@ -94,6 +96,7 @@
         app:itemIconSize="16dp"
         app:itemIconTint="@color/bottom_nav_colors"
         app:itemPaddingBottom="10dp"
+        android:background="@color/bottom_nav_bg_clr"
         app:itemPaddingTop="10dp"
         app:itemTextColor="@color/bottom_nav_colors"
         app:menu="@menu/doctor_bottom_nav" />

@@ -55,6 +55,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // google location services
+    implementation(libs.play.services.location)
+
 //    OTP View
     implementation (libs.otp)
 

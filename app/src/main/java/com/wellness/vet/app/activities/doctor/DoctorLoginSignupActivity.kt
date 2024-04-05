@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.otpview.OTPListener
 import com.wellness.vet.app.R
+import com.wellness.vet.app.activities.user.UserLoginSignupActivity
 import com.wellness.vet.app.databinding.ActivityDoctorLoginSignupBinding
 import com.wellness.vet.app.main_utils.AppConstants.Companion.DOCTOR_REF
 import com.wellness.vet.app.main_utils.AppConstants.Companion.PROFILE_REF
@@ -52,6 +53,7 @@ class DoctorLoginSignupActivity : AppCompatActivity(), View.OnClickListener {
     private fun init() {
         auth = FirebaseAuth.getInstance()
         binding.loginBtn.setOnClickListener(this)
+        binding.loginAsUserBtn.setOnClickListener(this)
         appSharedPreferences = AppSharedPreferences(this@DoctorLoginSignupActivity)
         doctorRef = FirebaseDatabase.getInstance().getReference(DOCTOR_REF)
 
@@ -102,6 +104,10 @@ class DoctorLoginSignupActivity : AppCompatActivity(), View.OnClickListener {
                     loadingDialog = LoadingDialog.showLoadingDialog(this@DoctorLoginSignupActivity)
                     login()
                 }
+            }
+            R.id.loginAsUserBtn -> {
+                startActivity(Intent(this@DoctorLoginSignupActivity, UserLoginSignupActivity::class.java))
+                finish()
             }
         }
     }

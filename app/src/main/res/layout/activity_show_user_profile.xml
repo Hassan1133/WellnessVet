@@ -42,22 +42,47 @@
             android:layout_height="match_parent"
             tools:ignore="ScrollViewSize">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profileIcon"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+            <RelativeLayout
+                android:id="@+id/imageLayout"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:src="@drawable/avatar" />
+                >
 
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profileIcon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/avatar" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/editProfileBtn"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@id/profileIcon"
+                    android:backgroundTint="@color/lighter_grey"
+                    android:layout_alignParentEnd="true"
+                    app:elevation="0dp"
+                    app:fabCustomSize="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="-28dp"
+                    app:maxImageSize="17dp"
+                    app:srcCompat="@drawable/edit"
+                    app:tint="@color/dark_navy_blue"
+                    tools:ignore="ContentDescription" />
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/nameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/profileIcon"
+                android:layout_below="@+id/imageLayout"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp">
 
                 <ImageView

@@ -17,6 +17,7 @@ firebaseAuth = "22.3.1"
 firebaseDatabase = "20.3.1"
 firebaseDatabaseKtx = "20.3.1"
 googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
+playServicesLocation = "21.2.0"
 playServicesMaps = "18.2.0"
 
 [libraries]
@@ -35,6 +36,7 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 otp = { module = "com.github.appsfeature:otp-view", version.ref = "otpView" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 
 [plugins]

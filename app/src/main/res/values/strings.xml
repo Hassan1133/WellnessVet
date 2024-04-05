@@ -53,4 +53,10 @@
     <string name="enter_clinic_location">enter clinic location</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="name">Name</string>
+    <string name="profile_updated_successfully">Profile Updated Successfully</string>
+    <string name="select_your_location">Select Your Location</string>
+    <string name="directions">Directions</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="update">Update</string>
+    <string name="update_your_profile">Update your Profile</string>
 </resources>

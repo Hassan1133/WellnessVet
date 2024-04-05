@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,9 +15,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.wellness.vet.app.R
-import com.wellness.vet.app.adapters.CityDropDownAdapter
 import com.wellness.vet.app.databinding.ActivityUserProfileBinding
-import com.wellness.vet.app.main_utils.AppConstants
+import com.wellness.vet.app.main_utils.AppConstants.Companion.CITY_NAMES
+import com.wellness.vet.app.main_utils.AppConstants.Companion.PROFILE_REF
+import com.wellness.vet.app.main_utils.AppConstants.Companion.USER_REF
 import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.main_utils.LoadingDialog
 import com.wellness.vet.app.models.UserProfileModel
@@ -38,14 +40,14 @@ class UserProfileActivity : AppCompatActivity(), OnClickListener {
         binding.saveProfile.setOnClickListener(this)
         appSharedPreferences = AppSharedPreferences(this@UserProfileActivity)
         userProfileDatabaseRef =
-            FirebaseDatabase.getInstance().getReference(AppConstants.USER_REF).child(
+            FirebaseDatabase.getInstance().getReference(USER_REF).child(
                 appSharedPreferences.getString("userUid")!!
-            ).child(AppConstants.PROFILE_REF)
+            ).child(PROFILE_REF)
         getCityNamesFromDb()
     }
 
     private fun getCityNamesFromDb() {
-        FirebaseDatabase.getInstance().getReference(AppConstants.CITY_NAMES)
+        FirebaseDatabase.getInstance().getReference(CITY_NAMES)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     cityList.clear()
@@ -55,8 +57,10 @@ class UserProfileActivity : AppCompatActivity(), OnClickListener {
 
                     if (cityList.isNotEmpty()) {
                         binding.city.setAdapter(
-                            CityDropDownAdapter(
-                                this@UserProfileActivity, cityList
+                            ArrayAdapter(
+                                this@UserProfileActivity,
+                                android.R.layout.simple_dropdown_item_1line,
+                                cityList
                             )
                         )
                     }
@@ -104,7 +108,7 @@ class UserProfileActivity : AppCompatActivity(), OnClickListener {
             Toast.makeText(
                 this@UserProfileActivity, "Profile Data Added Successfully", Toast.LENGTH_SHORT
             ).show()
-            appSharedPreferences.put("userProfileAdded", true)
+            updateSharedPref(userProfile.name, userProfile.city, userProfile.gender)
             startActivity(Intent(this@UserProfileActivity, UserDashBoardActivity::class.java))
             finish()
         }.addOnFailureListener {
@@ -113,6 +117,13 @@ class UserProfileActivity : AppCompatActivity(), OnClickListener {
                 this@UserProfileActivity, it.message, Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun updateSharedPref(name: String, city: String, gender: String) {
+        appSharedPreferences.put("userProfileAdded", true)
+        appSharedPreferences.put("userName", name)
+        appSharedPreferences.put("userCity", city)
+        appSharedPreferences.put("userGender", gender)
     }
 
     private fun isValid(): Boolean {

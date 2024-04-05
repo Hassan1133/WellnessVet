@@ -1,5 +1,6 @@
 package com.wellness.vet.app.activities.user
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.wellness.vet.app.databinding.ActivityShowUserProfileBinding
@@ -17,10 +18,19 @@ class ShowUserProfileActivity : AppCompatActivity() {
         init()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getDataFromSharedPreferences()
+    }
+
     private fun init()
     {
         appSharedPreferences = AppSharedPreferences(this@ShowUserProfileActivity)
         getDataFromSharedPreferences()
+
+        binding.editProfileBtn.setOnClickListener {
+            startActivity(Intent(this@ShowUserProfileActivity, EditUserProfileActivity::class.java))
+        }
     }
 
     private fun getDataFromSharedPreferences()

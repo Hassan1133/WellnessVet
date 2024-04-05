@@ -37,6 +37,7 @@ class LocationPermissionUtils(private val activity: Activity) {
             .setPositiveButton("Yes") { _, _ ->
                 val enableGpsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 activity.startActivityForResult(enableGpsIntent, PERMISSIONS_REQUEST_ENABLE_GPS)
+                getLocationPermission()
             }
         val alert: AlertDialog = builder.create()
         alert.show()
@@ -83,6 +84,7 @@ class LocationPermissionUtils(private val activity: Activity) {
     }
 
     fun isLocationPermissionGranted(): Boolean {
+        getLocationPermission()
         return locationPermission
     }
 }

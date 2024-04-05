@@ -1,6 +1,7 @@
 package com.wellness.vet.app.activities.common
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
@@ -23,6 +24,7 @@ import com.wellness.vet.app.databinding.ActivityMapsBinding
 import com.wellness.vet.app.main_utils.NetworkManager
 import java.io.IOException
 import java.util.Locale
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -56,6 +58,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         searchLocation()
     }
 
+    @SuppressLint("ResourceType")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
@@ -82,12 +85,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             return
         }
         googleMap.isMyLocationEnabled = true
-        val locationButton = (mapFragment.view?.findViewById<View>("1".toInt())
-            ?.parent as View).findViewById<View>("2".toInt())
+        val locationButton =
+            mapFragment.requireView().findViewWithTag<View>("GoogleMapMyLocationButton")
         val layoutParams = locationButton.layoutParams as RelativeLayout.LayoutParams
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0)
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE)
         layoutParams.setMargins(0, 0, 0, 20)
+
+
     }
 
     private fun searchLocation() {

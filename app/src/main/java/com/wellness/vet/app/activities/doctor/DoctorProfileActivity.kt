@@ -2,9 +2,9 @@ package com.wellness.vet.app.activities.doctor
 
 import android.app.Dialog
 import android.content.Intent
-import android.opengl.ETC1.isValid
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,8 +14,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.wellness.vet.app.R
-import com.wellness.vet.app.activities.user.UserDashBoardActivity
-import com.wellness.vet.app.adapters.CityDropDownAdapter
 import com.wellness.vet.app.databinding.ActivityDoctorProfileBinding
 import com.wellness.vet.app.main_utils.AppConstants
 import com.wellness.vet.app.main_utils.AppSharedPreferences
@@ -57,8 +55,10 @@ class DoctorProfileActivity : AppCompatActivity(), View.OnClickListener {
 
                     if (cityList.isNotEmpty()) {
                         binding.city.setAdapter(
-                            CityDropDownAdapter(
-                                this@DoctorProfileActivity, cityList
+                            ArrayAdapter(
+                                this@DoctorProfileActivity,
+                                android.R.layout.simple_dropdown_item_1line,
+                                cityList
                             )
                         )
                     }
@@ -106,7 +106,7 @@ class DoctorProfileActivity : AppCompatActivity(), View.OnClickListener {
             Toast.makeText(
                 this@DoctorProfileActivity, "Profile Data Added Successfully", Toast.LENGTH_SHORT
             ).show()
-            appSharedPreferences.put("doctorProfileAdded", true)
+            updateSharePref(doctorProfile.name, doctorProfile.city, doctorProfile.gender)
             startActivity(Intent(this@DoctorProfileActivity, DoctorTimeFeesActivity::class.java))
             finish()
         }.addOnFailureListener {
@@ -115,6 +115,13 @@ class DoctorProfileActivity : AppCompatActivity(), View.OnClickListener {
                 this@DoctorProfileActivity, it.message, Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun updateSharePref(name: String, city: String, gender: String) {
+        appSharedPreferences.put("doctorProfileAdded", true)
+        appSharedPreferences.put("doctorName", name)
+        appSharedPreferences.put("doctorCity", city)
+        appSharedPreferences.put("doctorGender", gender)
     }
 
     private fun isValid(): Boolean {

@@ -15,10 +15,12 @@ import com.wellness.vet.app.fragments.user.UserAppointmentFragment
 import com.wellness.vet.app.fragments.user.UserChatFragment
 import com.wellness.vet.app.fragments.user.UserFindDoctorFragment
 import com.wellness.vet.app.main_utils.AppSharedPreferences
+import com.wellness.vet.app.main_utils.LocationPermissionUtils
 
 class UserDashBoardActivity : AppCompatActivity(), OnClickListener {
     private lateinit var binding: ActivityUserDashBoardBinding
     private lateinit var appSharedPreferences: AppSharedPreferences
+    private lateinit var permissionUtils: LocationPermissionUtils
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserDashBoardBinding.inflate(layoutInflater)
@@ -26,8 +28,13 @@ class UserDashBoardActivity : AppCompatActivity(), OnClickListener {
         init()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getUserNameData()
+    }
     private fun init() {
         appSharedPreferences = AppSharedPreferences(this@UserDashBoardActivity)
+        permissionUtils = LocationPermissionUtils(this@UserDashBoardActivity)
         binding.logoutBtn.setOnClickListener(this)
         binding.profile.setOnClickListener(this)
 
@@ -67,6 +74,7 @@ class UserDashBoardActivity : AppCompatActivity(), OnClickListener {
             return@setOnItemSelectedListener false
         }
         getUserNameData()
+        permissionUtils.checkAndRequestPermissions()
     }
 
     private fun getUserNameData() {
