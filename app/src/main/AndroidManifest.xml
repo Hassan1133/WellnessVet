@@ -19,6 +19,15 @@
         android:theme="@style/Theme.WellnessVet"
         tools:targetApi="31">
         <activity
+            android:name=".activities.common.MainTestAuthActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activities.doctor.EditDoctorProfileActivity"
             android:exported="false" />
         <activity
@@ -29,6 +38,12 @@
             android:exported="false" />
         <activity
             android:name=".activities.doctor.ShowDoctorProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.doctor.DoctorChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.user.UserChatActivity"
             android:exported="false" />
 
         <meta-data
@@ -90,11 +105,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="DiscouragedApi,LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.wellness.vet.app.R
+import com.wellness.vet.app.activities.doctor.DoctorChatActivity
 import com.wellness.vet.app.activities.doctor.DoctorDashBoardActivity
 import com.wellness.vet.app.activities.doctor.DoctorProfileActivity
 import com.wellness.vet.app.activities.doctor.DoctorTimeFeesActivity
@@ -44,7 +45,8 @@ class SplashActivity : AppCompatActivity() {
                 }
             } else if (docLoginCheck) {
                 intent = if (docProfileCheck && docTimeCheck) {
-                    Intent(this, DoctorDashBoardActivity::class.java)
+//                    Intent(this, DoctorDashBoardActivity::class.java)
+                    Intent(this, DoctorChatActivity::class.java)
                 } else if (docProfileCheck) {
                     Intent(this, DoctorTimeFeesActivity::class.java)
                 } else {

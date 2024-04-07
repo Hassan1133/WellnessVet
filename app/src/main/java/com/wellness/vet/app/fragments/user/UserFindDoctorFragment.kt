@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.common.MapsActivity
+import com.wellness.vet.app.activities.user.UserChatActivity
 import com.wellness.vet.app.databinding.FragmentUserFindDoctorBinding
 import com.wellness.vet.app.main_utils.AppConstants.Companion.DOCTOR_REF
 import com.wellness.vet.app.main_utils.DistanceCalculator
@@ -177,7 +178,6 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
 
     private fun calculateDistance(docList: List<DoctorDetailProfileModel>) {
 
-
         var nearestDoctor: DoctorDetailProfileModel? = null
         var shortestDistance = Double.MAX_VALUE
 
@@ -204,6 +204,9 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
                 "Nearest doctor's clinic: ${it.name}",
                 Toast.LENGTH_SHORT
             ).show()
+
+            startActivity(Intent(requireContext(),UserChatActivity::class.java).putExtra("uid",""))
+
         }
 }
 

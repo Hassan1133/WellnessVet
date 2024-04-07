@@ -59,4 +59,7 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="update">Update</string>
     <string name="update_your_profile">Update your Profile</string>
+    <string name="user_chat">User Chat</string>
+    <string name="doctor_chat">Doctor Chat</string>
+    <string name="type_a_message">Type a message</string>
 </resources>

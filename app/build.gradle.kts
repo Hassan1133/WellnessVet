@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.database.ktx)
     implementation(libs.play.services.maps)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -60,7 +62,7 @@ dependencies {
     implementation(libs.play.services.location)
 
 //    OTP View
-    implementation (libs.otp)
+    implementation(libs.otp)
 
     //    clk progress library
     implementation(libs.clkProgressBar)
@@ -68,4 +70,5 @@ dependencies {
     // circular ImageView
     implementation(libs.circleimageview)
 
+    implementation(libs.glide)
 }
