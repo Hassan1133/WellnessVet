@@ -1,5 +1,6 @@
 package com.wellness.vet.app.activities.doctor
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.wellness.vet.app.databinding.ActivityShowDoctorProfileBinding
@@ -17,9 +18,18 @@ class ShowDoctorProfileActivity : AppCompatActivity() {
         init()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getProfileDataFromSharedPref()
+    }
+
     private fun init() {
         appSharedPreferences = AppSharedPreferences(this@ShowDoctorProfileActivity)
         getProfileDataFromSharedPref()
+
+        binding.editProfileBtn.setOnClickListener{
+            startActivity(Intent(this@ShowDoctorProfileActivity, EditDoctorProfileActivity::class.java))
+        }
     }
 
     private fun getProfileDataFromSharedPref() {

@@ -79,7 +79,7 @@ class DoctorDashBoardActivity : AppCompatActivity(), OnClickListener {
     }
 
     private fun showLogoutDialog() {
-        MaterialAlertDialogBuilder(this@DoctorDashBoardActivity).setMessage(R.string.logout_message)
+        MaterialAlertDialogBuilder(this@DoctorDashBoardActivity, R.style.ThemeOverlay_App_MaterialAlertDialog).setMessage(R.string.logout_message)
             .setCancelable(false).setPositiveButton(R.string.yes) { _, _ ->
                 logout() // Perform logout
             }.setNegativeButton(R.string.no) { dialog, _ ->

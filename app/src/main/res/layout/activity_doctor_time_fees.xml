@@ -93,6 +93,9 @@
                     android:layout_below="@+id/startTimeHeading"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
+                    app:endIconDrawable="@drawable/calendar_clock"
+                    app:endIconMode="custom"
+                    app:endIconTint="@color/hint_color"
                     android:layout_marginEnd="20dp"
                     app:hintEnabled="false"
                     app:hintTextColor="@color/hint_color">
@@ -105,6 +108,7 @@
                         android:background="@drawable/edit_txt_bg"
                         android:hint="@string/enter_start_time"
                         android:inputType="text"
+                        android:enabled="false"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint_color"
                         android:textSize="14sp" />
@@ -133,13 +137,16 @@
 
                 <!-- TextInputLayout to contain the input field for phone number -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/endLayout"
+                    android:id="@+id/endTimeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_below="@+id/endHeading"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="20dp"
+                    app:endIconDrawable="@drawable/calendar_clock"
+                    app:endIconMode="custom"
+                    app:endIconTint="@color/hint_color"
                     app:hintEnabled="false"
                     app:hintTextColor="@color/hint_color">
 
@@ -150,9 +157,10 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_txt_bg"
                         android:hint="@string/enter_end_time"
+                        android:enabled="false"
                         android:inputType="text"
-                        android:textColor="@color/black"
                         android:textColorHint="@color/hint_color"
+                        android:textColor="@color/black"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -233,6 +241,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="20dp"
                     app:endIconDrawable="@drawable/add_location"
+                    app:endIconTint="@color/hint_color"
                     app:endIconMode="custom"
                     app:hintEnabled="false"
                     app:hintTextColor="@color/hint_color">
@@ -244,6 +253,7 @@
                         android:enabled="false"
                         android:hint="@string/enter_clinic_location"
                         android:textColor="@color/hint_color"
+                        android:textColorHint="@color/hint_color"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -263,6 +273,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
+                    android:textColor="@color/white"
                     android:layout_centerInParent="true"
                     android:backgroundTint="@color/orange"
                     android:text="@string/save"

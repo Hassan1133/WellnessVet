@@ -4,6 +4,12 @@
         <!-- Customize your dark theme here. -->
         <item name="colorPrimary">@color/dark_navy_blue</item>
         <item name="android:windowDisablePreview">true</item>
+
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+
+        <item name="chipStyle">@style/Widget.App.Chip</item>
+
+
     </style>
 
     <!--    style of search view-->
@@ -13,6 +19,21 @@
         <item name="android:colorControlNormal">@color/hint_color</item>
         <item name="android:textCursorDrawable">@drawable/cursor_shape</item>
         <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/dark_navy_blue</item>
+        <item name="colorSecondary">@color/dark_navy_blue</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.Material3.Body.Text</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
+    </style>
+
+    <style name="Widget.App.Chip" parent="Widget.Material3.MaterialTimePicker.Display">
+        <item name="android:textColor">@color/dark_navy_blue</item>
     </style>
 
 </resources>

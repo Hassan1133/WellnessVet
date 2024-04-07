@@ -96,7 +96,7 @@ class UserDashBoardActivity : AppCompatActivity(), OnClickListener {
     }
 
     private fun showLogoutDialog() {
-        MaterialAlertDialogBuilder(this@UserDashBoardActivity).setMessage(R.string.logout_message)
+        MaterialAlertDialogBuilder(this@UserDashBoardActivity, R.style.ThemeOverlay_App_MaterialAlertDialog).setMessage(R.string.logout_message)
             .setCancelable(false).setPositiveButton(R.string.yes) { _, _ ->
                 logout() // Perform logout
             }.setNegativeButton(R.string.no) { dialog, _ ->

@@ -49,7 +49,7 @@ class DoctorTimeFeesActivity : AppCompatActivity(),OnClickListener {
         permissionUtils = LocationPermissionUtils(this@DoctorTimeFeesActivity)
         permissionUtils.checkAndRequestPermissions()
 
-        binding.startTime.setOnClickListener {
+        binding.startTimeLayout.setEndIconOnClickListener {
             val cal = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
@@ -66,7 +66,7 @@ class DoctorTimeFeesActivity : AppCompatActivity(),OnClickListener {
         }
 
 
-        binding.endTime.setOnClickListener {
+        binding.endTimeLayout.setEndIconOnClickListener() {
             val cal = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
