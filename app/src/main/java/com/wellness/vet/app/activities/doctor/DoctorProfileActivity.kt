@@ -81,6 +81,7 @@ class DoctorProfileActivity : AppCompatActivity(), View.OnClickListener {
                     setDataToModel(
                         binding.name.text.toString(),
                         appSharedPreferences.getString("doctorPhoneNo")!!,
+                        appSharedPreferences.getString("doctorUid")!!,
                         binding.city.text.toString(),
                         radio.text.toString()
                     )
@@ -90,10 +91,11 @@ class DoctorProfileActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun setDataToModel(name: String, phone: String, city: String, gender: String) {
+    private fun setDataToModel(name: String, phone: String, id: String ,city: String, gender: String) {
         val doctorProfile = DoctorProfileModel()
         doctorProfile.name = "Dr. $name"
         doctorProfile.phoneNo = phone
+        doctorProfile.id = id
         doctorProfile.city = city
         doctorProfile.gender = gender
 

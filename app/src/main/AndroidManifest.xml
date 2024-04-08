@@ -19,14 +19,14 @@
         android:theme="@style/Theme.WellnessVet"
         tools:targetApi="31">
         <activity
-            android:name=".activities.common.MainTestAuthActivity"
+            android:name=".activities.user.ViewDoctorProfileActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
+        <activity
+            android:name=".activities.common.MainTestAuthActivity"
+            android:exported="true"></activity>
         <activity
             android:name=".activities.doctor.EditDoctorProfileActivity"
             android:exported="false" />
@@ -105,7 +105,11 @@
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="DiscouragedApi,LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

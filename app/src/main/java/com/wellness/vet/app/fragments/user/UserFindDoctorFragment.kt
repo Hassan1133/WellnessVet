@@ -18,9 +18,12 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -29,9 +32,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.common.MapsActivity
-import com.wellness.vet.app.activities.user.UserChatActivity
+import com.wellness.vet.app.activities.user.ViewDoctorProfileActivity
 import com.wellness.vet.app.databinding.FragmentUserFindDoctorBinding
 import com.wellness.vet.app.main_utils.AppConstants.Companion.DOCTOR_REF
+import com.wellness.vet.app.main_utils.AppConstants.Companion.PROFILE_REF
 import com.wellness.vet.app.main_utils.DistanceCalculator
 import com.wellness.vet.app.main_utils.LocationPermissionUtils
 import com.wellness.vet.app.models.DoctorDetailProfileModel
@@ -43,14 +47,12 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
     private lateinit var googleMap: GoogleMap
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var permissionUtils: LocationPermissionUtils
-    private var nearestClinicLatitude: Double = 0.0
-    private var nearestClinicLongitude: Double = 0.0
     private var userLatitude: Double = 0.0
     private var userLongitude: Double = 0.0
-    private var nearestClinicLocation: String = ""
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var doctorRef: DatabaseReference
     private lateinit var doctorsList: MutableList<DoctorDetailProfileModel>
+    private var doctorUId: String = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,6 +73,8 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
         doctorRef = FirebaseDatabase.getInstance().getReference(DOCTOR_REF)
         permissionUtils = LocationPermissionUtils(requireActivity())
 
+        binding.viewDoctorProfileBtn.setOnClickListener(this)
+
         val statusArray = resources.getStringArray(R.array.location_options)
         // Create ArrayAdapter for AutoCompleteTextView
         val adapter = ArrayAdapter(
@@ -90,7 +94,18 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
     }
 
     override fun onClick(v: View?) {
-
+        when (v?.id) {
+            R.id.viewDoctorProfileBtn -> {
+                if (doctorUId.isNotEmpty()) {
+                    val intent = Intent(requireActivity(), ViewDoctorProfileActivity::class.java)
+                    intent.putExtra("doctorUId", doctorUId)
+                    requireActivity().startActivity(intent)
+                } else {
+                    Toast.makeText(requireActivity(), R.string.doctor_not_found, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
     }
 
     private fun getDoctorsData() {
@@ -101,7 +116,7 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
                 if (snapshot.exists()) {
                     for (dataSnapshot in snapshot.getChildren()) {
                         val doctorDetailProfileModel: DoctorDetailProfileModel? =
-                            dataSnapshot.child("Profile")
+                            dataSnapshot.child(PROFILE_REF)
                                 .getValue(DoctorDetailProfileModel::class.java)
 
                         doctorsList.add(doctorDetailProfileModel!!)
@@ -124,9 +139,6 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
 
                 when (selectedItem) {
                     "Your Current Location" -> {
-                        nearestClinicLocation = ""
-                        nearestClinicLatitude = 0.0
-                        nearestClinicLongitude = 0.0
                         userLatitude = 0.0
                         userLongitude = 0.0
                         googleMap.clear()
@@ -136,9 +148,6 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
                     }
 
                     "Choose on Map" -> {
-                        nearestClinicLocation = ""
-                        nearestClinicLatitude = 0.0
-                        nearestClinicLongitude = 0.0
                         userLatitude = 0.0
                         userLongitude = 0.0
                         googleMap.clear()
@@ -196,18 +205,21 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
         }
 
         nearestDoctor?.let {
-            nearestClinicLatitude = it.clinicLatitude
-            nearestClinicLongitude = it.clinicLongitude
-            // Here you can handle the nearest doctor's clinic location
-            Toast.makeText(
-                requireActivity(),
-                "Nearest doctor's clinic: ${it.name}",
-                Toast.LENGTH_SHORT
-            ).show()
 
-            startActivity(Intent(requireContext(),UserChatActivity::class.java).putExtra("uid",""))
+            doctorUId = it.id
+            moveCameraToNearestDoctorLocation(it.name, it.clinicLatitude, it.clinicLongitude)
 
         }
-}
+    }
+
+    private fun moveCameraToNearestDoctorLocation(
+        doctorName: String, lat: Double, lng: Double
+    ) {
+        val latLng = LatLng(lat, lng)
+        val marker = googleMap.addMarker(MarkerOptions().position(latLng).title(doctorName))
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
+        assert(marker != null)
+        marker!!.showInfoWindow()
+    }
 
 }

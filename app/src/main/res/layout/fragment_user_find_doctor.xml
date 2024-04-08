@@ -43,7 +43,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/startDirectionBtn"
+        android:id="@+id/viewDoctorProfileBtn"
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -53,10 +53,10 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
         android:backgroundTint="@color/dark_navy_blue"
-        android:text="@string/directions"
+        android:text="@string/view_doctor_profile"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/direction" />
+        app:icon="@drawable/user" />
 
 
 </RelativeLayout>

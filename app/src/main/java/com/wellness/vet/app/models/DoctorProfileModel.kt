@@ -5,4 +5,5 @@ data class DoctorProfileModel (
     var name: String = "",
     var city: String = "",
     var gender: String = "",
+    var id: String = ""
 )

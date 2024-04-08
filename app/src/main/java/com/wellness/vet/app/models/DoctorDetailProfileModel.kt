@@ -3,6 +3,7 @@ package com.wellness.vet.app.models
 class DoctorDetailProfileModel(
     var phoneNo: String = "",
     var name: String = "",
+    var id: String = "",
     var city: String = "",
     var gender: String = "",
     var startTime: String = "",

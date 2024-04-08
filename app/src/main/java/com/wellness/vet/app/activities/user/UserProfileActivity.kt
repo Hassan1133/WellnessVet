@@ -83,6 +83,7 @@ class UserProfileActivity : AppCompatActivity(), OnClickListener {
                     setDataToModel(
                         binding.name.text.toString(),
                         appSharedPreferences.getString("userPhoneNo")!!,
+                        appSharedPreferences.getString("userUid")!!,
                         binding.city.text.toString(),
                         radio.text.toString()
                     )
@@ -92,10 +93,17 @@ class UserProfileActivity : AppCompatActivity(), OnClickListener {
         }
     }
 
-    private fun setDataToModel(name: String, phone: String, city: String, gender: String) {
+    private fun setDataToModel(
+        name: String,
+        phone: String,
+        id: String,
+        city: String,
+        gender: String
+    ) {
         val userProfile = UserProfileModel()
         userProfile.name = name
         userProfile.phoneNo = phone
+        userProfile.id = id
         userProfile.city = city
         userProfile.gender = gender
 
