@@ -67,4 +67,7 @@
     <string name="timings">Timings</string>
     <string name="appointment">Appointment</string>
     <string name="chat">Chat</string>
+    <string name="schedule_appointment">Schedule Appointment</string>
+    <string name="set_up_date_and_time">Select Date and Time to Schedule</string>
+    <string name="date">Date</string>
 </resources>

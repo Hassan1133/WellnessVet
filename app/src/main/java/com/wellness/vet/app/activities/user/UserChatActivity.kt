@@ -40,7 +40,7 @@ class UserChatActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
 
         if (currentUser != null) {
-            val doctorUid = "yiGsWIhGIsMXz7Onilymj4LAR2m2"
+            val doctorUid = intent.getStringExtra("uid").toString()
             val userUid = currentUser.uid
 
             val senderDbRef = chatDbRef.child(userUid).child(doctorUid).child("messages")
@@ -85,6 +85,7 @@ class UserChatActivity : AppCompatActivity() {
             val pickMedia =
                 registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                     if (uri != null) {
+                        val mimeType: String? = contentResolver.getType(uri)
                         val pushIdRef = senderDbRef.push()
                         val pushId = pushIdRef.key
                         val filePath = storageDbRef.child("messageImages").child("$pushId.jpg")

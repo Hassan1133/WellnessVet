@@ -22,6 +22,9 @@
             android:name=".activities.user.FindDoctorFromListActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.user.CreateAppointmentActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.user.ViewDoctorProfileActivity"
             android:exported="true"></activity>
         <activity
