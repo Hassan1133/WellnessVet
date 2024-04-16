@@ -70,4 +70,7 @@
     <string name="schedule_appointment">Schedule Appointment</string>
     <string name="set_up_date_and_time">Select Date and Time to Schedule</string>
     <string name="date">Date</string>
+    <string name="select_date">Select Date</string>
+    <string name="time">Time</string>
+    <string name="schedule">Schedule</string>
 </resources>

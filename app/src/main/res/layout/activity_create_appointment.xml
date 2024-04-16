@@ -44,7 +44,7 @@
 
             <!-- TextView displaying "set up your profile" -->
             <TextView
-                android:id="@+id/setUpProfileHeading"
+                android:id="@+id/setUpHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -54,23 +54,11 @@
                 android:textColor="@color/black"
                 android:textSize="22sp" />
 
-            <!-- TextView displaying a subheading -->
-            <TextView
-                android:id="@+id/setUpProfileSubHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/setUpProfileHeading"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="20dp"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
             <RelativeLayout
-                android:id="@+id/startTimeRelative"
+                android:id="@+id/relativeSlotDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/setUpProfileSubHeading">
+                android:layout_below="@+id/setUpHeading">
 
                 <!-- TextView displaying "Phone number" -->
                 <TextView
@@ -87,7 +75,7 @@
 
                 <!-- TextInputLayout to contain the input field for phone number -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/startTimeLayout"
+                    android:id="@+id/slotDateLayout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_below="@+id/startTimeHeading"
@@ -102,11 +90,11 @@
 
                     <!-- TextInputEditText for entering phone number -->
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/startTime"
+                        android:id="@+id/slotDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_txt_bg"
-                        android:hint="@string/enter_start_time"
+                        android:hint="@string/select_date"
                         android:inputType="text"
                         android:enabled="false"
                         android:textColor="@color/black"
@@ -117,158 +105,41 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/endTimeRelative"
+                android:id="@+id/relativeSlots"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/startTimeRelative">
+                android:layout_below="@+id/relativeSlotDate"
+                android:layout_above="@+id/saveRelative">
 
-                <!-- TextView displaying "Phone number" -->
                 <TextView
-                    android:id="@+id/endHeading"
+                    android:id="@+id/timeSlotHeading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginEnd="20dp"
-                    android:text="@string/end_time"
+                    android:text="@string/time"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <!-- TextInputLayout to contain the input field for phone number -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/endTimeLayout"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerSlot"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_below="@+id/endHeading"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    app:endIconDrawable="@drawable/calendar_clock"
-                    app:endIconMode="custom"
-                    app:endIconTint="@color/hint_color"
-                    app:hintEnabled="false"
-                    app:hintTextColor="@color/hint_color">
-
-                    <!-- TextInputEditText for entering phone number -->
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/endTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edit_txt_bg"
-                        android:hint="@string/enter_end_time"
-                        android:enabled="false"
-                        android:inputType="text"
-                        android:textColorHint="@color/hint_color"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/feesRelative"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/endTimeRelative">
-
-                <!-- TextView displaying "Phone number" -->
-                <TextView
-                    android:id="@+id/feesHeading"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="20dp"
-                    android:text="@string/fees"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <!-- TextInputLayout to contain the input field for phone number -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/feesLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_below="@+id/feesHeading"
-                    android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    app:hintEnabled="false"
-                    app:hintTextColor="@color/hint_color">
-
-                    <!-- TextInputEditText for entering phone number -->
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/fees"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edit_txt_bg"
-                        android:hint="@string/enter_fees"
-                        android:inputType="number"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/hint_color"
-                        android:textSize="14sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_below="@+id/timeSlotHeading"/>
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/clinicRelative"
+                android:id="@+id/scheduleRelative"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/feesRelative">
-
-                <!-- TextView displaying "Phone number" -->
-                <TextView
-                    android:id="@+id/clinicHeading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="20dp"
-                    android:text="@string/clinic_location"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/clinicLocationLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/clinicHeading"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    app:endIconDrawable="@drawable/add_location"
-                    app:endIconTint="@color/hint_color"
-                    app:endIconMode="custom"
-                    app:hintEnabled="false"
-                    app:hintTextColor="@color/hint_color">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/clinicLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:enabled="false"
-                        android:hint="@string/enter_clinic_location"
-                        android:textColor="@color/hint_color"
-                        android:textColorHint="@color/hint_color"
-                        android:textSize="14sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/saveRelative"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/clinicRelative">
+                android:layout_height="70dp"
+                android:layout_alignParentBottom="true">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/saveProfile"
+                    android:id="@+id/scheduleAppointment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -276,7 +147,7 @@
                     android:textColor="@color/white"
                     android:layout_centerInParent="true"
                     android:backgroundTint="@color/orange"
-                    android:text="@string/save"
+                    android:text="@string/schedule"
                     android:textSize="16sp"
                     app:cornerRadius="6dp"/>
 
