@@ -24,6 +24,11 @@ class AppSharedPreferences(context: Context) {
             .apply()
     }
 
+    fun put(key: String, value: Float) {
+        editor.putFloat(key, value)
+            .apply()
+    }
+
     fun put(key: String, value: Int) {
         editor.putInt(key, value)
             .apply()
@@ -31,6 +36,10 @@ class AppSharedPreferences(context: Context) {
 
     fun getInt(key: String): Int {
         return sharedPref.getInt(key, 0)
+    }
+
+    fun getFloat(key: String): Float {
+        return sharedPref.getFloat(key, 0.0f)
     }
 
     fun getBoolean(key: String): Boolean {

@@ -3,25 +3,32 @@ package com.wellness.vet.app.activities.doctor
 //noinspection SuspiciousImport
 import android.R
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.wellness.vet.app.activities.common.MapsActivity
 import com.wellness.vet.app.databinding.ActivityEditDoctorProfileBinding
 import com.wellness.vet.app.main_utils.AppConstants
 import com.wellness.vet.app.main_utils.AppConstants.Companion.DOCTOR_REF
 import com.wellness.vet.app.main_utils.AppConstants.Companion.PROFILE_REF
 import com.wellness.vet.app.main_utils.AppSharedPreferences
+import com.wellness.vet.app.main_utils.LoadingDialog
 import com.wellness.vet.app.main_utils.LocationPermissionUtils
 import com.wellness.vet.app.main_utils.NetworkManager
 import java.text.SimpleDateFormat
@@ -37,6 +44,9 @@ class EditDoctorProfileActivity : AppCompatActivity() {
     private lateinit var permissionUtils: LocationPermissionUtils
     private var selectedClinicLatitude: Double = 0.0
     private var selectedClinicLongitude: Double = 0.0;
+    private var imageUri = Uri.EMPTY
+    private lateinit var storageRef: StorageReference
+    private lateinit var loadingDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +64,7 @@ class EditDoctorProfileActivity : AppCompatActivity() {
         doctorProfileRef = FirebaseDatabase.getInstance().getReference(DOCTOR_REF).child(
             appSharedPreferences.getString("doctorUid")!!
         ).child(PROFILE_REF)
+        storageRef = FirebaseStorage.getInstance().getReference()
         getProfileDataFromSharedPref()
         getCityNamesFromDb()
 
@@ -112,19 +123,96 @@ class EditDoctorProfileActivity : AppCompatActivity() {
 
         binding.updateProfileBtn.setOnClickListener {
             if (isValid()) {
-                updateDataToDb(
-                    binding.name.text.toString(),
-                    binding.city.text.toString(),
-                    binding.clinicLocation.text.toString(),
-                    binding.startTime.text.toString(),
-                    binding.endTime.text.toString(),
-                    binding.fees.text.toString(),
-                    selectedClinicLatitude,
-                    selectedClinicLongitude
-                )
+                if (imageUri == Uri.EMPTY) {
+                    loadingDialog = LoadingDialog.showLoadingDialog(this@EditDoctorProfileActivity)
+                    updateDataToDb(
+                        binding.name.text.toString(),
+                        binding.city.text.toString(),
+                        binding.clinicLocation.text.toString(),
+                        binding.startTime.text.toString(),
+                        binding.endTime.text.toString(),
+                        binding.fees.text.toString(),
+                        selectedClinicLatitude,
+                        selectedClinicLongitude,
+                        appSharedPreferences.getString("doctorImgUrl")!!
+                    )
+                } else if (imageUri != Uri.EMPTY) {
+                    loadingDialog = LoadingDialog.showLoadingDialog(this@EditDoctorProfileActivity)
+                    uploadImage(
+                        binding.name.text.toString(),
+                        binding.city.text.toString(),
+                        binding.clinicLocation.text.toString(),
+                        binding.startTime.text.toString(),
+                        binding.endTime.text.toString(),
+                        binding.fees.text.toString(),
+                        selectedClinicLatitude,
+                        selectedClinicLongitude,
+                        appSharedPreferences.getString("doctorUid")!!
+                    )
+                }
             }
         }
+
+        binding.pickImgBtn.setOnClickListener {
+            pickNewImage()
+        }
     }
+
+    private fun uploadImage(
+        name: String,
+        city: String,
+        clinicLocation: String,
+        startTime: String,
+        endTime: String,
+        fees: String,
+        selectedClinicLatitude: Double,
+        selectedClinicLongitude: Double,
+        docId: String
+    ) {
+
+        val filepath: StorageReference = storageRef.child("DoctorProfileImages/" + docId)
+
+        val uploadTask = filepath.putFile(imageUri)
+
+        uploadTask.addOnSuccessListener { taskSnapshot ->
+            // Get the download URL
+            val downloadUrlTask = taskSnapshot.storage.downloadUrl
+            downloadUrlTask.addOnSuccessListener { uri ->
+                updateDataToDb(
+                    name,
+                    city,
+                    clinicLocation,
+                    startTime,
+                    endTime,
+                    fees,
+                    selectedClinicLatitude,
+                    selectedClinicLongitude,
+                    uri.toString()
+                )
+            }.addOnFailureListener {
+                LoadingDialog.hideLoadingDialog(loadingDialog)
+                Toast.makeText(this@EditDoctorProfileActivity, it.message, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }.addOnFailureListener {
+            LoadingDialog.hideLoadingDialog(loadingDialog)
+            Toast.makeText(this@EditDoctorProfileActivity, it.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun pickNewImage() {
+        getContent.launch("image/*")
+    }
+
+    private var getContent =
+        registerForActivityResult<String, Uri>(
+            ActivityResultContracts.GetContent()
+        ) { result ->
+            if (result != null) {
+                imageUri = result
+                binding.userImg.setImageURI(imageUri)
+            }
+        }
 
     private fun updateDataToDb(
         name: String,
@@ -134,7 +222,8 @@ class EditDoctorProfileActivity : AppCompatActivity() {
         endTime: String,
         fees: String,
         clinicLatitude: Double,
-        clinicLongitude: Double
+        clinicLongitude: Double,
+        imgUrl: String,
     ) {
 
         val doctorMap = hashMapOf<String, Any>(
@@ -146,12 +235,22 @@ class EditDoctorProfileActivity : AppCompatActivity() {
             "clinicLocation" to clinicLocation,
             "clinicLatitude" to clinicLatitude,
             "clinicLongitude" to clinicLongitude,
+            "imgUrl" to imgUrl,
         )
 
         doctorProfileRef.updateChildren(doctorMap)
             .addOnSuccessListener {
-                updateSharedPreferences(name, city, startTime, endTime, fees, clinicLocation)
+                updateSharedPreferences(
+                    name,
+                    city,
+                    startTime,
+                    endTime,
+                    fees,
+                    clinicLocation,
+                    imgUrl
+                )
             }.addOnFailureListener {
+                LoadingDialog.hideLoadingDialog(loadingDialog)
                 Toast.makeText(
                     this@EditDoctorProfileActivity,
                     it.message,
@@ -166,7 +265,8 @@ class EditDoctorProfileActivity : AppCompatActivity() {
         startTime: String,
         endTime: String,
         fees: String,
-        clinicLocation: String
+        clinicLocation: String,
+        imgUrl: String
     ) {
         appSharedPreferences.put("doctorName", name)
         appSharedPreferences.put("doctorCity", city)
@@ -174,6 +274,8 @@ class EditDoctorProfileActivity : AppCompatActivity() {
         appSharedPreferences.put("doctorStartTime", startTime)
         appSharedPreferences.put("doctorEndTime", endTime)
         appSharedPreferences.put("doctorFees", fees)
+        appSharedPreferences.put("doctorImgUrl", imgUrl)
+        LoadingDialog.hideLoadingDialog(loadingDialog)
         Toast.makeText(
             this@EditDoctorProfileActivity,
             "Profile updated Successfully",
@@ -188,6 +290,12 @@ class EditDoctorProfileActivity : AppCompatActivity() {
         binding.startTime.setText(appSharedPreferences.getString("doctorStartTime"))
         binding.endTime.setText(appSharedPreferences.getString("doctorEndTime"))
         binding.fees.setText(appSharedPreferences.getString("doctorFees"))
+        selectedClinicLatitude = appSharedPreferences.getFloat("doctorClinicLatitude").toDouble()
+        selectedClinicLongitude = appSharedPreferences.getFloat("doctorClinicLongitude").toDouble()
+        Glide.with(applicationContext).load(appSharedPreferences.getString("doctorImgUrl"))
+            .diskCacheStrategy(
+                DiskCacheStrategy.DATA
+            ).into(binding.userImg)
     }
 
     private fun getCityNamesFromDb() {

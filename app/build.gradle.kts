@@ -71,4 +71,9 @@ dependencies {
     implementation(libs.circleimageview)
 
     implementation(libs.glide)
+
+    // dexter
+    implementation(libs.dexter)
+
+    implementation(libs.glide)
 }

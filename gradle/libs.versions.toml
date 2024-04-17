@@ -2,6 +2,7 @@
 agp = "8.3.1"
 circleimageview = "3.1.0"
 clkprogress = "v1.0"
+dexter = "6.2.3"
 kotlin = "1.9.0"
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -27,6 +28,7 @@ firebaseStorage = "20.3.0"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 clkProgressBar = { module = "com.github.colakcode:clkProgress", version.ref = "clkprogress" }
+dexter = { module = "com.karumi:dexter", version.ref = "dexter" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

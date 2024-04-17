@@ -41,30 +41,37 @@
             android:layout_height="match_parent"
             tools:ignore="ScrollViewSize">
 
-            <!-- TextView displaying "set up your profile" -->
-            <TextView
-                android:id="@+id/setUpProfileHeading"
+            <RelativeLayout
+                android:id="@+id/profile_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:layout_marginEnd="20dp"
-                android:text="@string/update_your_profile"
-                android:textColor="@color/black"
-                android:textSize="22sp" />
+                android:layout_marginEnd="20dp">
 
-            <!-- TextView displaying a subheading -->
-            <TextView
-                android:id="@+id/setUpProfileSubHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/setUpProfileHeading"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="20dp"
-                android:text="@string/add_necessary_info_to_complete_setup"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userImg"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/dp" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/pickImgBtn"
+                    android:layout_width="26sp"
+                    android:layout_height="26sp"
+                    android:layout_below="@+id/userImg"
+                    android:layout_alignEnd="@+id/userImg"
+                    android:layout_marginTop="-33dp"
+                    android:layout_marginEnd="-10dp"
+                    android:backgroundTint="@color/orange"
+                    android:src="@drawable/camera"
+                    app:fabCustomSize="26sp"
+                    app:maxImageSize="14dp"
+                    app:tint="@color/white"
+                    tools:ignore="ContentDescription" />
+
+            </RelativeLayout>
 
 
             <!-- TextView displaying "Name" -->
@@ -76,7 +83,7 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="20dp"
                 android:text="@string/name"
-                android:layout_below="@+id/setUpProfileSubHeading"
+                android:layout_below="@+id/profile_img"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />

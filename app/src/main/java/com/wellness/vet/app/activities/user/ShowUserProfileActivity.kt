@@ -3,6 +3,8 @@ package com.wellness.vet.app.activities.user
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.wellness.vet.app.databinding.ActivityShowUserProfileBinding
 import com.wellness.vet.app.main_utils.AppSharedPreferences
 
@@ -39,5 +41,10 @@ class ShowUserProfileActivity : AppCompatActivity() {
         binding.phoneNumber.text = appSharedPreferences.getString("userPhoneNo")
         binding.city.text = appSharedPreferences.getString("userCity")
         binding.gender.text = appSharedPreferences.getString("userGender")
+        binding.email.text = appSharedPreferences.getString("userEmail")
+        Glide.with(applicationContext).load(appSharedPreferences.getString("userImgUrl"))
+            .diskCacheStrategy(
+                DiskCacheStrategy.DATA
+            ).into(binding.profile)
     }
 }

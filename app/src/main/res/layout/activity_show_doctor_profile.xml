@@ -52,7 +52,7 @@
                 >
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profileIcon"
+                    android:id="@+id/profileImage"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
@@ -64,13 +64,13 @@
                     android:id="@+id/editProfileBtn"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_below="@id/profileIcon"
+                    android:layout_below="@id/profileImage"
                     android:backgroundTint="@color/lighter_grey"
                     android:layout_alignParentEnd="true"
                     app:elevation="0dp"
                     app:fabCustomSize="25dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginTop="-28dp"
+                    android:layout_marginTop="-30dp"
                     app:maxImageSize="17dp"
                     app:srcCompat="@drawable/edit"
                     app:tint="@color/dark_navy_blue"
@@ -138,10 +138,65 @@
 
 
             <RelativeLayout
-                android:id="@+id/phoneLayout"
+                android:id="@+id/emailLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nameLayout"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp">
+
+                <ImageView
+                    android:id="@+id/emailIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/email"
+                    app:tint="@color/black" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@+id/emailIcon">
+
+                    <TextView
+                        android:id="@+id/emailHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/email"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/emailHeading"
+                        android:padding="2dp"
+                        android:textColor="@color/hint_color"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/email"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="4dp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phoneLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/emailLayout"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp">
@@ -162,7 +217,7 @@
                     android:layout_toEndOf="@+id/phoneIcon">
 
                     <TextView
-                        android:id="@+id/emailHeading"
+                        android:id="@+id/phoneHeading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
@@ -175,7 +230,7 @@
                         android:id="@+id/phoneNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/emailHeading"
+                        android:layout_below="@+id/phoneHeading"
                         android:padding="2dp"
                         android:textColor="@color/hint_color"
                         android:textSize="14sp" />

@@ -35,7 +35,7 @@ class DoctorTimeFeesActivity : AppCompatActivity(),OnClickListener {
     private lateinit var networkManager :NetworkManager
     private lateinit var permissionUtils: LocationPermissionUtils
     private var selectedClinicLatitude : Double = 0.0
-    private var selectedClinicLongitude : Double = 0.0;
+    private var selectedClinicLongitude : Double = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDoctorTimeFeesBinding.inflate(layoutInflater)

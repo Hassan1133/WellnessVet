@@ -73,4 +73,17 @@
     <string name="select_date">Select Date</string>
     <string name="time">Time</string>
     <string name="schedule">Schedule</string>
+    <string name="please_enter_your_credentials">Please enter your credentials</string>
+    <string name="email">Email</string>
+    <string name="e_g_example_gmail_com">e.g example@gmail.com</string>
+    <string name="password">Password</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="enter_atleast_6_words">enter atleast 6 words</string>
+    <string name="please_enter_your_details">please enter your details</string>
+    <string name="doctor_sign_up">Doctor Sign-up</string>
+    <string name="user_sign_up">User Sign-up</string>
+    <string name="already_have_an_account">Already have an account.</string>
+    <string name="digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="sign_in">Sign in</string>
 </resources>

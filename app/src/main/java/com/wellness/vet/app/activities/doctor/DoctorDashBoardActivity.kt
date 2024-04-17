@@ -6,9 +6,12 @@ import android.view.View
 import android.view.View.OnClickListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.wellness.vet.app.R
+import com.wellness.vet.app.activities.common.LoginActivity
 import com.wellness.vet.app.adapters.ViewPagerAdapter
 import com.wellness.vet.app.databinding.ActivityDoctorDashBoardBinding
 import com.wellness.vet.app.fragments.doctor.DoctorAppointmentFragment
@@ -69,6 +72,10 @@ class DoctorDashBoardActivity : AppCompatActivity(), OnClickListener {
 
     private fun getUserNameData() {
         binding.name.text = appSharedPreferences.getString("doctorName")
+        Glide.with(applicationContext).load(appSharedPreferences.getString("doctorImgUrl"))
+            .diskCacheStrategy(
+                DiskCacheStrategy.DATA
+            ).into(binding.profile)
     }
 
     override fun onClick(v: View?) {
@@ -90,7 +97,7 @@ class DoctorDashBoardActivity : AppCompatActivity(), OnClickListener {
     private fun logout() {
         FirebaseAuth.getInstance().signOut()
         appSharedPreferences.clear()
-        val intent = Intent(this@DoctorDashBoardActivity, DoctorLoginSignupActivity::class.java)
+        val intent = Intent(this@DoctorDashBoardActivity, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }

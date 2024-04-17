@@ -7,9 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.wellness.vet.app.R
+import com.wellness.vet.app.activities.user.CreateAppointmentActivity
 import com.wellness.vet.app.activities.user.UserChatActivity
 import com.wellness.vet.app.models.DoctorDetailProfileModel
+import de.hdodenhof.circleimageview.CircleImageView
 
 class DoctorListAdp(
     private val context: Context,
@@ -30,6 +34,9 @@ class DoctorListAdp(
         val doctorDetailProfileModel = doctorList[position]
         holder.doctorName.text = doctorDetailProfileModel.name
         holder.doctorCity.text = doctorDetailProfileModel.city
+        Glide.with(context).load(doctorDetailProfileModel.imgUrl).diskCacheStrategy(
+            DiskCacheStrategy.DATA
+        ).into(holder.docImage)
 
         holder.itemView.setOnClickListener {
             if (flag == "chat") {
@@ -37,7 +44,9 @@ class DoctorListAdp(
                 intent.putExtra("uid", doctorDetailProfileModel.id)
                 context.startActivity(intent)
             } else if (flag == "appointment") {
-
+                val intent = Intent(context, CreateAppointmentActivity::class.java)
+                intent.putExtra("uid", doctorDetailProfileModel.id)
+                context.startActivity(intent)
             }
         }
     }
@@ -51,5 +60,6 @@ class DoctorListAdp(
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val doctorName: TextView = itemView.findViewById(R.id.docName)
         val doctorCity: TextView = itemView.findViewById(R.id.docCity)
+        val docImage: CircleImageView = itemView.findViewById(R.id.docImage)
     }
 }
