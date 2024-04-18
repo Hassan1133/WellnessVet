@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.doctor.DoctorDashBoardActivity
 import com.wellness.vet.app.activities.user.UserDashBoardActivity
@@ -26,20 +27,29 @@ class SplashActivity : AppCompatActivity() {
         appSharedPreferences = AppSharedPreferences(this@SplashActivity)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            val userLoginCheck = appSharedPreferences.getBoolean("userLogin")
-            val docLoginCheck = appSharedPreferences.getBoolean("doctorLogin")
 
-            val intent = when {
-                userLoginCheck -> Intent(this, UserDashBoardActivity::class.java)
-                docLoginCheck -> Intent(this, DoctorDashBoardActivity::class.java)
-                else -> Intent(
-                    this,
-                    LoginActivity::class.java
-                ) // Default to LoginActivity if no flags are set
+            if (FirebaseAuth.getInstance().currentUser != null) {
+
+                val userLoginCheck = appSharedPreferences.getBoolean("userLogin")
+                val docLoginCheck = appSharedPreferences.getBoolean("doctorLogin")
+
+                val intent = when {
+                    userLoginCheck -> Intent(this, UserDashBoardActivity::class.java)
+                    docLoginCheck -> Intent(this, DoctorDashBoardActivity::class.java)
+                    else -> Intent(
+                        this, LoginActivity::class.java
+                    ) // Default to LoginActivity if no flags are set
+                }
+
+                startActivity(intent)
+                finish()
+            } else {
+                Intent(
+                    this, LoginActivity::class.java
+                )
+                startActivity(intent)
+                finish()
             }
-
-            startActivity(intent)
-            finish()
 
         }, 3000)
     }

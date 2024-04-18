@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +19,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ServerValue
 import com.google.firebase.database.database
 import com.google.firebase.storage.storage
-import com.wellness.vet.app.R
 import com.wellness.vet.app.adapters.ChatListAdapter
 import com.wellness.vet.app.databinding.ActivityUserChatBinding
 import com.wellness.vet.app.models.ChatDataModel
@@ -41,6 +39,11 @@ class UserChatActivity : AppCompatActivity() {
 
         if (currentUser != null) {
             val doctorUid = intent.getStringExtra("uid").toString()
+            binding.docName.text = intent.getStringExtra("name").toString()
+            Glide.with(this@UserChatActivity).load(intent.getStringExtra("imgUrl").toString())
+                .diskCacheStrategy(
+                    DiskCacheStrategy.DATA
+                ).into(binding.docImage)
             val userUid = currentUser.uid
 
             val senderDbRef = chatDbRef.child(userUid).child(doctorUid).child("messages")

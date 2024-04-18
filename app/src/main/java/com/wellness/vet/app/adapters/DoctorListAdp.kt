@@ -42,6 +42,8 @@ class DoctorListAdp(
             if (flag == "chat") {
                 val intent = Intent(context, UserChatActivity::class.java)
                 intent.putExtra("uid", doctorDetailProfileModel.id)
+                intent.putExtra("name", doctorDetailProfileModel.name)
+                intent.putExtra("imgUrl", doctorDetailProfileModel.imgUrl)
                 context.startActivity(intent)
             } else if (flag == "appointment") {
                 val intent = Intent(context, CreateAppointmentActivity::class.java)

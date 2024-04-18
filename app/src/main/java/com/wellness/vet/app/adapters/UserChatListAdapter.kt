@@ -46,7 +46,7 @@ class UserChatListAdapter(
                 DiskCacheStrategy.DATA
             ).into(holder.doctorImage)
         holder.itemView.setOnClickListener(View.OnClickListener {
-            context.startActivity(Intent(context,UserChatActivity::class.java).putExtra("uid",userChatList[position].uid))
+            context.startActivity(Intent(context,UserChatActivity::class.java).putExtra("uid",userChatList[position].uid).putExtra("name", userChatList[position].name).putExtra("imgUrl",userChatList[position].imgUrl))
         })
     }
     fun updateList(updateList: ArrayList<UserChatListModel>) {

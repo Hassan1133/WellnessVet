@@ -11,6 +11,8 @@ import android.view.View.OnClickListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.database.DataSnapshot
@@ -80,6 +82,10 @@ class ViewDoctorProfileActivity : AppCompatActivity(), OnClickListener {
         binding.fees.text = doctorProfile.fees
         docClinicLatitude = doctorProfile.clinicLatitude
         docClinicLongitude = doctorProfile.clinicLongitude
+        Glide.with(this@ViewDoctorProfileActivity).load(doctorProfile.imgUrl)
+            .diskCacheStrategy(
+                DiskCacheStrategy.DATA
+            ).into(binding.profileImg)
     }
 
     override fun onClick(v: View?) {
