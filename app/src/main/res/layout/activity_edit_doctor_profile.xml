@@ -182,7 +182,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <!-- TextInputLayout to contain the input field for phone number -->
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/startTimeLayout"
                     android:layout_width="match_parent"
@@ -197,7 +197,6 @@
                     app:hintEnabled="false"
                     app:hintTextColor="@color/hint_color">
 
-                    <!-- TextInputEditText for entering phone number -->
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/startTime"
                         android:layout_width="match_parent"

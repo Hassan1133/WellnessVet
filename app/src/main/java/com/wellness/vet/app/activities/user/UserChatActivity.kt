@@ -139,6 +139,7 @@ class UserChatActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
                 sendMessage(textMessage, "text", userUid, senderDbRef, receiverDbRef)
+                binding.message.setText("")
             }
         }
     }

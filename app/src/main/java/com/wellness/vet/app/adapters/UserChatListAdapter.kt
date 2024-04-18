@@ -5,13 +5,14 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.user.UserChatActivity
-import com.wellness.vet.app.models.ChatDataModel
 import com.wellness.vet.app.models.UserChatListModel
+import de.hdodenhof.circleimageview.CircleImageView
 
 class UserChatListAdapter(
     private val context: Context,
@@ -21,10 +22,9 @@ class UserChatListAdapter(
 
     class ChatListRecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val txtDoctorName: TextView = itemView.findViewById(R.id.txt_doctor_name)
-        val txtDoctorTime: TextView = itemView.findViewById(R.id.txt_doctor_time)
-        val txtDoctorFees: TextView = itemView.findViewById(R.id.txt_doctor_fees)
-        val btnChat: RelativeLayout = itemView.findViewById(R.id.btn_chat)
+        val txtDoctorName: TextView = itemView.findViewById(R.id.docName)
+        val txtDoctorCity: TextView = itemView.findViewById(R.id.docCity)
+        val doctorImage: CircleImageView = itemView.findViewById(R.id.docImage)
 
     }
 
@@ -40,9 +40,12 @@ class UserChatListAdapter(
 
     override fun onBindViewHolder(holder: ChatListRecyclerViewHolder, position: Int) {
         holder.txtDoctorName.text = userChatList[position].name
-        holder.txtDoctorTime.text = userChatList[position].time
-        holder.txtDoctorFees.text = userChatList[position].fees
-        holder.btnChat.setOnClickListener(View.OnClickListener {
+        holder.txtDoctorCity.text = userChatList[position].city
+        Glide.with(context).load(userChatList[position].imgUrl)
+            .diskCacheStrategy(
+                DiskCacheStrategy.DATA
+            ).into(holder.doctorImage)
+        holder.itemView.setOnClickListener(View.OnClickListener {
             context.startActivity(Intent(context,UserChatActivity::class.java).putExtra("uid",userChatList[position].uid))
         })
     }
