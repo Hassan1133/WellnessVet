@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_txt_bg"
-                android:hint="@string/e_g_example_gmail_com"
+                android:hint="@string/enter_your_email_address"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/black"
                 android:textColorHint="@color/hint_color"

@@ -86,4 +86,8 @@
     <string name="already_have_an_account">Already have an account.</string>
     <string name="digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="sign_in">Sign in</string>
+    <string name="enter_your_name">enter your name</string>
+    <string name="enter_your_email_address">enter your email address</string>
+    <string name="enter_your_mobile_number">enter your mobile number</string>
+    <string name="select_your_city">select your city</string>
 </resources>

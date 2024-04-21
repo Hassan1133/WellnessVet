@@ -38,9 +38,9 @@ class UserChatActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
 
         if (currentUser != null) {
-            val doctorUid = intent.getStringExtra("uid").toString()
-            binding.docName.text = intent.getStringExtra("name").toString()
-            Glide.with(this@UserChatActivity).load(intent.getStringExtra("imgUrl").toString())
+            val doctorUid = intent.getStringExtra("uid")!!
+            binding.docName.text = intent.getStringExtra("name")!!
+            Glide.with(this@UserChatActivity).load(intent.getStringExtra("imgUrl")!!)
                 .diskCacheStrategy(
                     DiskCacheStrategy.DATA
                 ).into(binding.docImage)

@@ -326,7 +326,7 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
         val radio: RadioButton = findViewById(binding.genderRadioGroup.checkedRadioButtonId)
 
         val model = DoctorDetailProfileModel()
-        model.name = "Dr. $binding.name.getText().toString().trim()"
+        model.name = "Dr. ${binding.name.getText().toString().trim()}"
         model.phoneNo = binding.phoneNumber.getText().toString().trim()
         model.email = binding.email.getText().toString().trim()
         model.city = binding.city.getText().toString().trim()

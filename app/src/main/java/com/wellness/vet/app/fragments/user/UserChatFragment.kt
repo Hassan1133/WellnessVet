@@ -1,5 +1,6 @@
 package com.wellness.vet.app.fragments.user
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -18,11 +19,13 @@ import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.user.FindDoctorFromListActivity
 import com.wellness.vet.app.adapters.UserChatListAdapter
 import com.wellness.vet.app.databinding.FragmentUserChatBinding
+import com.wellness.vet.app.main_utils.LoadingDialog
 import com.wellness.vet.app.models.UserChatListModel
 
 class UserChatFragment : Fragment() , OnClickListener{
 
     private lateinit var binding: FragmentUserChatBinding
+    private lateinit var loadingDialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +57,7 @@ class UserChatFragment : Fragment() , OnClickListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val dataBase = Firebase.database
         val chatDbRef = dataBase.getReference("chats")
         val profileDbRef = dataBase.getReference("Doctors")
@@ -63,38 +67,45 @@ class UserChatFragment : Fragment() , OnClickListener{
         val chatListAdapter = UserChatListAdapter(requireContext(),chatList)
         binding.recyclerView.adapter = chatListAdapter
 
+        loadingDialog = LoadingDialog.showLoadingDialog(requireActivity())
+
         if (currentUser != null) {
             val userUid = currentUser.uid
 
             chatDbRef.child(userUid).addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     chatList.clear()
-                    for (ds in snapshot.children) {
-                        Log.d("TAGTest", "onDataChange: ${ds.key}")
-                        profileDbRef.child(ds.key.toString()).child("Profile")
-                            .addValueEventListener(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    val doctorProfile = UserChatListModel(
-                                        snapshot.child("id").value.toString(),
-                                        snapshot.child("name").value.toString(),
-                                        snapshot.child("city").value.toString(),
-                                        snapshot.child("imgUrl").value.toString()
-                                    )
-                                    chatList.add(doctorProfile)
-                                    chatListAdapter.updateList(chatList)
-                                }
+                    if (snapshot.exists()) {
+                        for (ds in snapshot.children) {
+                            Log.d("TAGTest", "onDataChange: ${ds.key}")
+                            profileDbRef.child(ds.key.toString()).child("Profile")
+                                .addValueEventListener(object : ValueEventListener {
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        val doctorProfile = UserChatListModel(
+                                            snapshot.child("id").value.toString(),
+                                            snapshot.child("name").value.toString(),
+                                            snapshot.child("city").value.toString(),
+                                            snapshot.child("imgUrl").value.toString()
+                                        )
+                                        chatList.add(doctorProfile)
+                                        chatListAdapter.updateList(chatList)
+                                        LoadingDialog.hideLoadingDialog(loadingDialog)
+                                    }
 
-                                override fun onCancelled(error: DatabaseError) {
-                                    TODO("Not yet implemented")
-                                }
+                                    override fun onCancelled(error: DatabaseError) {
+                                        LoadingDialog.hideLoadingDialog(loadingDialog)
+                                    }
 
-                            })
+                                })
+                        }
+                    } else {
+                        LoadingDialog.hideLoadingDialog(loadingDialog)
                     }
 
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+                    LoadingDialog.hideLoadingDialog(loadingDialog)
                 }
 
             })

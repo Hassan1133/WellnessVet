@@ -16,7 +16,6 @@ import com.wellness.vet.app.main_utils.AppSharedPreferences
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var appSharedPreferences: AppSharedPreferences
-    private lateinit var intent: Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,7 +32,7 @@ class SplashActivity : AppCompatActivity() {
                 val userLoginCheck = appSharedPreferences.getBoolean("userLogin")
                 val docLoginCheck = appSharedPreferences.getBoolean("doctorLogin")
 
-                 intent = when {
+                val intent = when {
                     userLoginCheck -> Intent(this, UserDashBoardActivity::class.java)
                     docLoginCheck -> Intent(this, DoctorDashBoardActivity::class.java)
                     else -> Intent(

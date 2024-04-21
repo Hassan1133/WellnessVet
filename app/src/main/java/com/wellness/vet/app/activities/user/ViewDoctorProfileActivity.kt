@@ -30,6 +30,8 @@ class ViewDoctorProfileActivity : AppCompatActivity(), OnClickListener {
 
     private lateinit var binding: ActivityViewDoctorProfileBinding
     private var doctorUId = ""
+    private var imgUrl = ""
+    private var name = ""
     private var docClinicLatitude = 0.0
     private var docClinicLongitude = 0.0
     private var userLatitude = 0.0
@@ -50,6 +52,8 @@ class ViewDoctorProfileActivity : AppCompatActivity(), OnClickListener {
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(this@ViewDoctorProfileActivity)
         binding.directionCard.setOnClickListener(this)
+        binding.chatCard.setOnClickListener(this)
+        binding.appointmentCard.setOnClickListener(this)
     }
 
     private fun getDataFromIntent() {
@@ -74,7 +78,9 @@ class ViewDoctorProfileActivity : AppCompatActivity(), OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun setDoctorProfileDataToFields(doctorProfile: DoctorDetailProfileModel) {
-        binding.doctorName.text = doctorProfile.name
+        name = doctorProfile.name
+        imgUrl = doctorProfile.imgUrl
+        binding.doctorName.text = name
         binding.doctorPhoneNo.text = doctorProfile.phoneNo
         binding.city.text = doctorProfile.city
         binding.timings.text = "${doctorProfile.startTime} - ${doctorProfile.endTime}"
@@ -82,7 +88,7 @@ class ViewDoctorProfileActivity : AppCompatActivity(), OnClickListener {
         binding.fees.text = doctorProfile.fees
         docClinicLatitude = doctorProfile.clinicLatitude
         docClinicLongitude = doctorProfile.clinicLongitude
-        Glide.with(this@ViewDoctorProfileActivity).load(doctorProfile.imgUrl)
+        Glide.with(this@ViewDoctorProfileActivity).load(imgUrl)
             .diskCacheStrategy(
                 DiskCacheStrategy.DATA
             ).into(binding.profileImg)
@@ -92,6 +98,24 @@ class ViewDoctorProfileActivity : AppCompatActivity(), OnClickListener {
         when (v?.id) {
             R.id.directionCard -> {
                 getLastLocation()
+            }
+
+            R.id.appointmentCard -> {
+                val intent = Intent(this@ViewDoctorProfileActivity, CreateAppointmentActivity::class.java)
+                intent.putExtra("uid", doctorUId)
+                startActivity(intent)
+            }
+
+            R.id.chatCard -> {
+                if (doctorUId.isNotEmpty() && imgUrl.isNotEmpty() && name.isNotEmpty()) {
+                    val intent = Intent(
+                        this@ViewDoctorProfileActivity, UserChatActivity::class.java
+                    )
+                    intent.putExtra("uid", doctorUId)
+                    intent.putExtra("name", name)
+                    intent.putExtra("imgUrl", imgUrl)
+                    startActivity(intent)
+                }
             }
         }
     }
