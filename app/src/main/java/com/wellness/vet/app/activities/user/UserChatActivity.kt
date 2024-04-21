@@ -89,6 +89,11 @@ class UserChatActivity : AppCompatActivity() {
                 registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                     if (uri != null) {
                         val mimeType: String? = contentResolver.getType(uri)
+                        var dataType = "image"
+                        if(mimeType!!.contains("video")){
+                            dataType = "video"
+                        }
+                        Toast.makeText(this@UserChatActivity,"$mimeType",Toast.LENGTH_SHORT).show()
                         val pushIdRef = senderDbRef.push()
                         val pushId = pushIdRef.key
                         val filePath = storageDbRef.child("messageImages").child("$pushId.jpg")
@@ -102,7 +107,7 @@ class UserChatActivity : AppCompatActivity() {
                                 filePath.downloadUrl.addOnSuccessListener { downloadUri ->
                                     val msgMap = HashMap<String, Any>()
                                     msgMap["message"] = "$downloadUri"
-                                    msgMap["type"] = "image"
+                                    msgMap["type"] = dataType
                                     msgMap["time"] = ServerValue.TIMESTAMP
                                     msgMap["from"] = userUid
 

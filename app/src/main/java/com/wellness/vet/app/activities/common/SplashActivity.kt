@@ -33,7 +33,7 @@ class SplashActivity : AppCompatActivity() {
                 val userLoginCheck = appSharedPreferences.getBoolean("userLogin")
                 val docLoginCheck = appSharedPreferences.getBoolean("doctorLogin")
 
-                val intent = when {
+                 intent = when {
                     userLoginCheck -> Intent(this, UserDashBoardActivity::class.java)
                     docLoginCheck -> Intent(this, DoctorDashBoardActivity::class.java)
                     else -> Intent(
@@ -44,10 +44,10 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             } else {
-                Intent(
+
+                startActivity(Intent(
                     this, LoginActivity::class.java
-                )
-                startActivity(intent)
+                ))
                 finish()
             }
 

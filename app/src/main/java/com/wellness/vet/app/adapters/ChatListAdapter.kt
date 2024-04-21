@@ -1,6 +1,7 @@
 package com.wellness.vet.app.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.wellness.vet.app.R
+import com.wellness.vet.app.activities.common.ImageVideoViewerActivity
 import com.wellness.vet.app.models.ChatDataModel
 
 class ChatListAdapter(
@@ -42,6 +44,7 @@ class ChatListAdapter(
         val linearVideoTo: LinearLayout = itemView.findViewById(R.id.linear_vid_message_to)
         val vidMessageFrom: ImageView = itemView.findViewById(R.id.vid_message_from)
         val vidMessageTo: ImageView = itemView.findViewById(R.id.vid_message_to)
+
 
     }
 
@@ -108,6 +111,18 @@ class ChatListAdapter(
                     .into(holder.vidMessageTo)
             }
         }
+
+        holder.relativeImage.setOnClickListener(View.OnClickListener {
+            context.startActivity(Intent(context,ImageVideoViewerActivity::class.java)
+                .putExtra("dataType",chatList[position].type)
+                .putExtra("dataSource",chatList[position].message))
+        })
+
+        holder.relativeVideo.setOnClickListener(View.OnClickListener {
+            context.startActivity(Intent(context,ImageVideoViewerActivity::class.java)
+                .putExtra("dataType",chatList[position].type)
+                .putExtra("dataSource",chatList[position].message))
+        })
     }
 
     fun updateList(updateList: ArrayList<ChatDataModel>) {

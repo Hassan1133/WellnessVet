@@ -27,7 +27,7 @@
                 android:background="@drawable/sender_single_message_bg"
                 android:gravity="end|center_vertical"
                 android:padding="10dp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
 
 
@@ -157,7 +157,7 @@
         android:id="@+id/relative_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/linear_vid_message_from"
