@@ -38,7 +38,7 @@ class DoctorChatFragment : Fragment() {
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         val chatList = ArrayList<UserChatListModel>()
-        val chatListAdapter = UserChatListAdapter(requireContext(),chatList)
+        val chatListAdapter = UserChatListAdapter(requireContext(),chatList,"doctor")
         binding.recyclerView.adapter = chatListAdapter
 
         if (currentUser != null) {

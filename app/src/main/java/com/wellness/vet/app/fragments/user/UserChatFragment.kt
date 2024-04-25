@@ -64,7 +64,7 @@ class UserChatFragment : Fragment() , OnClickListener{
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         val chatList = ArrayList<UserChatListModel>()
-        val chatListAdapter = UserChatListAdapter(requireContext(),chatList)
+        val chatListAdapter = UserChatListAdapter(requireContext(),chatList,"user")
         binding.recyclerView.adapter = chatListAdapter
 
         loadingDialog = LoadingDialog.showLoadingDialog(requireActivity())

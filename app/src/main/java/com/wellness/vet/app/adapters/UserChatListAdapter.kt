@@ -17,7 +17,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class UserChatListAdapter(
     private val context: Context,
-    private var userChatList: ArrayList<UserChatListModel>
+    private var userChatList: ArrayList<UserChatListModel>,
+    private val flag : String
 ) : RecyclerView.Adapter<UserChatListAdapter.ChatListRecyclerViewHolder>() {
 
 
@@ -47,13 +48,24 @@ class UserChatListAdapter(
                 DiskCacheStrategy.DATA
             ).into(holder.doctorImage)
         holder.itemView.setOnClickListener(View.OnClickListener {
-            context.startActivity(
-                Intent(context, DoctorChatActivity::class.java).putExtra(
-                    "uid",
-                    userChatList[position].uid
-                ).putExtra("name", userChatList[position].name)
-                    .putExtra("imgUrl", userChatList[position].imgUrl)
-            )
+            if(flag=="user"){
+                context.startActivity(
+                    Intent(context, UserChatActivity::class.java).putExtra(
+                        "uid",
+                        userChatList[position].uid
+                    ).putExtra("name", userChatList[position].name)
+                        .putExtra("imgUrl", userChatList[position].imgUrl)
+                )
+            }else if(flag == "doctor"){
+                context.startActivity(
+                    Intent(context, DoctorChatActivity::class.java).putExtra(
+                        "uid",
+                        userChatList[position].uid
+                    ).putExtra("name", userChatList[position].name)
+                        .putExtra("imgUrl", userChatList[position].imgUrl)
+                )
+            }
+
         })
     }
 
