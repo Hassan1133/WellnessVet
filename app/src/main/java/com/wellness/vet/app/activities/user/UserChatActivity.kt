@@ -41,6 +41,7 @@ class UserChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserChatBinding
     private lateinit var doctorUid: String
+    private lateinit var userRef: DatabaseReference
     private lateinit var doctorRef: DatabaseReference
     private lateinit var appSharedPreferences: AppSharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +54,7 @@ class UserChatActivity : AppCompatActivity() {
         val chatStorageRef = storage.getReference("chats")
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
+        userRef = FirebaseDatabase.getInstance().getReference(AppConstants.USER_REF)
         doctorRef = FirebaseDatabase.getInstance().getReference(AppConstants.DOCTOR_REF)
         appSharedPreferences = AppSharedPreferences(this@UserChatActivity)
 
@@ -136,7 +138,9 @@ class UserChatActivity : AppCompatActivity() {
                                                 receiverDbRef.child("$pushId").setValue(msgMap)
                                                     .addOnCompleteListener(OnCompleteListener { receive ->
                                                         if (receive.isSuccessful) {
-                                                            getDoctorFCMToken(doctorUid)
+                                                            updateChatReadStatus(
+                                                                appSharedPreferences.getString("userUid")!!
+                                                            )
                                                             Toast.makeText(
                                                                 this@UserChatActivity,
                                                                 "Success",
@@ -173,6 +177,22 @@ class UserChatActivity : AppCompatActivity() {
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        updateDoctorChatStatus()
+    }
+    private fun updateDoctorChatStatus()
+    {
+        val map = HashMap<String, Any>()
+        map["chatStatus"] = "seen"
+
+        doctorRef.child(doctorUid).child(AppConstants.PROFILE_REF).updateChildren(map).addOnSuccessListener {
+            Toast.makeText(this@UserChatActivity, "message seen", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener{
+            Toast.makeText(this@UserChatActivity, it.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun sendMessage(
         msg: String,
         type: String,
@@ -195,13 +215,26 @@ class UserChatActivity : AppCompatActivity() {
                     receiverDbRef.child("$pushId").setValue(msgMap)
                         .addOnCompleteListener(OnCompleteListener { receive ->
                             if (receive.isSuccessful) {
-                                getDoctorFCMToken(doctorUid)
+                                updateChatReadStatus(appSharedPreferences.getString("userUid")!!)
                                 Toast.makeText(this@UserChatActivity, "Success", Toast.LENGTH_SHORT)
                                     .show()
                             }
                         })
                 }
             })
+    }
+
+    private fun updateChatReadStatus(userId: String) {
+
+        val map = HashMap<String, Any>()
+        map["chatStatus"] = "unseen"
+
+        userRef.child(userId).child(AppConstants.PROFILE_REF).updateChildren(map)
+            .addOnSuccessListener {
+                getDoctorFCMToken(doctorUid)
+            }.addOnFailureListener {
+                Toast.makeText(this@UserChatActivity, it.message, Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun getDoctorFCMToken(doctorId: String) {

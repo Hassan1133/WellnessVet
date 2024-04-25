@@ -8,6 +8,7 @@
     android:elevation="0dp"
     android:layout_marginTop="10dp"
     app:cardElevation="0dp"
+    android:backgroundTint="@color/white"
     android:foreground="?android:attr/selectableItemBackground"
     android:focusable="true">
 
@@ -54,7 +55,20 @@
                 android:textColor="@color/hint_color"
                 android:text="Faisalabad"
                 android:textSize="12sp"
+                android:layout_toStartOf="@+id/active"
                 />
+
+            <ImageView
+                android:id="@+id/active"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_below="@id/docName"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/active"
+                android:visibility="gone"
+                app:tint="@color/orange" />
 
         </RelativeLayout>
 

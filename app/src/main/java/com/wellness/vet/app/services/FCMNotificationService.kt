@@ -7,6 +7,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -30,12 +31,15 @@ class FCMNotificationService : FirebaseMessagingService() {
         // Check if the user is authenticated
         if (FirebaseAuth.getInstance().currentUser != null) {
             // Extract title, body, and user type from the message data
+
             val title = message.getData()["title"]
             val body = message.getData()["body"]
             val userType = message.getData()["userType"]
             val uid = message.getData()["uid"]
             val name = message.getData()["name"]
             val imgUrl = message.getData()["imgUrl"]
+
+            Log.d("TAGservice", "onMessageReceived: ${userType}")
 
             // Send notification if user is authenticated
             sendNotification(title!!, body!!, userType!!, uid!!, name!!, imgUrl!!)

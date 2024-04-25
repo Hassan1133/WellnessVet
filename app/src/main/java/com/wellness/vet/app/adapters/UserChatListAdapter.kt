@@ -2,9 +2,11 @@ package com.wellness.vet.app.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -27,6 +29,7 @@ class UserChatListAdapter(
         val txtDoctorName: TextView = itemView.findViewById(R.id.docName)
         val txtDoctorCity: TextView = itemView.findViewById(R.id.docCity)
         val doctorImage: CircleImageView = itemView.findViewById(R.id.docImage)
+        val active: ImageView = itemView.findViewById(R.id.active)
 
     }
 
@@ -47,6 +50,15 @@ class UserChatListAdapter(
             .diskCacheStrategy(
                 DiskCacheStrategy.DATA
             ).into(holder.doctorImage)
+
+        if (userChatList[position].chatStatus == "unseen") {
+            holder.active.visibility = View.VISIBLE
+        }
+        else if (userChatList[position].chatStatus == "seen") {
+            holder.active.visibility = View.GONE
+        }
+        Log.d("TAGStatus", "onBindViewHolder: ${userChatList[position].chatStatus}")
+
         holder.itemView.setOnClickListener(View.OnClickListener {
             if(flag=="user"){
                 context.startActivity(

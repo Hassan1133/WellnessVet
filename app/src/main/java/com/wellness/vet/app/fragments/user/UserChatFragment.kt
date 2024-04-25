@@ -67,10 +67,10 @@ class UserChatFragment : Fragment() , OnClickListener{
         val chatListAdapter = UserChatListAdapter(requireContext(),chatList,"user")
         binding.recyclerView.adapter = chatListAdapter
 
-        loadingDialog = LoadingDialog.showLoadingDialog(requireActivity())
-
         if (currentUser != null) {
             val userUid = currentUser.uid
+
+            loadingDialog = LoadingDialog.showLoadingDialog(requireActivity())
 
             chatDbRef.child(userUid).addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -85,7 +85,8 @@ class UserChatFragment : Fragment() , OnClickListener{
                                             snapshot.child("id").value.toString(),
                                             snapshot.child("name").value.toString(),
                                             snapshot.child("city").value.toString(),
-                                            snapshot.child("imgUrl").value.toString()
+                                            snapshot.child("imgUrl").value.toString(),
+                                            snapshot.child("chatStatus").value.toString()
                                         )
                                         chatList.add(doctorProfile)
                                         chatListAdapter.updateList(chatList)
@@ -109,6 +110,7 @@ class UserChatFragment : Fragment() , OnClickListener{
                 }
 
             })
+
 
         }
     }
