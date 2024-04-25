@@ -14,4 +14,5 @@ class DoctorDetailProfileModel(
     var clinicLocation: String = "",
     var clinicLatitude: Double = 0.0,
     var clinicLongitude: Double = 0.0,
+    var fcmToken : String = ""
 )

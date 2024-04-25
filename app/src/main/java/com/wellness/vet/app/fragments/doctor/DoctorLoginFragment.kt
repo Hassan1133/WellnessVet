@@ -16,11 +16,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.doctor.DoctorDashBoardActivity
 import com.wellness.vet.app.activities.doctor.DoctorSignUpActivity
 import com.wellness.vet.app.databinding.FragmentDoctorLoginBinding
 import com.wellness.vet.app.main_utils.AppConstants
+import com.wellness.vet.app.main_utils.AppConstants.Companion.PROFILE_REF
 import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.main_utils.LoadingDialog
 import com.wellness.vet.app.main_utils.NetworkManager
@@ -137,12 +139,12 @@ class DoctorLoginFragment : Fragment(), OnClickListener {
     // Check if LM exists in Firestore
     private fun checkDoctorExists(userId: String) {
         doctorsRef.child(userId).child(AppConstants.PROFILE_REF)
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         val doctorDetailProfileModel =
                             snapshot.getValue(DoctorDetailProfileModel::class.java)
-                        goToDoctorDashBoard(doctorDetailProfileModel!!)
+                        getFCMToken(doctorDetailProfileModel!!)
                     }
                 }
 
@@ -151,6 +153,31 @@ class DoctorLoginFragment : Fragment(), OnClickListener {
                     Toast.makeText(requireActivity(), error.message, Toast.LENGTH_SHORT).show()
                 }
             })
+    }
+
+    private fun getFCMToken(doctorProfileModel: DoctorDetailProfileModel) {
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            // Update FCM token in Firestore
+            setFCMTokenToDb(token, doctorProfileModel)
+        }.addOnFailureListener { exception ->
+            // Handle FCM token retrieval failure
+            activity?.let {
+                Toast.makeText(requireActivity(), exception.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setFCMTokenToDb(token: String, doctorProfileModel: DoctorDetailProfileModel) {
+
+        val map = HashMap<String, Any>()
+        map["fcmToken"] = token
+        doctorsRef.child(doctorProfileModel.id).child(PROFILE_REF).updateChildren(map)
+            .addOnSuccessListener {
+                doctorProfileModel.fcmToken = token
+                goToDoctorDashBoard(doctorProfileModel)
+            }.addOnFailureListener {
+            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun goToDoctorDashBoard(model: DoctorDetailProfileModel) {

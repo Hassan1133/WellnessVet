@@ -16,16 +16,33 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.database.database
 import com.google.firebase.storage.storage
 import com.wellness.vet.app.adapters.ChatListAdapter
 import com.wellness.vet.app.databinding.ActivityUserChatBinding
+import com.wellness.vet.app.main_utils.AppConstants
+import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.models.ChatDataModel
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
+import org.json.JSONObject
+import java.io.IOException
 
 class UserChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserChatBinding
+    private lateinit var doctorUid: String
+    private lateinit var doctorRef: DatabaseReference
+    private lateinit var appSharedPreferences: AppSharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserChatBinding.inflate(layoutInflater)
@@ -36,9 +53,11 @@ class UserChatActivity : AppCompatActivity() {
         val chatStorageRef = storage.getReference("chats")
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
+        doctorRef = FirebaseDatabase.getInstance().getReference(AppConstants.DOCTOR_REF)
+        appSharedPreferences = AppSharedPreferences(this@UserChatActivity)
 
         if (currentUser != null) {
-            val doctorUid = intent.getStringExtra("uid")!!
+            doctorUid = intent.getStringExtra("uid")!!
             binding.docName.text = intent.getStringExtra("name")!!
             Glide.with(this@UserChatActivity).load(intent.getStringExtra("imgUrl")!!)
                 .diskCacheStrategy(
@@ -117,6 +136,7 @@ class UserChatActivity : AppCompatActivity() {
                                                 receiverDbRef.child("$pushId").setValue(msgMap)
                                                     .addOnCompleteListener(OnCompleteListener { receive ->
                                                         if (receive.isSuccessful) {
+                                                            getDoctorFCMToken(doctorUid)
                                                             Toast.makeText(
                                                                 this@UserChatActivity,
                                                                 "Success",
@@ -175,11 +195,68 @@ class UserChatActivity : AppCompatActivity() {
                     receiverDbRef.child("$pushId").setValue(msgMap)
                         .addOnCompleteListener(OnCompleteListener { receive ->
                             if (receive.isSuccessful) {
+                                getDoctorFCMToken(doctorUid)
                                 Toast.makeText(this@UserChatActivity, "Success", Toast.LENGTH_SHORT)
                                     .show()
                             }
                         })
                 }
             })
+    }
+
+    private fun getDoctorFCMToken(doctorId: String) {
+        doctorRef.child(doctorId).child(AppConstants.PROFILE_REF).child("fcmToken").get()
+            .addOnCompleteListener { task -> sendNotification(task.result.value.toString()) }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    this@UserChatActivity,
+                    e.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    private fun sendNotification(token: String) {
+        try {
+            val jsonObject = JSONObject().apply {
+                val dataObj = JSONObject().apply {
+                    put("title", appSharedPreferences.getString("userName"))
+                    put("body", "sent you a message.")
+                    put("userType", "user")
+                    put("uid", appSharedPreferences.getString("userUid"))
+                    put("name", appSharedPreferences.getString("userName"))
+                    put("imgUrl", appSharedPreferences.getString("userImgUrl"))
+                }
+                put("data", dataObj)
+                put("to", token)
+            }
+            callApi(jsonObject)
+        } catch (e: Exception) {
+            // Handle exception
+        }
+    }
+
+    fun callApi(jsonObject: JSONObject) {
+        val json: MediaType = "application/json; charset=utf-8".toMediaType()
+        val client = OkHttpClient()
+        val url = "https://fcm.googleapis.com/fcm/send"
+        val body: RequestBody = jsonObject.toString().toRequestBody(json)
+        val request: Request = Request.Builder().url(url).post(body).header(
+            "Authorization",
+            "Bearer AAAACUPVG6c:APA91bGNRoGWs-hbWTuUYz96UqpZNI2appZUTIIpf6L1of3PMNAcfCpHRaS-HkwohhXAOxAl1uzB0FXJVgURP1aOi9EnU1W5hLAv9gC0bbMsGlAiwL41z1SbqyWgQln8eE0GLEhTTD4z"
+        ).build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                // Handle failure
+                this@UserChatActivity.runOnUiThread {
+                    Toast.makeText(this@UserChatActivity, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            @Throws(IOException::class)
+            override fun onResponse(call: Call, response: Response) {
+
+            }
+        })
     }
 }

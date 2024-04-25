@@ -3,6 +3,7 @@ package com.wellness.vet.app.fragments.user
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +17,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.user.UserDashBoardActivity
 import com.wellness.vet.app.activities.user.UserSignupActivity
 import com.wellness.vet.app.databinding.FragmentUserLoginBinding
 import com.wellness.vet.app.main_utils.AppConstants
+import com.wellness.vet.app.main_utils.AppConstants.Companion.PROFILE_REF
 import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.main_utils.LoadingDialog
 import com.wellness.vet.app.main_utils.NetworkManager
@@ -135,12 +138,13 @@ class UserLoginFragment : Fragment(), OnClickListener {
 
     // Check if LM exists in Firestore
     private fun checkUserExists(userId: String) {
+
         usersRef.child(userId).child(AppConstants.PROFILE_REF)
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         val userProfileModel = snapshot.getValue(UserProfileModel::class.java)
-                        goToUserDashBoard(userProfileModel!!)
+                        getFCMToken(userProfileModel!!)
                     }
                 }
 
@@ -149,6 +153,31 @@ class UserLoginFragment : Fragment(), OnClickListener {
                     Toast.makeText(requireActivity(), error.message, Toast.LENGTH_SHORT).show()
                 }
             })
+    }
+
+    private fun getFCMToken(userProfileModel: UserProfileModel) {
+
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            // Update FCM token in Firestore
+            setFCMTokenToDb(token, userProfileModel)
+        }.addOnFailureListener { exception ->
+            // Handle FCM token retrieval failure
+            activity?.let {
+                Toast.makeText(requireActivity(), exception.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setFCMTokenToDb(token: String, userProfileModel: UserProfileModel) {
+
+        val map = HashMap<String, Any>()
+        map["fcmToken"] = token
+        usersRef.child(userProfileModel.id).child(PROFILE_REF).updateChildren(map).addOnSuccessListener {
+            userProfileModel.fcmToken = token
+            goToUserDashBoard(userProfileModel)
+        }.addOnFailureListener {
+            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun goToUserDashBoard(userProfileModel: UserProfileModel) {

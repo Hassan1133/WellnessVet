@@ -12,6 +12,7 @@ appcompat = "1.6.1"
 material = "1.10.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
+okhttp = "4.10.0"
 otpView = "1.0"
 googleServices = "4.4.1"
 firebaseAuth = "22.3.1"
@@ -23,6 +24,7 @@ playServicesMaps = "18.2.0"
 firebaseStorageKtx = "20.3.0"
 glide = "4.16.0"
 firebaseStorage = "20.3.0"
+firebaseMessaging = "23.4.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +40,7 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 otp = { module = "com.github.appsfeature:otp-view", version.ref = "otpView" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
@@ -46,6 +49,7 @@ play-services-maps = { group = "com.google.android.gms", name = "play-services-m
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

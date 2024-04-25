@@ -1,9 +1,14 @@
 package com.wellness.vet.app.activities.user
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -76,8 +81,46 @@ class UserDashBoardActivity : AppCompatActivity(), OnClickListener {
             }
             return@setOnItemSelectedListener false
         }
-        getUserNameData()
         permissionUtils.checkAndRequestPermissions()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            checkNotificationPermission()
+        }
+    }
+
+    // Activity result launcher for permission request
+    private val launcher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (!isGranted) {
+            // Handle permission denial
+            // Consider showing a message or taking appropriate action
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun checkNotificationPermission() {
+        if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            // Permission already granted, proceed with your action
+        } else {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // Show rationale to the user, then request permission using launcher
+                showPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                // Request permission directly using launcher
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+        }
+    }
+
+    private fun showPermissionRationale(permission: String) {
+        // Explain why the app needs permission
+        MaterialAlertDialogBuilder(this)
+            .setMessage("This app needs notification permission to...") // Provide reason
+            .setPositiveButton("Grant") { _, _ -> launcher.launch(permission) }
+            .setNegativeButton("Deny") { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 
     private fun getUserNameData() {

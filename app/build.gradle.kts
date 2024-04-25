@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.firebase.storage.ktx)
     implementation(libs.firebase.storage)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -76,4 +77,7 @@ dependencies {
     implementation(libs.dexter)
 
     implementation(libs.glide)
+
+    //okhttp
+    implementation(libs.okhttp)
 }
