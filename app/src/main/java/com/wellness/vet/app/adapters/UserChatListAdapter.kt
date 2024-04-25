@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.wellness.vet.app.R
+import com.wellness.vet.app.activities.doctor.DoctorChatActivity
 import com.wellness.vet.app.activities.user.UserChatActivity
 import com.wellness.vet.app.models.UserChatListModel
 import de.hdodenhof.circleimageview.CircleImageView
@@ -46,9 +47,16 @@ class UserChatListAdapter(
                 DiskCacheStrategy.DATA
             ).into(holder.doctorImage)
         holder.itemView.setOnClickListener(View.OnClickListener {
-            context.startActivity(Intent(context,UserChatActivity::class.java).putExtra("uid",userChatList[position].uid).putExtra("name", userChatList[position].name).putExtra("imgUrl",userChatList[position].imgUrl))
+            context.startActivity(
+                Intent(context, DoctorChatActivity::class.java).putExtra(
+                    "uid",
+                    userChatList[position].uid
+                ).putExtra("name", userChatList[position].name)
+                    .putExtra("imgUrl", userChatList[position].imgUrl)
+            )
         })
     }
+
     fun updateList(updateList: ArrayList<UserChatListModel>) {
         userChatList = updateList
         this.notifyDataSetChanged()

@@ -10,6 +10,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -41,7 +43,12 @@ class DoctorChatActivity : AppCompatActivity() {
 
         if (currentUser != null) {
             val doctorUid = currentUser.uid
-            val userUid = "FHHLsAJAlaOtb8jsC9Hyvt6B7AQ2"
+            val userUid =  intent.getStringExtra("uid").toString()
+            binding.docName.text = intent.getStringExtra("name").toString()
+            Glide.with(this@DoctorChatActivity).load(intent.getStringExtra("imgUrl").toString())
+                .diskCacheStrategy(
+                    DiskCacheStrategy.DATA
+                ).into(binding.docImage)
 
             val senderDbRef = chatDbRef.child(doctorUid).child(userUid).child("messages")
             val receiverDbRef = chatDbRef.child(userUid).child(doctorUid).child("messages")

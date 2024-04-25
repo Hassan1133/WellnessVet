@@ -18,15 +18,37 @@
             android:layout_height="match_parent">
 
             <!-- TextView displaying header text -->
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
                 android:layout_toStartOf="@id/top_linear_end"
-                android:text="@string/doctor_chat"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+                >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/docImage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/dp"
+                    />
+
+                <TextView
+                    android:id="@+id/docName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toEndOf="@id/docImage"
+                    android:layout_centerVertical="true"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/top_linear_end"
