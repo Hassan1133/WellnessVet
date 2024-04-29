@@ -115,7 +115,7 @@ class EditDoctorProfileActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(
                     this@EditDoctorProfileActivity,
-                    "Please check your internet connection",
+                    getString(com.wellness.vet.app.R.string.please_connect_to_internet),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -278,7 +278,7 @@ class EditDoctorProfileActivity : AppCompatActivity() {
         LoadingDialog.hideLoadingDialog(loadingDialog)
         Toast.makeText(
             this@EditDoctorProfileActivity,
-            "Profile updated Successfully",
+            getString(com.wellness.vet.app.R.string.profile_updated_successfully),
             Toast.LENGTH_SHORT
         ).show()
     }
@@ -331,42 +331,42 @@ class EditDoctorProfileActivity : AppCompatActivity() {
         var valid = true
 
         if (binding.name.text.isNullOrEmpty()) {
-            binding.name.error = "Please enter valid name"
+            binding.name.error = getString(com.wellness.vet.app.R.string.enter_valid_name)
             valid = false
         }
 
         if (binding.city.text.isNullOrEmpty()) {
-            binding.city.error = "Please select city"
+            binding.city.error = getString(com.wellness.vet.app.R.string.select_your_city)
             valid = false
         }
 
         if (binding.clinicLocation.text.isNullOrEmpty()) {
             Toast.makeText(
                 this@EditDoctorProfileActivity,
-                "Please select location",
+                getString(com.wellness.vet.app.R.string.enter_clinic_location),
                 Toast.LENGTH_SHORT
             ).show()
             valid = false
         }
 
         if (binding.startTime.text.isNullOrEmpty()) {
-            binding.startTime.error = "Please select start time"
+            binding.startTime.error = getString(com.wellness.vet.app.R.string.enter_start_time_please)
             valid = false
         }
         if (binding.endTime.text.isNullOrEmpty()) {
-            binding.endTime.error = "Please select end time"
+            binding.endTime.error = getString(com.wellness.vet.app.R.string.enter_end_time_please)
             valid = false
         }
 
         if (binding.fees.text.isNullOrEmpty()) {
-            binding.fees.error = "Please enter fees"
+            binding.fees.error = getString(com.wellness.vet.app.R.string.enter_fees_please)
             valid = false
         }
 
         if (selectedClinicLatitude == 0.0 && selectedClinicLongitude == 0.0) {
             Toast.makeText(
                 this@EditDoctorProfileActivity,
-                "Select clinic location again",
+                getString(com.wellness.vet.app.R.string.select_location_again),
                 Toast.LENGTH_SHORT
             ).show()
             valid = false

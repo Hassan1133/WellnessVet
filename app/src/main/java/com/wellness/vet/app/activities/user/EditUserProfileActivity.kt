@@ -158,12 +158,12 @@ class EditUserProfileActivity : AppCompatActivity() {
         var valid = true
 
         if (binding.name.text.isNullOrEmpty()) {
-            binding.name.error = "Please enter valid name"
+            binding.name.error = getString(R.string.enter_valid_name)
             valid = false
         }
 
         if (binding.city.text.isNullOrEmpty()) {
-            binding.city.error = "Please select city"
+            binding.city.error = getString(R.string.select_your_city)
             valid = false
         }
 

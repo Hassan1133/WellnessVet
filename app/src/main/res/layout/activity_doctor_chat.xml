@@ -5,12 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="ltr"
     tools:context=".activities.doctor.DoctorChatActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layoutDirection="ltr"
         android:backgroundTint="@color/white">
 
         <RelativeLayout
@@ -42,6 +44,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_toEndOf="@id/userImage"
+                    android:textDirection="ltr"
                     android:layout_centerVertical="true"
                     android:textSize="16sp"
                     android:textColor="@color/black"
@@ -130,7 +133,7 @@
             android:layout_marginTop="10dp"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:text="Wait While\nUploading data..."/>
+            android:text="@string/wait_while_nuploading_data"/>
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/progress_indicator"
@@ -156,8 +159,10 @@
     <RelativeLayout
         android:id="@+id/btm_linear"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
+        android:paddingBottom="10dp"
         android:layout_alignParentBottom="true"
+        android:layoutDirection="ltr"
         android:background="@color/light_grey"
         android:orientation="horizontal">
 

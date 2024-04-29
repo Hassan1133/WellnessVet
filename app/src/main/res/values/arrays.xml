@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="location_options">
-        <item>Your Current Location</item>
-        <item>Choose on Map</item>
-    </string-array>
-</resources>

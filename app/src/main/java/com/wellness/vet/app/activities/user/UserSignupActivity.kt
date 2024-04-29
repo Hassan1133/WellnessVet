@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.View.OnClickListener
@@ -13,17 +14,21 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.firebase.auth.AuthResult
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.otpview.OTPListener
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.common.LoginActivity
 import com.wellness.vet.app.databinding.ActivityUserSignupBinding
@@ -34,6 +39,7 @@ import com.wellness.vet.app.main_utils.LoadingDialog
 import com.wellness.vet.app.main_utils.NetworkManager
 import com.wellness.vet.app.main_utils.StoragePermissionUtils
 import com.wellness.vet.app.models.UserProfileModel
+import java.util.concurrent.TimeUnit
 
 class UserSignupActivity : AppCompatActivity(), OnClickListener {
     private lateinit var binding: ActivityUserSignupBinding
@@ -45,6 +51,10 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var networkManager: NetworkManager
     private val cityList = mutableListOf<String>()
+    private lateinit var storedVerificationId: String
+    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    private lateinit var appSharedPreferences: AppSharedPreferences
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +77,8 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
 
         networkManager = NetworkManager(this@UserSignupActivity)
 
+        appSharedPreferences = AppSharedPreferences(this@UserSignupActivity)
+
         storageRef = FirebaseStorage.getInstance().getReference()
 
         usersRef = FirebaseDatabase.getInstance().getReference(USER_REF)
@@ -74,6 +86,8 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
         firebaseAuth = FirebaseAuth.getInstance()
 
         getCityNamesFromDb()
+
+        startOtpVerificationCode()
     }
 
     override fun onClick(v: View?) {
@@ -84,7 +98,7 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
 
             R.id.signUpBtn -> {
                 if (isValid()) {
-                    checkUserPhoneExists(binding.phoneNumber.text.toString())
+                    signup()
                 }
             }
 
@@ -94,7 +108,105 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
             }
         }
     }
+    private fun signup() {
 
+        loadingDialog = LoadingDialog.showLoadingDialog(this@UserSignupActivity)
+        // Retrieve phone number from input field
+        var number = binding.phoneNumber.text?.trim().toString()
+        // Add country code to phone number
+        number = "+92$number"
+        // Send verification code to provided phone number
+        sendVerificationCode(number)
+    }
+    private fun sendVerificationCode(number: String) {
+        val options = PhoneAuthOptions.newBuilder(firebaseAuth)
+            .setPhoneNumber(number)
+            .setTimeout(60L, TimeUnit.SECONDS)
+            .setActivity(this)
+            .setCallbacks(callbacks)
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+        Log.d("GFG", "Auth started")
+    }
+
+    private fun startOtpVerificationCode() {
+
+        callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                // Called when verification is completed successfully
+                LoadingDialog.hideLoadingDialog(loadingDialog)
+            }
+
+            override fun onVerificationFailed(e: FirebaseException) {
+                // Called when verification fails
+                LoadingDialog.hideLoadingDialog(loadingDialog)
+                Log.d("GFG", "onVerificationFailed  $e")
+            }
+
+            override fun onCodeSent(
+                verificationId: String, token: PhoneAuthProvider.ForceResendingToken
+            ) {
+                LoadingDialog.hideLoadingDialog(loadingDialog)
+                // Called when verification code is successfully sent
+                Log.d("GFG", "onCodeSent: $verificationId")
+                storedVerificationId = verificationId
+                resendToken = token
+
+                // Request focus on OTP input field and set OTP listener
+                binding.otpView.requestFocusOTP()
+                binding.otpView.otpListener = object : OTPListener {
+                    override fun onInteractionListener() {}
+
+                    override fun onOTPComplete(otp: String) {
+                        // Called when OTP is complete
+                        val credential: PhoneAuthCredential =
+                            PhoneAuthProvider.getCredential(storedVerificationId, otp)
+                        signInWithPhoneAuthCredential(credential)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
+            if (task.isSuccessful) {
+                checkUserExistOrNot(
+                    task.result.user?.uid.toString(), task.result.user?.phoneNumber.toString()
+                )
+            } else {
+                // If sign-in fails, display error message
+                if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                    Toast.makeText(this, "Invalid OTP", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun checkUserExistOrNot(userId: String, phoneNo: String) {
+        usersRef.child(userId).child(AppConstants.PROFILE_REF)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Handle data retrieval success
+                    if (dataSnapshot.exists()) {
+                        Toast.makeText(
+                            this@UserSignupActivity,
+                            getString(R.string.users_exists),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        // Data doesn't exist
+                        addDataToModel(userId, phoneNo)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Toast.makeText(
+                        this@UserSignupActivity, databaseError.message, Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
     private fun getCityNamesFromDb() {
         FirebaseDatabase.getInstance().getReference(AppConstants.CITY_NAMES)
             .addValueEventListener(object : ValueEventListener {
@@ -144,105 +256,51 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
         var valid = true
 
         if (imageUri == Uri.EMPTY) {
-            Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.select_an_image), Toast.LENGTH_SHORT).show()
             valid = false
         }
 
         if (binding.name.text.isNullOrEmpty()) {
-            binding.name.error = "Please enter valid name"
+            binding.name.error = getString(R.string.enter_valid_name)
             valid = false
         }
         if (binding.phoneNumber.text!!.length < 11) {
-            binding.phoneNumber.error = "Please enter valid phone number"
+            binding.phoneNumber.error = getString(R.string.enter_valid_phone_number)
             valid = false
         }
 
         if (binding.city.text.isNullOrEmpty()) {
-            binding.city.error = "Please enter valid city"
+            binding.city.error = getString(R.string.enter_valid_city)
             valid = false
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(binding.email.getText().toString()).matches()) {
-            binding.email.error = "Please enter valid email"
-            valid = false
-        }
-
-        if (binding.password.text.isNullOrEmpty() || binding.password.text!!.length < 6) {
-            binding.password.error = "Please enter valid password"
+            binding.email.error = getString(R.string.enter_valid_email)
             valid = false
         }
 
         return valid
     }
 
-    private fun checkUserPhoneExists(phoneNo: String) {
-        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            var count = 0
-            var check = false
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
 
-                    // data exists in database
-                    for (userSnapshot in snapshot.getChildren()) {
-                        val profile: UserProfileModel =
-                            userSnapshot.child(AppConstants.PROFILE_REF)
-                                .getValue(UserProfileModel::class.java)!!
-                        count++
-                        if (profile.phoneNo == phoneNo) {
-                            binding.phoneNumber.setText("")
-                            Toast.makeText(
-                                this@UserSignupActivity,
-                                "Phone number already exists. Please choose a different one",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            binding.phoneNumber.error =
-                                "Phone number already exists. Please choose a different one"
-                            check = true
-                            return
-                        } else if (count.toLong() == snapshot.childrenCount) {
-                            if (!check) {
-                                createAccount()
-                            }
-                        }
-                    }
-                } else {
-                    createAccount()
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@UserSignupActivity, error.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun createAccount() // method for create account
+    private fun addDataToModel(userId: String, phoneNo: String)
     {
-        loadingDialog = LoadingDialog.showLoadingDialog(this@UserSignupActivity)
         val radio: RadioButton = findViewById(binding.genderRadioGroup.checkedRadioButtonId)
 
         val model = UserProfileModel()
+        model.id = userId
         model.name = binding.name.getText().toString().trim()
-        model.phoneNo = binding.phoneNumber.getText().toString().trim()
+        model.phoneNo = phoneNo
         model.email = binding.email.getText().toString().trim()
         model.city = binding.city.getText().toString().trim()
         model.gender = radio.text.toString()
 
-        firebaseAuth.createUserWithEmailAndPassword(
-            model.email, binding.password.getText().toString().trim()
-        ).addOnCompleteListener(OnCompleteListener<AuthResult?> { task ->
-            if (task.isSuccessful) {
-                model.id = firebaseAuth.uid.toString()
-                uploadImage(model)
-            }
-        }).addOnFailureListener(OnFailureListener { e ->
-            LoadingDialog.hideLoadingDialog(loadingDialog)
-            Toast.makeText(this@UserSignupActivity, e.message, Toast.LENGTH_SHORT).show()
-        })
+        uploadImage(model)
     }
 
     private fun uploadImage(model: UserProfileModel) {
 
+        loadingDialog = LoadingDialog.showLoadingDialog(this@UserSignupActivity)
 
         val filepath: StorageReference = storageRef.child("UserProfileImages/" + model.id)
 
@@ -267,18 +325,56 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
     private fun addDataToDb(model: UserProfileModel) {
         usersRef.child(model.id).child(AppConstants.PROFILE_REF).setValue(model)
             .addOnSuccessListener {
-                goToLoginActivity()
+                getFCMToken(model)
             }.addOnFailureListener {
             LoadingDialog.hideLoadingDialog(loadingDialog)
             Toast.makeText(this@UserSignupActivity, it.message, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun goToLoginActivity() {
+    private fun getFCMToken(userProfileModel: UserProfileModel) {
+
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            // Update FCM token in Firestore
+            setFCMTokenToDb(token, userProfileModel)
+        }.addOnFailureListener { exception ->
+                LoadingDialog.hideLoadingDialog(loadingDialog)
+                Toast.makeText(this@UserSignupActivity, exception.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setFCMTokenToDb(token: String, userProfileModel: UserProfileModel) {
+
+        val map = HashMap<String, Any>()
+        map["fcmToken"] = token
+        usersRef.child(userProfileModel.id).child(AppConstants.PROFILE_REF).updateChildren(map).addOnSuccessListener {
+            userProfileModel.fcmToken = token
+            goToUserDashBoard(userProfileModel)
+        }.addOnFailureListener {
+            LoadingDialog.hideLoadingDialog(loadingDialog)
+            Toast.makeText(this@UserSignupActivity, it.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun goToUserDashBoard(userProfileModel: UserProfileModel) {
+        appSharedPreferences.put("userPhoneNo", userProfileModel.phoneNo)
+        appSharedPreferences.put("userUid", userProfileModel.id)
+        appSharedPreferences.put("userName", userProfileModel.name)
+        appSharedPreferences.put("userCity", userProfileModel.city)
+        appSharedPreferences.put("userGender", userProfileModel.gender)
+        appSharedPreferences.put("userImgUrl", userProfileModel.imgUrl)
+        appSharedPreferences.put("userEmail", userProfileModel.email)
+        appSharedPreferences.put("userLogin", true)
         LoadingDialog.hideLoadingDialog(loadingDialog)
-        Toast.makeText(this@UserSignupActivity, "Signed up successfully", Toast.LENGTH_SHORT)
-            .show()
-        startActivity(Intent(this@UserSignupActivity, LoginActivity::class.java))
+        Toast.makeText(
+            this@UserSignupActivity, getString(R.string.signup_successfully), Toast.LENGTH_SHORT
+        ).show()
+        startActivity(
+            Intent(
+                this@UserSignupActivity, UserDashBoardActivity::class.java
+            )
+        )
         finish()
+
     }
 }

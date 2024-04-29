@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.View.OnClickListener
@@ -17,17 +18,21 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.firebase.auth.AuthResult
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.otpview.OTPListener
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.common.LoginActivity
 import com.wellness.vet.app.activities.common.MapsActivity
@@ -35,6 +40,7 @@ import com.wellness.vet.app.databinding.ActivityDoctorSignUpBinding
 import com.wellness.vet.app.main_utils.AppConstants
 import com.wellness.vet.app.main_utils.AppConstants.Companion.DOCTOR_REF
 import com.wellness.vet.app.main_utils.AppConstants.Companion.PROFILE_REF
+import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.main_utils.LoadingDialog
 import com.wellness.vet.app.main_utils.LocationPermissionUtils
 import com.wellness.vet.app.main_utils.NetworkManager
@@ -42,6 +48,7 @@ import com.wellness.vet.app.main_utils.StoragePermissionUtils
 import com.wellness.vet.app.models.DoctorDetailProfileModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 
 class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
@@ -57,6 +64,10 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
     private lateinit var networkManager: NetworkManager
     private lateinit var permissionUtils: LocationPermissionUtils
     private val cityList = mutableListOf<String>()
+    private lateinit var storedVerificationId: String
+    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    private lateinit var appSharedPreferences: AppSharedPreferences
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +87,7 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
         storagePermissionUtils = StoragePermissionUtils(this)
         // Call the method to check storage permissions
         storagePermissionUtils.checkStoragePermission()
-
+        appSharedPreferences = AppSharedPreferences(this@DoctorSignUpActivity)
         networkManager = NetworkManager(this@DoctorSignUpActivity)
         permissionUtils = LocationPermissionUtils(this@DoctorSignUpActivity)
         permissionUtils.checkAndRequestPermissions()
@@ -133,14 +144,14 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
                 }
             } else {
                 Toast.makeText(
-                    this@DoctorSignUpActivity,
-                    "Please check your internet connection",
+                    this@DoctorSignUpActivity, getString(R.string.please_connect_to_internet),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
 
         getCityNamesFromDb()
+        startOtpVerificationCode()
     }
 
     private val mapsActivityResultLauncher = registerForActivityResult<Intent, ActivityResult>(
@@ -161,7 +172,7 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
 
             R.id.signUpBtn -> {
                 if (isValid()) {
-                    checkDoctorPhoneExists(binding.phoneNumber.text.toString())
+                    signup()
                 }
             }
 
@@ -172,6 +183,77 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
         }
     }
 
+    private fun startOtpVerificationCode() {
+
+        callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                // Called when verification is completed successfully
+                LoadingDialog.hideLoadingDialog(loadingDialog)
+            }
+
+            override fun onVerificationFailed(e: FirebaseException) {
+                // Called when verification fails
+                LoadingDialog.hideLoadingDialog(loadingDialog)
+                Log.d("GFG", "onVerificationFailed  $e")
+            }
+
+            override fun onCodeSent(
+                verificationId: String, token: PhoneAuthProvider.ForceResendingToken
+            ) {
+                LoadingDialog.hideLoadingDialog(loadingDialog)
+                // Called when verification code is successfully sent
+                Log.d("GFG", "onCodeSent: $verificationId")
+                storedVerificationId = verificationId
+                resendToken = token
+
+                // Request focus on OTP input field and set OTP listener
+                binding.otpView.requestFocusOTP()
+                binding.otpView.otpListener = object : OTPListener {
+                    override fun onInteractionListener() {}
+
+                    override fun onOTPComplete(otp: String) {
+                        // Called when OTP is complete
+                        val credential: PhoneAuthCredential =
+                            PhoneAuthProvider.getCredential(storedVerificationId, otp)
+                        signInWithPhoneAuthCredential(credential)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
+            if (task.isSuccessful) {
+                checkDoctorProfileExistOrNot(
+                    task.result.user?.uid.toString(), task.result.user?.phoneNumber.toString()
+                )
+            } else {
+                // If sign-in fails, display error message
+                if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                    Toast.makeText(this, "Invalid OTP", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun signup() {
+
+        loadingDialog = LoadingDialog.showLoadingDialog(this@DoctorSignUpActivity)
+        // Retrieve phone number from input field
+        var number = binding.phoneNumber.text?.trim().toString()
+        // Add country code to phone number
+        number = "+92$number"
+        // Send verification code to provided phone number
+        sendVerificationCode(number)
+    }
+
+    private fun sendVerificationCode(number: String) {
+        val options = PhoneAuthOptions.newBuilder(firebaseAuth).setPhoneNumber(number)
+            .setTimeout(60L, TimeUnit.SECONDS).setActivity(this).setCallbacks(callbacks).build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+        Log.d("GFG", "Auth started")
+    }
     private fun getCityNamesFromDb() {
         FirebaseDatabase.getInstance().getReference(AppConstants.CITY_NAMES)
             .addValueEventListener(object : ValueEventListener {
@@ -221,113 +303,96 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
         var valid = true
 
         if (imageUri == Uri.EMPTY) {
-            Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.select_an_image), Toast.LENGTH_SHORT).show()
             valid = false
         }
 
         if (binding.name.text.isNullOrEmpty()) {
-            binding.name.error = "Please enter valid name"
+            binding.name.error = getString(R.string.enter_valid_name)
             valid = false
         }
         if (binding.phoneNumber.text!!.length < 11) {
-            binding.phoneNumber.error = "Please enter valid phone number"
+            binding.phoneNumber.error = getString(R.string.enter_valid_phone_number)
             valid = false
         }
 
         if (binding.city.text.isNullOrEmpty()) {
-            binding.city.error = "Please enter valid city"
+            binding.city.error = getString(R.string.enter_valid_city)
             valid = false
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(binding.email.getText().toString()).matches()) {
-            binding.email.error = "Please enter valid email"
-            valid = false
-        }
-
-        if (binding.password.text.isNullOrEmpty() || binding.password.text!!.length < 6) {
-            binding.password.error = "Please enter valid password"
+            binding.email.error = getString(R.string.enter_valid_email)
             valid = false
         }
 
         if (binding.startTime.text.isNullOrEmpty()) {
-            binding.startTime.error = "Please enter start time"
+            binding.startTime.error = getString(R.string.enter_start_time)
             valid = false
         }
 
         if (binding.endTime.text.isNullOrEmpty()) {
-            binding.endTime.error = "Please enter valid end time"
+            binding.endTime.error = getString(R.string.enter_end_time)
             valid = false
         }
 
         if (binding.fees.text.isNullOrEmpty()) {
-            binding.fees.error = "Please enter valid fees"
+            binding.fees.error = getString(R.string.enter_fees)
             valid = false
         }
 
         if (selectedClinicLatitude == 0.0 && selectedClinicLongitude == 0.0) {
             Toast.makeText(
-                this@DoctorSignUpActivity, "Please select location again", Toast.LENGTH_SHORT
+                this@DoctorSignUpActivity,
+                getString(R.string.select_location_again),
+                Toast.LENGTH_SHORT
             ).show()
             valid = false
         }
 
         if (binding.clinicLocation.text.isNullOrEmpty()) {
-            binding.clinicLocation.error = "Please select location"
+            binding.clinicLocation.error = getString(R.string.select_location)
             valid = false
         }
 
         return valid
     }
 
-    private fun checkDoctorPhoneExists(phoneNo: String) {
-        doctorReference.addListenerForSingleValueEvent(object : ValueEventListener {
-            var count = 0
-            var check = false
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
+    private fun checkDoctorProfileExistOrNot(doctorId: String, phoneNo: String) {
+        doctorReference.child(doctorId).child(PROFILE_REF)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Handle data retrieval success
+                    if (dataSnapshot.exists()) {
+                        Toast.makeText(
+                            this@DoctorSignUpActivity,
+                            getString(R.string.users_exists),
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                    // data exists in database
-                    for (userSnapshot in snapshot.getChildren()) {
-                        val profile: DoctorDetailProfileModel =
-                            userSnapshot.child(AppConstants.PROFILE_REF)
-                                .getValue(DoctorDetailProfileModel::class.java)!!
-                        count++
-                        if (profile.phoneNo == phoneNo) {
-                            binding.phoneNumber.setText("")
-                            Toast.makeText(
-                                this@DoctorSignUpActivity,
-                                "Phone number already exists. Please choose a different one",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            binding.phoneNumber.error =
-                                "Phone number already exists. Please choose a different one"
-                            check = true
-                            return
-                        } else if (count.toLong() == snapshot.childrenCount) {
-                            if (!check) {
-                                createAccount()
-                            }
-                        }
+                    } else {
+                        // Data doesn't exist
+                        addDataToModel(doctorId, phoneNo)
                     }
-                } else {
-                    createAccount()
                 }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@DoctorSignUpActivity, error.message, Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Toast.makeText(
+                        this@DoctorSignUpActivity, databaseError.message, Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
 
-    private fun createAccount() // method for create account
+    private fun addDataToModel(doctorId: String, phoneNo: String) // method for create account
     {
         loadingDialog = LoadingDialog.showLoadingDialog(this@DoctorSignUpActivity)
         val radio: RadioButton = findViewById(binding.genderRadioGroup.checkedRadioButtonId)
 
         val model = DoctorDetailProfileModel()
-        model.name = "Dr. ${binding.name.getText().toString().trim()}"
-        model.phoneNo = binding.phoneNumber.getText().toString().trim()
+        model.id = doctorId
+        model.name = binding.name.getText().toString().trim()
+        model.phoneNo = phoneNo
         model.email = binding.email.getText().toString().trim()
         model.city = binding.city.getText().toString().trim()
         model.startTime = binding.startTime.getText().toString().trim()
@@ -338,17 +403,7 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
         model.clinicLongitude = selectedClinicLongitude
         model.gender = radio.text.toString()
 
-        firebaseAuth.createUserWithEmailAndPassword(
-            model.email, binding.password.getText().toString().trim()
-        ).addOnCompleteListener(OnCompleteListener<AuthResult?> { task ->
-            if (task.isSuccessful) {
-                model.id = firebaseAuth.uid.toString()
-                uploadImage(model)
-            }
-        }).addOnFailureListener(OnFailureListener { e ->
-            LoadingDialog.hideLoadingDialog(loadingDialog)
-            Toast.makeText(this@DoctorSignUpActivity, e.message, Toast.LENGTH_SHORT).show()
-        })
+        uploadImage(model)
     }
 
     private fun uploadImage(model: DoctorDetailProfileModel) {
@@ -376,18 +431,62 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
 
     private fun addDataToDb(model: DoctorDetailProfileModel) {
         doctorReference.child(model.id).child(PROFILE_REF).setValue(model).addOnSuccessListener {
-            goToLoginActivity()
+            getFCMToken(model)
         }.addOnFailureListener {
             LoadingDialog.hideLoadingDialog(loadingDialog)
             Toast.makeText(this@DoctorSignUpActivity, it.message, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun goToLoginActivity() {
+    private fun getFCMToken(doctorProfileModel: DoctorDetailProfileModel) {
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            // Update FCM token in Firestore
+            setFCMTokenToDb(token, doctorProfileModel)
+        }.addOnFailureListener { exception ->
+            // Handle FCM token retrieval failure
+            LoadingDialog.hideLoadingDialog(loadingDialog)
+            Toast.makeText(this@DoctorSignUpActivity, exception.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setFCMTokenToDb(token: String, doctorProfileModel: DoctorDetailProfileModel) {
+
+        val map = HashMap<String, Any>()
+        map["fcmToken"] = token
+        doctorReference.child(doctorProfileModel.id).child(PROFILE_REF).updateChildren(map)
+            .addOnSuccessListener {
+                doctorProfileModel.fcmToken = token
+                goToDoctorDashBoard(doctorProfileModel)
+            }.addOnFailureListener {
+                LoadingDialog.hideLoadingDialog(loadingDialog)
+                Toast.makeText(this@DoctorSignUpActivity, it.message, Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun goToDoctorDashBoard(model: DoctorDetailProfileModel) {
+        appSharedPreferences.put("doctorPhoneNo", model.phoneNo)
+        appSharedPreferences.put("doctorUid", model.id)
+        appSharedPreferences.put("doctorName", model.name)
+        appSharedPreferences.put("doctorEmail", model.email)
+        appSharedPreferences.put("doctorImgUrl", model.imgUrl)
+        appSharedPreferences.put("doctorCity", model.city)
+        appSharedPreferences.put("doctorGender", model.gender)
+        appSharedPreferences.put("doctorClinicLocation", model.clinicLocation)
+        appSharedPreferences.put("doctorStartTime", model.startTime)
+        appSharedPreferences.put("doctorEndTime", model.endTime)
+        appSharedPreferences.put("doctorFees", model.fees)
+        appSharedPreferences.put("doctorClinicLatitude", model.clinicLatitude.toFloat())
+        appSharedPreferences.put("doctorClinicLongitude", model.clinicLongitude.toFloat())
+        appSharedPreferences.put("doctorLogin", true)
         LoadingDialog.hideLoadingDialog(loadingDialog)
-        Toast.makeText(this@DoctorSignUpActivity, "Signed up successfully", Toast.LENGTH_SHORT)
-            .show()
-        startActivity(Intent(this@DoctorSignUpActivity, LoginActivity::class.java))
+        Toast.makeText(
+            this@DoctorSignUpActivity, getString(R.string.signup_successfully), Toast.LENGTH_SHORT
+        ).show()
+        startActivity(
+            Intent(
+                this@DoctorSignUpActivity, DoctorDashBoardActivity::class.java
+            )
+        )
         finish()
     }
 }

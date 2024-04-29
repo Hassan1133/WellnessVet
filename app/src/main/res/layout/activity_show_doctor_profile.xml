@@ -48,6 +48,7 @@
                 android:id="@+id/imageLayout"
                 android:layout_width="140dp"
                 android:layout_height="140dp"
+                android:layoutDirection="ltr"
                 android:layout_centerHorizontal="true"
                 >
 
@@ -232,6 +233,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/phoneHeading"
                         android:padding="2dp"
+                        android:textDirection="ltr"
                         android:textColor="@color/hint_color"
                         android:textSize="14sp" />
 
@@ -562,6 +564,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/feesHeading"
                         android:padding="2dp"
+                        android:textDirection="ltr"
                         android:textColor="@color/hint_color"
                         android:textSize="14sp" />
 

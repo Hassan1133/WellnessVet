@@ -125,7 +125,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 } else {
                     Toast.makeText(
                         this@MapsActivity,
-                        "Check your internet connection",
+                        getString(R.string.please_connect_to_internet),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

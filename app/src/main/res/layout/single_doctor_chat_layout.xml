@@ -7,6 +7,7 @@
     android:clickable="true"
     android:elevation="0dp"
     android:layout_marginTop="10dp"
+    android:layoutDirection="ltr"
     app:cardElevation="0dp"
     android:backgroundTint="@color/white"
     android:foreground="?android:attr/selectableItemBackground"
@@ -40,6 +41,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:text="Muhammad Hassan"
+                android:textDirection="ltr"
                 android:textSize="14sp"
                 android:textColor="@color/black"
                 />
@@ -52,6 +54,7 @@
                 android:layout_below="@id/docName"
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="5dp"
+                android:textDirection="ltr"
                 android:textColor="@color/hint_color"
                 android:text="Faisalabad"
                 android:textSize="12sp"

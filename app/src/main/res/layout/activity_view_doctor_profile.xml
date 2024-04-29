@@ -65,6 +65,7 @@
                         android:layout_below="@+id/doctorName"
                         android:layout_centerHorizontal="true"
                         android:layout_marginStart="10dp"
+                        android:textDirection="ltr"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:text="+9230303558418"
@@ -79,6 +80,7 @@
                     android:layout_below="@id/profileLayout"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
+                    android:layoutDirection="ltr"
                     android:layout_marginBottom="10dp">
 
                     <com.google.android.material.card.MaterialCardView
@@ -437,7 +439,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/feesHeading"
                         android:padding="2dp"
-                        android:text="06:30 PM - 09:30 PM"
+                        android:text="1500"
+                        android:textDirection="ltr"
                         android:textColor="@color/hint_color"
                         android:textSize="14sp" />
 

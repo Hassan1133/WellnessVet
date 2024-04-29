@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.wellness.vet.app.R
 import com.wellness.vet.app.adapters.ViewPagerAdp
 import com.wellness.vet.app.databinding.ActivityLoginBinding
 
@@ -34,8 +35,8 @@ class LoginActivity : AppCompatActivity() {
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             // Set tab text based on position
             when (position) {
-                0 -> tab.text = "USER"
-                1 -> tab.text = "DOCTOR"
+                0 -> tab.text = getString(R.string.user_tab)
+                1 -> tab.text = getString(R.string.doctor_tab)
             }
         }.attach()
     }

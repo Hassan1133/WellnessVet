@@ -119,7 +119,9 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
                             dataSnapshot.child(PROFILE_REF)
                                 .getValue(DoctorDetailProfileModel::class.java)
 
-                        doctorsList.add(doctorDetailProfileModel!!)
+                        if (doctorDetailProfileModel != null) {
+                            doctorsList.add(doctorDetailProfileModel)
+                        }
                     }
                     calculateDistance(doctorsList)
                 }
@@ -138,7 +140,7 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
                 val selectedItem = adapterView.getItemAtPosition(position) as String
 
                 when (selectedItem) {
-                    "Your Current Location" -> {
+                    getString(R.string.your_current_location) -> {
                         userLatitude = 0.0
                         userLongitude = 0.0
                         googleMap.clear()
@@ -147,7 +149,7 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
 
                     }
 
-                    "Choose on Map" -> {
+                    getString(R.string.choose_on_map) -> {
                         userLatitude = 0.0
                         userLongitude = 0.0
                         googleMap.clear()

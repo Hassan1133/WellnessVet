@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.database.database
 import com.google.firebase.storage.storage
+import com.wellness.vet.app.R
 import com.wellness.vet.app.adapters.ChatListAdapter
 import com.wellness.vet.app.databinding.ActivityUserChatBinding
 import com.wellness.vet.app.main_utils.AppConstants
@@ -143,7 +144,7 @@ class UserChatActivity : AppCompatActivity() {
                                                             )
                                                             Toast.makeText(
                                                                 this@UserChatActivity,
-                                                                "Success",
+                                                                getString(R.string.message_sent),
                                                                 Toast.LENGTH_SHORT
                                                             ).show()
                                                         }
@@ -167,7 +168,7 @@ class UserChatActivity : AppCompatActivity() {
             binding.btnSend.setOnClickListener {
                 val textMessage = binding.message.text.toString()
                 if (textMessage.isEmpty()) {
-                    binding.message.error = "enter some text"
+                    binding.message.error = getString(R.string.enter_text)
                     return@setOnClickListener
                 }
                 sendMessage(textMessage, "text", userUid, senderDbRef, receiverDbRef)
@@ -187,7 +188,9 @@ class UserChatActivity : AppCompatActivity() {
         map["chatStatus"] = "seen"
 
         doctorRef.child(doctorUid).child(AppConstants.PROFILE_REF).updateChildren(map).addOnSuccessListener {
-            Toast.makeText(this@UserChatActivity, "message seen", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this@UserChatActivity, getString(R.string.messages_seen), Toast.LENGTH_SHORT
+            ).show()
         }.addOnFailureListener{
             Toast.makeText(this@UserChatActivity, it.message, Toast.LENGTH_SHORT).show()
         }
@@ -216,7 +219,11 @@ class UserChatActivity : AppCompatActivity() {
                         .addOnCompleteListener(OnCompleteListener { receive ->
                             if (receive.isSuccessful) {
                                 updateChatReadStatus(appSharedPreferences.getString("userUid")!!)
-                                Toast.makeText(this@UserChatActivity, "Success", Toast.LENGTH_SHORT)
+                                Toast.makeText(
+                                    this@UserChatActivity,
+                                    getString(R.string.message_sent),
+                                    Toast.LENGTH_SHORT
+                                )
                                     .show()
                             }
                         })

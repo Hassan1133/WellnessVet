@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.View
+import com.clk.progress.CircularProgress
 import com.wellness.vet.app.R
 
 class LoadingDialog {
@@ -23,7 +25,6 @@ class LoadingDialog {
             if (dialog.window != null) {
                 dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             }
-
             // Show the dialog
             dialog.show()
             return dialog

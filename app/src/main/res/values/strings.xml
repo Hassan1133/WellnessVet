@@ -1,6 +1,16 @@
 <resources>
+
+    <string-array name="location_options">
+        <item>Your Current Location</item>
+        <item>Choose on Map</item>
+    </string-array>
+
     <string name="app_name">WellnessVet</string>
+    <string name="user_tab">USER</string>
+    <string name="doctor_tab">DOCTOR</string>
     <string name="splash_image_description">Image Loading....</string>
+    <string name="your_current_location">Your Current Location</string>
+    <string name="choose_on_map">Choose on Map</string>
     <string name="user_login">User Login</string>
     <string name="enter_your_phone_number">Enter your Phone Number</string>
     <string name="we_share_this_information_with_the_doctor">We share this information with the doctor</string>
@@ -25,7 +35,7 @@
     <string name="no">No</string>
     <string name="search">Search...</string>
     <string name="save_next">Save and Next</string>
-    <string name="doctor_name_hint">enter your name without Dr title</string>
+    <string name="doctor_name_hint">enter your name</string>
     <string name="doctor_city_hint">enter your city</string>
     <string name="logout_message">Are you sure you want to Logout ?</string>
     <string name="enter_start_time">enter start Time</string>
@@ -47,7 +57,7 @@
     <string name="enter_fees">enter fees</string>
     <string name="set_up_your_timings_and_fees">Set up your Timings and Fees</string>
     <string name="doctor">Doctor</string>
-    <string name="maps_api_key">AIzaSyCoDtci5S11xJfMTs4zIJvBoytoIKnfn_Y</string>
+    <string name="maps_api_key" translatable="false">AIzaSyCoDtci5S11xJfMTs4zIJvBoytoIKnfn_Y</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="clinic_location">Clinic Location</string>
     <string name="enter_clinic_location">enter clinic location</string>
@@ -84,10 +94,36 @@
     <string name="doctor_sign_up">Doctor Sign-up</string>
     <string name="user_sign_up">User Sign-up</string>
     <string name="already_have_an_account">Already have an account.</string>
-    <string name="digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="sign_in">Sign in</string>
+    <string name="enter_valid_email">Please enter valid email</string>
+    <string name="enter_valid_password">Please enter valid password</string>
+    <string name="select_an_image">Please select an image</string>
+    <string name="enter_valid_name">Please enter valid name</string>
+    <string name="messages_seen">messages seen</string>
+    <string name="message_sent">message sent</string>
+    <string name="enter_valid_city">Please enter valid city</string>
+    <string name="enter_start_time_please">Please enter start time</string>
+    <string name="enter_end_time_please">Please enter valid end time</string>
+    <string name="enter_fees_please">Please enter valid fees</string>
+    <string name="select_location_again">Please select location again</string>
+    <string name="select_location">Please select location</string>
+    <string name="users_exists">User Already Exists</string>
+    <string name="account_not_exists">Account Doesn\'t Exist</string>
+    <string name="enter_valid_phone_number">Please enter valid phone number</string>
+    <string name="phone_number_already_exists">Phone number already exists. Please choose a different one</string>
+    <string name="login_successfully">Logged in successfully</string>
+    <string name="signup_successfully">"Signed up successfully</string>
     <string name="enter_your_name">enter your name</string>
     <string name="enter_your_email_address">enter your email address</string>
     <string name="enter_your_mobile_number">enter your mobile number</string>
     <string name="select_your_city">select your city</string>
+    <string name="please_connect_to_internet">Please connect to internet</string>
+    <string name="welcome" translatable="false">Welcome | خوش آمدید</string>
+    <string name="select_language" translatable="false">Select Language | زبان منتخب کریں</string>
+    <string name="english" translatable="false">English | انگریزی</string>
+    <string name="urdu" translatable="false">Urdu | اردو</string>
+    <string name="let_s_start" translatable="false">Let\'s Start | شروع کرتے ہیں</string>
+    <string name="wait_while_nuploading_data">Wait While\nUploading data...</string>
+    <string name="enter_text">enter some text</string>
+    <string name="otp">OTP</string>
 </resources>

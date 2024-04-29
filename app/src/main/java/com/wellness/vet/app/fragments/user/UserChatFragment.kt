@@ -58,13 +58,18 @@ class UserChatFragment : Fragment() , OnClickListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         val dataBase = Firebase.database
         val chatDbRef = dataBase.getReference("chats")
         val profileDbRef = dataBase.getReference("Doctors")
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         val chatList = ArrayList<UserChatListModel>()
-        val chatListAdapter = UserChatListAdapter(requireContext(),chatList,"user")
+        val chatListAdapter = UserChatListAdapter(requireContext(), chatList, "user")
         binding.recyclerView.adapter = chatListAdapter
 
         if (currentUser != null) {
@@ -74,23 +79,31 @@ class UserChatFragment : Fragment() , OnClickListener{
 
             chatDbRef.child(userUid).addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    chatList.clear()
+                    val tempList = mutableListOf<UserChatListModel>()
                     if (snapshot.exists()) {
+                        var count = 0
                         for (ds in snapshot.children) {
                             Log.d("TAGTest", "onDataChange: ${ds.key}")
                             profileDbRef.child(ds.key.toString()).child("Profile")
                                 .addValueEventListener(object : ValueEventListener {
                                     override fun onDataChange(snapshot: DataSnapshot) {
-                                        val doctorProfile = UserChatListModel(
+                                        val userProfile = UserChatListModel(
                                             snapshot.child("id").value.toString(),
                                             snapshot.child("name").value.toString(),
                                             snapshot.child("city").value.toString(),
                                             snapshot.child("imgUrl").value.toString(),
                                             snapshot.child("chatStatus").value.toString()
                                         )
-                                        chatList.add(doctorProfile)
-                                        chatListAdapter.updateList(chatList)
-                                        LoadingDialog.hideLoadingDialog(loadingDialog)
+                                        if (!tempList.any { it.uid == userProfile.uid }) {
+                                            tempList.add(userProfile)
+                                        }
+                                        count++
+                                        if (count == snapshot.childrenCount.toInt()) {
+                                            chatList.clear()
+                                            chatList.addAll(tempList)
+                                            chatListAdapter.updateList(chatList)
+                                            LoadingDialog.hideLoadingDialog(loadingDialog)
+                                        }
                                     }
 
                                     override fun onCancelled(error: DatabaseError) {
@@ -110,7 +123,6 @@ class UserChatFragment : Fragment() , OnClickListener{
                 }
 
             })
-
 
         }
     }

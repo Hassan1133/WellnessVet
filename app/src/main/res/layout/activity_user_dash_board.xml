@@ -10,6 +10,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/headerCardView"
         android:layout_width="match_parent"
+        android:layoutDirection="ltr"
         android:backgroundTint="@color/white"
         android:layout_height="wrap_content">
 
@@ -43,6 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="@string/welcome_back"
+                    android:textDirection="ltr"
                     android:textColor="@color/black"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
@@ -63,6 +65,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="10dp"
                     android:text="Mohsin Abid"
+                    android:textDirection="ltr"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -96,6 +99,7 @@
         app:itemIconSize="16dp"
         app:itemIconTint="@color/bottom_nav_colors"
         app:itemPaddingBottom="10dp"
+        android:layoutDirection="ltr"
         android:background="@color/bottom_nav_bg_clr"
         app:itemPaddingTop="10dp"
         app:itemTextColor="@color/bottom_nav_colors"
