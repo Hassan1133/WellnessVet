@@ -5,6 +5,11 @@
         <item>Choose on Map</item>
     </string-array>
 
+    <string-array name="languages">
+        <item>English</item>
+        <item>Urdu</item>
+    </string-array>
+
     <string name="app_name">WellnessVet</string>
     <string name="user_tab">USER</string>
     <string name="doctor_tab">DOCTOR</string>
@@ -108,6 +113,7 @@
     <string name="select_location_again">Please select location again</string>
     <string name="select_location">Please select location</string>
     <string name="users_exists">User Already Exists</string>
+    <string name="choose_lang">Choose Language</string>
     <string name="account_not_exists">Account Doesn\'t Exist</string>
     <string name="enter_valid_phone_number">Please enter valid phone number</string>
     <string name="enter_valid_account_number">Please enter valid account number</string>

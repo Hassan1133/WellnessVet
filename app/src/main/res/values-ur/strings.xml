@@ -6,6 +6,11 @@
         <item>نقشہ پر منتخب کریں</item>
     </string-array>
 
+    <string-array name="languages">
+        <item>انگریزی</item>
+        <item>اردو</item>
+    </string-array>
+
     <string name="app_name">WellnessVet</string>
     <string name="splash_image_description">تصویر لوڈ ہو رہی ہے....</string>
     <string name="user_login">صارف لاگ ان</string>
@@ -109,7 +114,11 @@
     <string name="enter_valid_city">براہ کرم درست شہر درج کریں۔</string>
     <string name="select_location_again">براہ کرم دوبارہ مقام منتخب کریں۔</string>
     <string name="select_location">براہ کرم مقام منتخب کریں۔</string>
+    <string name="users_exists">صارف پہلے سے موجود ہے</string>
+    <string name="choose_lang">زبان کا انتخاب کریں</string>
+    <string name="account_not_exists">اکاؤنٹ موجود نہیں ہے</string>
     <string name="enter_valid_phone_number">براہ کرم درست فون نمبر درج کریں۔</string>
+    <string name="enter_valid_account_number">براہ کرم درست اکاؤنٹ نمبر درج کریں</string>
     <string name="phone_number_already_exists">فون نمبر پہلے سے موجود ہے۔ براہ کرم ایک مختلف کا انتخاب کریں۔</string>
     <string name="signup_successfully">کامیابی سے سائن اپ ہو گیا۔</string>
     <string name="enter_end_time_please">براہ کرم درست اختتامی وقت درج کریں۔</string>
@@ -117,4 +126,6 @@
     <string name="wait_while_nuploading_data">انتظار کریں جب تک\n ڈیٹا اپ لوڈ ہو رہا ہے...</string>
     <string name="enter_text">کچھ الفاظ درج کریں</string>
     <string name="otp">او ٹی پی</string>
+    <string name="account_number">اکاؤنٹ نمبر</string>
+    <string name="enter_your_bank_account_number">اپنا بینک اکاؤنٹ نمبر درج کریں</string>
 </resources>

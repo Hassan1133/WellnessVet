@@ -414,7 +414,6 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
 
     private fun uploadImage(model: DoctorDetailProfileModel) {
 
-
         val filepath: StorageReference = storageRef.child("DoctorProfileImages/" + model.id)
 
         val uploadTask = filepath.putFile(imageUri)

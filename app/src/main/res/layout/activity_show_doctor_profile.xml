@@ -27,6 +27,21 @@
                 android:text="@string/doctor_profile"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/languageBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/white"
+                app:elevation="0dp"
+                app:fabCustomSize="30dp"
+                app:maxImageSize="17dp"
+                app:srcCompat="@drawable/language"
+                app:tint="@color/dark_navy_blue"
+                tools:ignore="ContentDescription" />
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
@@ -250,10 +265,66 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/cityLayout"
+                android:id="@+id/accountNumberLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/phoneLayout"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp">
+
+                <ImageView
+                    android:id="@+id/accountIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/bank"
+                    app:tint="@color/black" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_toEndOf="@+id/accountIcon">
+
+                    <TextView
+                        android:id="@+id/accountNumberHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/account_number"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/accountNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/accountNumberHeading"
+                        android:padding="2dp"
+                        android:textColor="@color/hint_color"
+                        android:textDirection="ltr"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/accountNumber"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="4dp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/cityLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/accountNumberLayout"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp">
