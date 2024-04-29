@@ -25,6 +25,10 @@ firebaseStorageKtx = "20.3.0"
 glide = "4.16.0"
 firebaseStorage = "20.3.0"
 firebaseMessaging = "23.4.1"
+retrofit = "2.9.0"
+retrofitGson = "2.9.0"
+sendBird = "1.10.6"
+multiDex = "2.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +54,10 @@ firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofitGson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitGson" }
+sendBird = { group = "com.sendbird.sdk", name = "sendbird-calls", version.ref = "sendBird" }
+multiDex = { group = "androidx.multidex", name = "multidex", version.ref = "multiDex" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

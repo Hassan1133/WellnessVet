@@ -64,12 +64,13 @@
                 android:weightSum="2">
 
                 <RelativeLayout
-                    android:id="@+id/btn_voice_call"
+
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/btn_voice_call"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerInParent="true"
@@ -84,12 +85,13 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/btn_video_call"
+
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/btn_video_call"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerInParent="true"

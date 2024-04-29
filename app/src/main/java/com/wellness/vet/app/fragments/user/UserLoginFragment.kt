@@ -271,6 +271,7 @@ class UserLoginFragment : Fragment(), OnClickListener {
         appSharedPreferences.put("userEmail", userProfileModel.email)
         appSharedPreferences.put("userLogin", true)
         appSharedPreferences.put("is_lang_set", true)
+        appSharedPreferences.put("userType", "user")
         LoadingDialog.hideLoadingDialog(loadingDialog)
         Toast.makeText(
             requireActivity(), getString(R.string.login_successfully), Toast.LENGTH_SHORT

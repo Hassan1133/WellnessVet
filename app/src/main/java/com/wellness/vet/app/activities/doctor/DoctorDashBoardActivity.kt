@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.common.LoginActivity
 import com.wellness.vet.app.adapters.ViewPagerAdapter
+import com.wellness.vet.app.calls.utils.AuthenticationUtils
+import com.wellness.vet.app.calls.utils.ToastUtils
 import com.wellness.vet.app.databinding.ActivityDoctorDashBoardBinding
 import com.wellness.vet.app.fragments.doctor.DoctorAppointmentFragment
 import com.wellness.vet.app.fragments.doctor.DoctorChatFragment
@@ -27,10 +31,19 @@ class DoctorDashBoardActivity : AppCompatActivity(), OnClickListener {
 
     private lateinit var binding: ActivityDoctorDashBoardBinding
     private lateinit var appSharedPreferences: AppSharedPreferences
+    private var mEncodedAuthInfo: String? = null
+
+    private val MANDATORY_PERMISSIONS = arrayOf(
+        Manifest.permission.RECORD_AUDIO,  // for VoiceCall and VideoCall
+        Manifest.permission.CAMERA // for VoiceCall and VideoCall
+    )
+    private val REQUEST_PERMISSIONS_REQUEST_CODE = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDoctorDashBoardBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        checkPermissions()
+        authenticateSendBird()
         init()
     }
 
@@ -143,5 +156,119 @@ class DoctorDashBoardActivity : AppCompatActivity(), OnClickListener {
         val intent = Intent(this@DoctorDashBoardActivity, LoginActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun authenticateSendBird() {
+        val intent = intent
+//        if (intent != null) {
+            val data = intent.data
+            if (data != null) {
+                val scheme = data.scheme
+                if (scheme != null && scheme == "sendbird") {
+                    mEncodedAuthInfo = data.host
+                    if (!TextUtils.isEmpty(mEncodedAuthInfo)) {
+                        AuthenticationUtils.authenticateWithEncodedAuthInfo(
+                            this@DoctorDashBoardActivity,
+                            mEncodedAuthInfo
+                        ) { isSuccess: Boolean, hasInvalidValue: Boolean ->
+                            if (isSuccess) {
+                                Log.d("TAGSENDBIRD", "authenticateSendBird: successful login pre")
+
+                            } else {
+                                if (hasInvalidValue) {
+                                    ToastUtils.showToast(
+                                        this@DoctorDashBoardActivity,
+                                        getString(R.string.calls_invalid_deep_link)
+                                    )
+                                } else {
+                                    ToastUtils.showToast(
+                                        this@DoctorDashBoardActivity,
+                                        getString(R.string.calls_deep_linking_to_authenticate_failed)
+                                    )
+                                }
+                                finish()
+                            }
+                        }
+                    }else{
+                        AuthenticationUtils.autoAuthenticate(this@DoctorDashBoardActivity) { userId: String? ->
+                            if (!TextUtils.isEmpty(userId)) {
+//                                user login successful
+                                Log.d("TAGSENDBIRD", "authenticateSendBird: successful login util")
+
+                            } else {
+                                val currentUser = FirebaseAuth.getInstance().currentUser
+                                if (currentUser != null) {
+                                    AuthenticationUtils.authenticate(
+                                        this@DoctorDashBoardActivity, currentUser.uid, ""
+                                    ) { isSuccess: Boolean ->
+                                        if (isSuccess) {
+//                                            user login successful
+                                            Log.d("TAGSENDBIRD", "authenticateSendBird: successful login userid")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }else{
+                AuthenticationUtils.autoAuthenticate(this@DoctorDashBoardActivity) { userId: String? ->
+                    if (!TextUtils.isEmpty(userId)) {
+//                                user login successful
+                        Log.d("TAGSENDBIRD", "authenticateSendBird: successful login util")
+
+                    } else {
+                        val currentUser = FirebaseAuth.getInstance().currentUser
+                        if (currentUser != null) {
+                            AuthenticationUtils.authenticate(
+                                this@DoctorDashBoardActivity, currentUser.uid, ""
+                            ) { isSuccess: Boolean ->
+                                if (isSuccess) {
+//                                            user login successful
+                                    Log.d("TAGSENDBIRD", "authenticateSendBird: successful login userid")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+//        }
+    }
+
+    private fun checkPermissions() {
+        val permissions =
+            ArrayList<String>(listOf<String>(*MANDATORY_PERMISSIONS))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+        val deniedPermissions = ArrayList<String>()
+        for (permission in permissions) {
+            if (checkCallingOrSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                deniedPermissions.add(permission)
+            }
+        }
+        if (deniedPermissions.size > 0) {
+            requestPermissions(
+                deniedPermissions.toTypedArray<String>(),
+                REQUEST_PERMISSIONS_REQUEST_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
+            var allowed = true
+            for (result in grantResults) {
+                allowed = allowed && result == PackageManager.PERMISSION_GRANTED
+            }
+            if (!allowed) {
+                ToastUtils.showToast(this, "Permission denied.")
+            }
+        }
     }
 }

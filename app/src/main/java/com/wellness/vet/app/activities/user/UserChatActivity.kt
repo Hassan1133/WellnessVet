@@ -22,6 +22,8 @@ import com.google.firebase.database.database
 import com.google.firebase.storage.storage
 import com.wellness.vet.app.R
 import com.wellness.vet.app.adapters.ChatListAdapter
+import com.wellness.vet.app.calls.activites.CallService
+import com.wellness.vet.app.calls.utils.PrefUtils
 import com.wellness.vet.app.databinding.ActivityUserChatBinding
 import com.wellness.vet.app.main_utils.AppConstants
 import com.wellness.vet.app.main_utils.AppSharedPreferences
@@ -174,6 +176,17 @@ class UserChatActivity : AppCompatActivity() {
                 sendMessage(textMessage, "text", userUid, senderDbRef, receiverDbRef)
                 binding.message.setText("")
             }
+
+            binding.btnVoiceCall.setOnClickListener(View.OnClickListener {
+                Toast.makeText(this@UserChatActivity,"clicked",Toast.LENGTH_SHORT).show()
+                CallService.dial(this@UserChatActivity, doctorUid, false)
+                PrefUtils.setCalleeId(this@UserChatActivity, doctorUid)
+            })
+
+            binding.btnVideoCall.setOnClickListener(View.OnClickListener {
+                CallService.dial(this@UserChatActivity, doctorUid, true)
+                PrefUtils.setCalleeId(this@UserChatActivity, doctorUid)
+            })
         }
     }
 

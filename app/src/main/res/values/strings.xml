@@ -135,4 +135,65 @@
     <string name="otp">OTP</string>
     <string name="account_number">Account Number</string>
     <string name="enter_your_bank_account_number">enter your bank account number</string>
+
+
+
+//call package strings
+    <string name="calls_app_name" translatable="false">Sendbird Calls</string>
+    <string name="api_key_current" translatable="false">bc3a9d133a874c329f561292</string>
+    <string name="calls_quickstart_version" translatable="false">Quickstart %s</string>
+    <string name="calls_sdk_version" translatable="false">SDK %s</string>
+    <string name="calls_sign_in_with_qrcode" translatable="false">Sign in with QR code</string>
+    <string name="calls_scanning_a_qrcode_description" translatable="false">Scan QR code from Calls studio on Sendbird dashboard.</string>
+    <string name="calls_or" translatable="false">Or</string>
+    <string name="calls_sign_in_manually" translatable="false">Sign in with ID</string>
+    <string name="calls_sign_in_manually_title" translatable="false">Sign in</string>
+    <string name="calls_app_id" translatable="false">Application ID</string>
+    <string name="calls_user_id" translatable="false">User ID</string>
+    <string name="calls_access_token" translatable="false">Access token (optional)</string>
+    <string name="calls_sign_in" translatable="false">Sign in</string>
+
+    <string name="calls_empty_nickname" translatable="false">—</string>
+    <string name="calls_user_id_format" translatable="false">User ID: %s</string>
+    <string name="calls_and_character" translatable="false">" · "</string>
+
+    <string name="calls_notification_voice_calling_content" translatable="false">Voice call from %s</string>
+    <string name="calls_notification_video_calling_content" translatable="false">Video call from %s</string>
+    <string name="calls_notification_accept" translatable="false">Accept</string>
+    <string name="calls_notification_decline" translatable="false">Decline</string>
+    <string name="calls_notification_end" translatable="false">End</string>
+
+    <string name="calls_make_a_call" translatable="false">Make a call</string>
+    <string name="calls_history" translatable="false">Recents</string>
+    <string name="calls_no_call_history" translatable="false">No call history</string><!-- remove -->
+    <string name="calls_settings" translatable="false">Settings</string>
+    <string name="calls_application_information" translatable="false">Application information</string>
+    <string name="calls_application_name" translatable="false">Name</string>
+    <string name="calls_application_id" translatable="false">ID</string>
+    <string name="calls_sign_out" translatable="false">Sign out</string>
+
+    <string name="calls_muted_this_call" translatable="false">%s is muted</string>
+    <string name="calls_incoming_voice_call" translatable="false">incoming voice call&#8230;</string>
+    <string name="calls_incoming_video_call" translatable="false">incoming video call&#8230;</string>
+    <string name="calls_connecting_call" translatable="false">connecting&#8230;</string>
+    <string name="calls_calling" translatable="false">making voice call&#8230;</string>
+    <string name="calls_video_calling" translatable="false">making video call&#8230;</string>
+    <string name="calls_ending_voice_call" translatable="false">voice call ending&#8230;</string>
+    <string name="calls_ending_video_call" translatable="false">video call ending&#8230;</string>
+
+    <string name="calls_end_result_no_answer" translatable="false">No answer</string>
+    <string name="calls_end_result_canceled" translatable="false">Canceled</string>
+    <string name="calls_end_result_declined" translatable="false">Declined</string>
+    <string name="calls_end_result_completed" translatable="false">Ended</string>
+    <string name="calls_end_result_timed_out" translatable="false">Timed out</string>
+    <string name="calls_end_result_connection_lost" translatable="false">Connection lost</string>
+    <string name="calls_end_result_unknown" translatable="false">Unknown</string>
+    <string name="calls_end_result_accept_failed" translatable="false">Accept failed</string>
+    <string name="calls_end_result_dial_failed" translatable="false">Dial failed</string>
+    <string name="calls_end_result_other_device_accepted" translatable="false">Other device accepted</string>
+
+    <string name="calls_invalid_notifications_setting_in_dashboard" translatable="false">Turn on notifications on the Sendbird dashboard to allow mobile sign in.</string>
+    <string name="calls_invalid_qrcode" translatable="false">This QR code is not valid. Go to Calls studio and try scanning your QR code again.</string>
+    <string name="calls_invalid_deep_link" translatable="false">Invalid deep link</string>
+    <string name="calls_deep_linking_to_authenticate_failed" translatable="false">Could not authenticate deep link.</string>
 </resources>

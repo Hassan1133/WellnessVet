@@ -12,10 +12,16 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.sendbird.calls.SendBirdCall.currentUser
+import com.sendbird.calls.SendBirdCall.handleFirebaseMessageData
+import com.sendbird.calls.SendBirdException
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.common.LoginActivity
 import com.wellness.vet.app.activities.doctor.DoctorChatActivity
 import com.wellness.vet.app.activities.user.UserChatActivity
+import com.wellness.vet.app.calls.BaseApplication
+import com.wellness.vet.app.calls.utils.PrefUtils
+import com.wellness.vet.app.calls.utils.PushUtils
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 class FCMNotificationService : FirebaseMessagingService() {
@@ -28,7 +34,14 @@ class FCMNotificationService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        // Check if the user is authenticated
+
+        if (handleFirebaseMessageData(message.getData())) {
+            Log.i(BaseApplication.TAG,
+                "[MyFirebaseMessagingService] onMessageReceived() => " + message.getData()
+                    .toString()
+            )
+        }else{
+            // Check if the user is authenticated
         if (FirebaseAuth.getInstance().currentUser != null) {
             // Extract title, body, and user type from the message data
 
@@ -43,6 +56,7 @@ class FCMNotificationService : FirebaseMessagingService() {
 
             // Send notification if user is authenticated
             sendNotification(title!!, body!!, userType!!, uid!!, name!!, imgUrl!!)
+        }
         }
     }
 
@@ -101,6 +115,16 @@ class FCMNotificationService : FirebaseMessagingService() {
             "user" -> DoctorChatActivity::class.java
             "doctor" -> UserChatActivity::class.java
             else -> LoginActivity::class.java
+        }
+    }
+
+    override fun onNewToken(token: String) {
+        if (currentUser != null) {
+            PushUtils.registerPushToken(
+                applicationContext, token
+            ) { e: SendBirdException? -> }
+        } else {
+            PrefUtils.setPushToken(applicationContext, token)
         }
     }
 }

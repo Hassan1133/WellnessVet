@@ -18,6 +18,7 @@ import java.util.Locale
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var appSharedPreferences: AppSharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

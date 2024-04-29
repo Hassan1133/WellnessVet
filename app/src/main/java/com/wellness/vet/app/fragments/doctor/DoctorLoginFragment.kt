@@ -278,6 +278,7 @@ class DoctorLoginFragment : Fragment(), OnClickListener {
         appSharedPreferences.put("doctorClinicLongitude", model.clinicLongitude.toFloat())
         appSharedPreferences.put("doctorLogin", true)
         appSharedPreferences.put("is_lang_set", true)
+        appSharedPreferences.put("userType", "doctor")
         LoadingDialog.hideLoadingDialog(loadingDialog)
         Toast.makeText(
             requireActivity(), getString(R.string.login_successfully), Toast.LENGTH_SHORT
