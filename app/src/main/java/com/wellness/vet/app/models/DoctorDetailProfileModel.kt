@@ -7,6 +7,7 @@ class DoctorDetailProfileModel(
     var email: String = "",
     var city: String = "",
     var gender: String = "",
+    var accountNumber: String = "",
     var startTime: String = "",
     var endTime: String = "",
     var fees: String = "",

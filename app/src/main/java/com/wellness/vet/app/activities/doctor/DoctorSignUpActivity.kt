@@ -316,6 +316,11 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
             valid = false
         }
 
+        if (binding.accountNumber.text!!.length < 11 || binding.accountNumber.text!!.length > 28) {
+            binding.accountNumber.error = getString(R.string.enter_valid_account_number)
+            valid = false
+        }
+
         if (binding.city.text.isNullOrEmpty()) {
             binding.city.error = getString(R.string.enter_valid_city)
             valid = false
@@ -398,6 +403,7 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
         model.startTime = binding.startTime.getText().toString().trim()
         model.endTime = binding.endTime.getText().toString().trim()
         model.fees = binding.fees.getText().toString().trim()
+        model.accountNumber = binding.accountNumber.getText().toString().trim()
         model.clinicLocation = binding.clinicLocation.getText().toString().trim()
         model.clinicLatitude = selectedClinicLatitude
         model.clinicLongitude = selectedClinicLongitude
@@ -469,6 +475,7 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
         appSharedPreferences.put("doctorName", model.name)
         appSharedPreferences.put("doctorEmail", model.email)
         appSharedPreferences.put("doctorImgUrl", model.imgUrl)
+        appSharedPreferences.put("doctorAccountNumber", model.accountNumber)
         appSharedPreferences.put("doctorCity", model.city)
         appSharedPreferences.put("doctorGender", model.gender)
         appSharedPreferences.put("doctorClinicLocation", model.clinicLocation)
@@ -478,6 +485,7 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
         appSharedPreferences.put("doctorClinicLatitude", model.clinicLatitude.toFloat())
         appSharedPreferences.put("doctorClinicLongitude", model.clinicLongitude.toFloat())
         appSharedPreferences.put("doctorLogin", true)
+        appSharedPreferences.put("is_lang_set", true)
         LoadingDialog.hideLoadingDialog(loadingDialog)
         Toast.makeText(
             this@DoctorSignUpActivity, getString(R.string.signup_successfully), Toast.LENGTH_SHORT

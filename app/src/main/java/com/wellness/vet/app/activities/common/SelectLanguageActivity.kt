@@ -48,7 +48,6 @@ class SelectLanguageActivity : AppCompatActivity() {
         )
 
         appSharedPreferences.put("app_lang", language)
-        appSharedPreferences.put("is_lang_set", true)
 
         goToLoginActivity()
     }

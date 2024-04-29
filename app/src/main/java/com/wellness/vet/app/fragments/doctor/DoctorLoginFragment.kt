@@ -266,6 +266,7 @@ class DoctorLoginFragment : Fragment(), OnClickListener {
         appSharedPreferences.put("doctorUid", model.id)
         appSharedPreferences.put("doctorName", model.name)
         appSharedPreferences.put("doctorEmail", model.email)
+        appSharedPreferences.put("doctorAccountNumber", model.accountNumber)
         appSharedPreferences.put("doctorImgUrl", model.imgUrl)
         appSharedPreferences.put("doctorCity", model.city)
         appSharedPreferences.put("doctorGender", model.gender)
@@ -276,6 +277,7 @@ class DoctorLoginFragment : Fragment(), OnClickListener {
         appSharedPreferences.put("doctorClinicLatitude", model.clinicLatitude.toFloat())
         appSharedPreferences.put("doctorClinicLongitude", model.clinicLongitude.toFloat())
         appSharedPreferences.put("doctorLogin", true)
+        appSharedPreferences.put("is_lang_set", true)
         LoadingDialog.hideLoadingDialog(loadingDialog)
         Toast.makeText(
             requireActivity(), getString(R.string.login_successfully), Toast.LENGTH_SHORT

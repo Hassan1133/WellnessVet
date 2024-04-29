@@ -264,11 +264,13 @@ class UserLoginFragment : Fragment(), OnClickListener {
         appSharedPreferences.put("userPhoneNo", userProfileModel.phoneNo)
         appSharedPreferences.put("userUid", userProfileModel.id)
         appSharedPreferences.put("userName", userProfileModel.name)
+        appSharedPreferences.put("userAccountNumber", userProfileModel.accountNumber)
         appSharedPreferences.put("userCity", userProfileModel.city)
         appSharedPreferences.put("userGender", userProfileModel.gender)
         appSharedPreferences.put("userImgUrl", userProfileModel.imgUrl)
         appSharedPreferences.put("userEmail", userProfileModel.email)
         appSharedPreferences.put("userLogin", true)
+        appSharedPreferences.put("is_lang_set", true)
         LoadingDialog.hideLoadingDialog(loadingDialog)
         Toast.makeText(
             requireActivity(), getString(R.string.login_successfully), Toast.LENGTH_SHORT

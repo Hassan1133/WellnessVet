@@ -6,6 +6,7 @@ data class UserProfileModel(
     var city: String = "",
     var email: String = "",
     var gender: String = "",
+    var accountNumber: String = "",
     var imgUrl: String = "",
     var id: String = "",
     var fcmToken: String = ""
