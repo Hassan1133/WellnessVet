@@ -29,13 +29,13 @@ class SplashActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
 
-            if (!appSharedPreferences.getBoolean("is_lang_set")) {
+            if (appSharedPreferences.getBoolean("is_lang_set")) {
+                setLanguage()
+            } else {
                 startActivity(Intent(
                     this, SelectLanguageActivity::class.java
                 ))
                 finish()
-            } else if (appSharedPreferences.getBoolean("is_lang_set")) {
-                setLanguage()
             }
 
         }, 3000)

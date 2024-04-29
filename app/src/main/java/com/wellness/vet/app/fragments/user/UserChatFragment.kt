@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -72,6 +73,7 @@ class UserChatFragment : Fragment() , OnClickListener{
         val chatListAdapter = UserChatListAdapter(requireContext(), chatList, "user")
         binding.recyclerView.adapter = chatListAdapter
 
+
         if (currentUser != null) {
             val userUid = currentUser.uid
 
@@ -79,9 +81,8 @@ class UserChatFragment : Fragment() , OnClickListener{
 
             chatDbRef.child(userUid).addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val tempList = mutableListOf<UserChatListModel>()
+                    chatList.clear()
                     if (snapshot.exists()) {
-                        var count = 0
                         for (ds in snapshot.children) {
                             Log.d("TAGTest", "onDataChange: ${ds.key}")
                             profileDbRef.child(ds.key.toString()).child("Profile")
@@ -94,16 +95,9 @@ class UserChatFragment : Fragment() , OnClickListener{
                                             snapshot.child("imgUrl").value.toString(),
                                             snapshot.child("chatStatus").value.toString()
                                         )
-                                        if (!tempList.any { it.uid == userProfile.uid }) {
-                                            tempList.add(userProfile)
-                                        }
-                                        count++
-                                        if (count == snapshot.childrenCount.toInt()) {
-                                            chatList.clear()
-                                            chatList.addAll(tempList)
-                                            chatListAdapter.updateList(chatList)
-                                            LoadingDialog.hideLoadingDialog(loadingDialog)
-                                        }
+                                        chatList.add(userProfile)
+                                        chatListAdapter.updateList(chatList)
+                                        LoadingDialog.hideLoadingDialog(loadingDialog)
                                     }
 
                                     override fun onCancelled(error: DatabaseError) {
@@ -122,6 +116,28 @@ class UserChatFragment : Fragment() , OnClickListener{
                     LoadingDialog.hideLoadingDialog(loadingDialog)
                 }
 
+            })
+
+            binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    val searchList = ArrayList<UserChatListModel>()
+                    for (i in chatList) {
+                        if (i.name.lowercase().contains(newText!!.lowercase()) || i.city.lowercase()
+                                .contains(
+                                    newText.lowercase()
+                                )
+                        ) {
+                            searchList.add(i)
+                        }
+                    }
+                    // Update RecyclerView with search results
+                    chatListAdapter.updateList(searchList)
+                    return true
+                }
             })
 
         }

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -32,14 +33,20 @@ class DoctorChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         val dataBase = Firebase.database
         val chatDbRef = dataBase.getReference("chats")
         val profileDbRef = dataBase.getReference("Users")
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         val chatList = ArrayList<UserChatListModel>()
-        val chatListAdapter = UserChatListAdapter(requireContext(),chatList,"doctor")
+        val chatListAdapter = UserChatListAdapter(requireContext(), chatList, "doctor")
         binding.recyclerView.adapter = chatListAdapter
+
 
         if (currentUser != null) {
             val userUid = currentUser.uid
@@ -85,6 +92,27 @@ class DoctorChatFragment : Fragment() {
 
             })
 
+            binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    val searchList = ArrayList<UserChatListModel>()
+                    for (i in chatList) {
+                        if (i.name.lowercase().contains(newText!!.lowercase()) || i.city.lowercase()
+                                .contains(
+                                    newText.lowercase()
+                                )
+                        ) {
+                            searchList.add(i)
+                        }
+                    }
+                    // Update RecyclerView with search results
+                    chatListAdapter.updateList(searchList)
+                    return true
+                }
+            })
         }
     }
 }

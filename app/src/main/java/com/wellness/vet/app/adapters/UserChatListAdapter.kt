@@ -1,5 +1,6 @@
 package com.wellness.vet.app.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -81,6 +82,7 @@ class UserChatListAdapter(
         })
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateList(updateList: ArrayList<UserChatListModel>) {
         userChatList = updateList
         this.notifyDataSetChanged()
