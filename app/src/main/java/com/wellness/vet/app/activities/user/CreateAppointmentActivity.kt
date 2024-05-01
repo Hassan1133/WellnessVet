@@ -1,6 +1,7 @@
 package com.wellness.vet.app.activities.user
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -86,45 +87,15 @@ class CreateAppointmentActivity : AppCompatActivity(), TimeSlotSelectListener {
             } else {
                 if (slotSelected) {
                     if (currentUser != null) {
+
                         val userUid = currentUser.uid
-
-                        val userDbRef = appointDbRef.child(userUid).child(doctorUid)
-                        val doctorDbRef = appointDbRef.child(doctorUid).child(userUid)
-
-                        val pushIdRef = userDbRef.push()
-                        val pushId = pushIdRef.key
-
-                        val mMap = HashMap<String, Any>()
-                        mMap["date"] = slotDate
-                        mMap["time"] = timeSlot
-
-                        userDbRef.child("$pushId").setValue(mMap)
-                            .addOnCompleteListener(OnCompleteListener { uAppoint ->
-                                if (uAppoint.isSuccessful) {
-                                    doctorDbRef.child("$pushId").setValue(mMap)
-                                        .addOnCompleteListener(OnCompleteListener { dAppoint ->
-                                            if (dAppoint.isSuccessful) {
-                                                val slotMap = HashMap<String, Any>()
-                                                slotMap["time"] = timeSlot
-                                                doctorProfileDbRef.child(doctorUid)
-                                                    .child("appointments")
-                                                    .child(slotDate).child("$pushId")
-                                                    .setValue(slotMap)
-                                                    .addOnCompleteListener(OnCompleteListener { slotAppoint ->
-                                                        if (slotAppoint.isSuccessful) {
-                                                            Toast.makeText(
-                                                                this@CreateAppointmentActivity,
-                                                                "Success",
-                                                                Toast.LENGTH_SHORT
-                                                            ).show()
-                                                        }
-                                                    })
-
-                                            }
-                                        })
-                                }
-                            })
-
+                        startActivity(Intent(this@CreateAppointmentActivity,PaymentConfirmActivity::class.java)
+                            .putExtra("userUid",userUid)
+                            .putExtra("doctorUid",doctorUid)
+                            .putExtra("dateSlot",slotDate)
+                            .putExtra("timeSlot",timeSlot)
+                        )
+                        finish()
                     }
                 } else {
                     Toast.makeText(

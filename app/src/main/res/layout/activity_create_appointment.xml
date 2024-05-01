@@ -108,8 +108,7 @@
                 android:id="@+id/relativeSlots"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relativeSlotDate"
-                android:layout_above="@+id/saveRelative">
+                android:layout_below="@+id/relativeSlotDate">
 
                 <TextView
                     android:id="@+id/timeSlotHeading"

@@ -1,5 +1,6 @@
 package com.wellness.vet.app.adapters
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -16,7 +17,7 @@ import com.wellness.vet.app.models.DoctorDetailProfileModel
 import de.hdodenhof.circleimageview.CircleImageView
 
 class DoctorListAdp(
-    private val context: Context,
+    private val context: Activity,
     private val doctorList: List<DoctorDetailProfileModel>,
     private val flag: String
 ) :
@@ -49,6 +50,7 @@ class DoctorListAdp(
                 val intent = Intent(context, CreateAppointmentActivity::class.java)
                 intent.putExtra("uid", doctorDetailProfileModel.id)
                 context.startActivity(intent)
+                context.finish()
             }
         }
     }

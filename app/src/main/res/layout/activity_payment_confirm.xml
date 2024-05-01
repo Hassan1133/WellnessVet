@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.user.PaymentConfirmActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- TextView displaying header text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/confirm_payment"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headerLayout"
+        android:background="@color/white"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="ScrollViewSize">
+
+            <!-- TextView displaying "set up your profile" -->
+            <TextView
+                android:id="@+id/setUpHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/payment_detail"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+
+            <LinearLayout
+                android:id="@+id/priceLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/setUpHeading">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/amount"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"/>
+
+
+                <TextView
+                    android:id="@+id/txtPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Rs 300/-"
+                    android:gravity="end"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/relativeToAccountTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/priceLayout">
+
+                <!-- TextView displaying "Phone number" -->
+                <TextView
+                    android:id="@+id/toHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/to"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/toHeading"
+                    android:orientation="vertical">
+
+                    <!-- TextInputLayout to contain the input field for phone number -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/toAccountTitleInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="20dp"
+                        app:endIconMode="custom"
+                        app:endIconTint="@color/hint_color"
+                        app:hintEnabled="false"
+                        app:hintTextColor="@color/hint_color">
+
+                        <!-- TextInputEditText for entering phone number -->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/toAccountTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edit_txt_bg"
+                            android:enabled="false"
+                            android:hint="@string/account_holder_name"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/hint_color"
+                            android:textSize="14sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- TextInputLayout to contain the input field for phone number -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/toAccountNoInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp"
+                        app:endIconMode="custom"
+                        app:endIconTint="@color/hint_color"
+                        app:hintEnabled="false"
+                        app:hintTextColor="@color/hint_color">
+
+                        <!-- TextInputEditText for entering phone number -->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/toAccountNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edit_txt_bg"
+                            android:enabled="false"
+                            android:hint="@string/account_number"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/hint_color"
+                            android:textSize="14sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/relativeFromAccountTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/relativeToAccountTitle">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/light_grey"/>
+
+                <TextView
+                    android:id="@+id/fromHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/from"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/relativeCardNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- TextView displaying "Phone number" -->
+                    <TextView
+                        android:id="@+id/cardNoHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="Card Number"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <!-- TextInputLayout to contain the input field for phone number -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cardNoLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/cardNoHeading"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        app:endIconMode="custom"
+                        app:endIconTint="@color/hint_color"
+                        android:layout_marginEnd="20dp"
+                        app:hintEnabled="false"
+                        app:hintTextColor="@color/hint_color">
+
+                        <!-- TextInputEditText for entering phone number -->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/cardNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edit_txt_bg"
+                            android:hint="0000-0000-0000-0000"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/hint_color"
+                            android:textSize="14sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeCardHolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- TextView displaying "Phone number" -->
+                    <TextView
+                        android:id="@+id/cardHolderHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="Card Holder Name"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <!-- TextInputLayout to contain the input field for phone number -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cardHolderLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/cardHolderHeading"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        app:endIconMode="custom"
+                        app:endIconTint="@color/hint_color"
+                        android:layout_marginEnd="20dp"
+                        app:hintEnabled="false"
+                        app:hintTextColor="@color/hint_color">
+
+                        <!-- TextInputEditText for entering phone number -->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/cardHolderName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edit_txt_bg"
+                            android:hint="Enter Card Holder Name"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/hint_color"
+                            android:textSize="14sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeCardDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- TextView displaying "Phone number" -->
+                    <TextView
+                        android:id="@+id/cardDateHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="Card Expiry Date"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <!-- TextInputLayout to contain the input field for phone number -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cardDateLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/cardDateHeading"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        app:endIconMode="custom"
+                        app:endIconTint="@color/hint_color"
+                        android:layout_marginEnd="20dp"
+                        app:hintEnabled="false"
+                        app:hintTextColor="@color/hint_color">
+
+                        <!-- TextInputEditText for entering phone number -->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/cardDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edit_txt_bg"
+                            android:hint="Enter Card Expiry Date"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/hint_color"
+                            android:textSize="14sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeCardCvc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- TextView displaying "Phone number" -->
+                    <TextView
+                        android:id="@+id/cardCvcHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="Card CVC"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <!-- TextInputLayout to contain the input field for phone number -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cardCvcLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/cardCvcHeading"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        app:endIconMode="custom"
+                        app:endIconTint="@color/hint_color"
+                        android:layout_marginEnd="20dp"
+                        app:hintEnabled="false"
+                        app:hintTextColor="@color/hint_color">
+
+                        <!-- TextInputEditText for entering phone number -->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/cardCvc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edit_txt_bg"
+                            android:hint="Enter Card CVC"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/hint_color"
+                            android:textSize="14sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/scheduleRelative"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_below="@+id/relativeFromAccountTitle">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/confirmAppointment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:backgroundTint="@color/orange"
+                    android:text="@string/confirm_pay"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:cornerRadius="6dp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

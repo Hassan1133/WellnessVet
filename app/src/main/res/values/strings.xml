@@ -135,10 +135,17 @@
     <string name="otp">OTP</string>
     <string name="account_number">Account Number</string>
     <string name="enter_your_bank_account_number">enter your bank account number</string>
+    <string name="confirm_payment">Confirm Payment</string>
+    <string name="payment_detail">Please Pay the following amount to confirm your appointment</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="account_holder_name">Account Title</string>
+    <string name="confirm_pay">Confirm and Pay</string>
+    <string name="amount">Amount</string>
 
 
 
-//call package strings
+    //call package strings
     <string name="calls_app_name" translatable="false">Sendbird Calls</string>
     <string name="api_key_current" translatable="false">bc3a9d133a874c329f561292</string>
     <string name="calls_quickstart_version" translatable="false">Quickstart %s</string>

@@ -128,4 +128,11 @@
     <string name="otp">او ٹی پی</string>
     <string name="account_number">اکاؤنٹ نمبر</string>
     <string name="enter_your_bank_account_number">اپنا بینک اکاؤنٹ نمبر درج کریں</string>
+    <string name="confirm_payment">Confirm Payment</string>
+    <string name="payment_detail">Please Pay the following amount to confirm your appointment</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="account_holder_name">Account Title</string>
+    <string name="confirm_pay">Confirm and Pay</string>
+    <string name="amount">Amount</string>
 </resources>
