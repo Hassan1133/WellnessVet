@@ -3,7 +3,6 @@ package com.wellness.vet.app.fragments.user
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -82,7 +81,6 @@ class UserChatFragment : Fragment() , OnClickListener{
                     chatList.clear()
                     if (snapshot.exists()) {
                         for (ds in snapshot.children) {
-                            Log.d("TAGTest", "onDataChange: ${ds.key}")
                             profileDbRef.child(ds.key.toString()).child("Profile")
                                 .addValueEventListener(object : ValueEventListener {
                                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -93,7 +91,13 @@ class UserChatFragment : Fragment() , OnClickListener{
                                             snapshot.child("imgUrl").value.toString(),
                                             snapshot.child("chatStatus").value.toString()
                                         )
-                                        chatList.add(userProfile)
+                                        if (chatList.any { it.uid == userProfile.uid }) {
+                                            chatList[chatList.indexOfFirst { it.uid == userProfile.uid }] =
+                                                userProfile
+                                        } else {
+                                            // If userProfile doesn't exist, add it to the list
+                                            chatList.add(userProfile)
+                                        }
                                         chatListAdapter.updateList(chatList)
                                         LoadingDialog.hideLoadingDialog(loadingDialog)
                                     }

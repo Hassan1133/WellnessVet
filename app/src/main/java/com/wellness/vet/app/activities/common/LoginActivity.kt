@@ -38,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
                 0 -> tab.text = getString(R.string.user_tab)
                 1 -> tab.text = getString(R.string.doctor_tab)
             }
-        }.attach()
+        }.attach()  
     }
+
 }

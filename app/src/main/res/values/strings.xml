@@ -203,4 +203,12 @@
     <string name="calls_invalid_qrcode" translatable="false">This QR code is not valid. Go to Calls studio and try scanning your QR code again.</string>
     <string name="calls_invalid_deep_link" translatable="false">Invalid deep link</string>
     <string name="calls_deep_linking_to_authenticate_failed" translatable="false">Could not authenticate deep link.</string>
+    <string name="card_number">Card Number</string>
+    <string name="_0000_0000_0000_0000" translatable="false">0000-0000-0000-0000</string>
+    <string name="card_holder_name">Card Holder Name</string>
+    <string name="enter_card_holder_name">Enter Card Holder Name</string>
+    <string name="card_expiry_date">Card Expiry Date</string>
+    <string name="enter_card_expiry_date">Enter Card Expiry Date</string>
+    <string name="card_cvc">Card CVC</string>
+    <string name="enter_card_cvc">Enter Card CVC</string>
 </resources>

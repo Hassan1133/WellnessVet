@@ -269,11 +269,6 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
             valid = false
         }
 
-        if (binding.accountNumber.text!!.length < 11 || binding.accountNumber.text!!.length > 28) {
-            binding.accountNumber.error = getString(R.string.enter_valid_account_number)
-            valid = false
-        }
-
         if (binding.city.text.isNullOrEmpty()) {
             binding.city.error = getString(R.string.enter_valid_city)
             valid = false
@@ -296,7 +291,6 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
         model.id = userId
         model.name = binding.name.getText().toString().trim()
         model.phoneNo = phoneNo
-        model.accountNumber = binding.accountNumber.getText().toString().trim()
         model.email = binding.email.getText().toString().trim()
         model.city = binding.city.getText().toString().trim()
         model.gender = radio.text.toString()
@@ -369,7 +363,6 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
         appSharedPreferences.put("userCity", userProfileModel.city)
         appSharedPreferences.put("userGender", userProfileModel.gender)
         appSharedPreferences.put("userImgUrl", userProfileModel.imgUrl)
-        appSharedPreferences.put("userAccountNumber", userProfileModel.accountNumber)
         appSharedPreferences.put("userEmail", userProfileModel.email)
         appSharedPreferences.put("userLogin", true)
         appSharedPreferences.put("is_lang_set", true)

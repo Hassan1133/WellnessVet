@@ -128,11 +128,18 @@
     <string name="otp">او ٹی پی</string>
     <string name="account_number">اکاؤنٹ نمبر</string>
     <string name="enter_your_bank_account_number">اپنا بینک اکاؤنٹ نمبر درج کریں</string>
-    <string name="confirm_payment">Confirm Payment</string>
-    <string name="payment_detail">Please Pay the following amount to confirm your appointment</string>
-    <string name="from">From</string>
-    <string name="to">To</string>
-    <string name="account_holder_name">Account Title</string>
-    <string name="confirm_pay">Confirm and Pay</string>
-    <string name="amount">Amount</string>
+    <string name="confirm_payment">ادائیگی کی تصدیق کریں</string>
+    <string name="payment_detail">اپنی ملاقات کی تصدیق کے لیے براہ کرم درج ذیل رقم ادا کریں</string>
+    <string name="from">منجانب</string>
+    <string name="to">جانب</string>
+    <string name="account_holder_name">اکاؤنٹ کا عنوان</string>
+    <string name="confirm_pay">تصدیق کریں اور ادائیگی کریں</string>
+    <string name="amount">رقم</string>
+    <string name="card_number">کارڈ نمبر</string>
+    <string name="card_holder_name">کارڈ ہولڈر کا نام</string>
+    <string name="enter_card_holder_name">کارڈ ہولڈر کا نام درج کریں</string>
+    <string name="card_expiry_date">کارڈ کی میعاد ختم ہونے کی تاریخ</string>
+    <string name="enter_card_expiry_date">کارڈ کی میعاد ختم ہونے کی تاریخ درج کریں</string>
+    <string name="card_cvc">کارڈ سی وی سی</string>
+    <string name="enter_card_cvc">کارڈ CVC درج کریں</string>
 </resources>

@@ -69,7 +69,13 @@ class DoctorChatFragment : Fragment() {
                                             snapshot.child("imgUrl").value.toString(),
                                             snapshot.child("chatStatus").value.toString()
                                         )
-                                        chatList.add(userProfile)
+                                        if (chatList.any { it.uid == userProfile.uid }) {
+                                            chatList[chatList.indexOfFirst { it.uid == userProfile.uid }] =
+                                                userProfile
+                                        } else {
+                                            // If userProfile doesn't exist, add it to the list
+                                            chatList.add(userProfile)
+                                        }
                                         chatListAdapter.updateList(chatList)
                                         LoadingDialog.hideLoadingDialog(loadingDialog)
                                     }

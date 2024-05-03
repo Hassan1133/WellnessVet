@@ -218,7 +218,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="15dp"
                         android:layout_marginEnd="20dp"
-                        android:text="Card Number"
+                        android:text="@string/card_number"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -242,7 +242,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edit_txt_bg"
-                            android:hint="0000-0000-0000-0000"
+                            android:hint="@string/_0000_0000_0000_0000"
                             android:inputType="text"
                             android:textColor="@color/black"
                             android:textColorHint="@color/hint_color"
@@ -264,7 +264,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
-                        android:text="Card Holder Name"
+                        android:text="@string/card_holder_name"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -288,7 +288,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edit_txt_bg"
-                            android:hint="Enter Card Holder Name"
+                            android:hint="@string/enter_card_holder_name"
                             android:inputType="text"
                             android:textColor="@color/black"
                             android:textColorHint="@color/hint_color"
@@ -310,7 +310,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
-                        android:text="Card Expiry Date"
+                        android:text="@string/card_expiry_date"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -334,7 +334,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edit_txt_bg"
-                            android:hint="Enter Card Expiry Date"
+                            android:hint="@string/enter_card_expiry_date"
                             android:inputType="text"
                             android:textColor="@color/black"
                             android:textColorHint="@color/hint_color"
@@ -356,7 +356,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
-                        android:text="Card CVC"
+                        android:text="@string/card_cvc"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -380,7 +380,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edit_txt_bg"
-                            android:hint="Enter Card CVC"
+                            android:hint="@string/enter_card_cvc"
                             android:inputType="text"
                             android:textColor="@color/black"
                             android:textColorHint="@color/hint_color"
