@@ -144,7 +144,6 @@
     <string name="amount">Amount</string>
 
 
-
     //call package strings
     <string name="calls_app_name" translatable="false">Sendbird Calls</string>
     <string name="api_key_current" translatable="false">bc3a9d133a874c329f561292</string>
@@ -212,4 +211,9 @@
     <string name="card_cvc">Card CVC</string>
     <string name="enter_card_cvc">Enter Card CVC</string>
     <string name="bearer_token" translatable="false">Bearer AAAAxumk8RE:APA91bEinKjn4CTiF9ckxoebnGRyhdn7MWXvDXlo-giPnE9JpDTMg5gEpqmp6UuVn_XTDy6yYngPrTUPLCKwYACGgaefIQkS0ckBl2nRXG3aNcO86IUjamfLkjecRgHUXsO4zJ1YckI7</string>
+    <string name="appointment_details">Appointment Details</string>
+    <string name="doctor_name_appointment">Doctor Name</string>
+    <string name="appointment_time">Appointment Time</string>
+    <string name="appointment_date">Appointment Date</string>
+    <string name="cancel_appointment">Cancel</string>
 </resources>

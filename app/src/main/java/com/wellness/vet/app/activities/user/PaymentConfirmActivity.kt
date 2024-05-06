@@ -153,6 +153,7 @@ class PaymentConfirmActivity : AppCompatActivity() {
                                         val mMap = HashMap<String, Any>()
                                         mMap["date"] = slotDate
                                         mMap["time"] = timeSlot
+                                        mMap["appointmentStatus"] = "booked"
 
                                         userDbRef.child("$pushId").setValue(mMap)
                                             .addOnCompleteListener(OnCompleteListener { uAppoint ->

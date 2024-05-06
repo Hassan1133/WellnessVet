@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,7 +29,6 @@ import com.sendbird.calls.DirectCallUser;
 import com.sendbird.calls.SendBirdCall;
 import com.sendbird.calls.handler.DirectCallListener;
 import com.wellness.vet.app.R;
-import com.wellness.vet.app.calls.BaseApplication;
 import com.wellness.vet.app.calls.utils.AuthenticationUtils;
 import com.wellness.vet.app.calls.utils.BroadcastUtils;
 import com.wellness.vet.app.calls.utils.EndResultUtils;
@@ -365,13 +363,6 @@ public abstract class CallActivity extends AppCompatActivity {
     }
 
     protected void setInfo(DirectCall call, String status) {
-        AppSharedPreferences appSharedPreferences = new AppSharedPreferences(mContext);
-        DatabaseReference reference;
-        if (appSharedPreferences.getString("userType").equals("user")) {
-            reference = FirebaseDatabase.getInstance().getReference().child(AppConstants.USER_REF);
-        }else {
-            reference = FirebaseDatabase.getInstance().getReference().child(AppConstants.DOCTOR_REF);
-        }
 
         DirectCallUser remoteUser = (call != null ? call.getRemoteUser() : null);
         if (remoteUser != null) {
@@ -384,24 +375,48 @@ public abstract class CallActivity extends AppCompatActivity {
             mTextViewStatus.setText(status);
         }
 
-//        reference.child(getRemoteNicknameOrUserId(call)).child("Profile").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                Log.d("TAGFIRE", getRemoteNicknameOrUserId(call)+"onDataChange: "+snapshot.getValue());
-//                Log.d("TAGFIRE", getRemoteNicknameOrUserId(call)+"onDataChange: "+snapshot.child("name").getValue());
-////                String callerName = snapshot.child("name").getValue();
-//                mTextViewUserId.setText("callerName");
-//                mTextViewStatus.setVisibility(View.VISIBLE);
-//                if (status != null) {
-//                    mTextViewStatus.setText(status);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+        AppSharedPreferences appSharedPreferences = new AppSharedPreferences(mContext);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        if (appSharedPreferences.getString("userType").equals("user")) {
+            reference.child(AppConstants.DOCTOR_REF).child(getRemoteNicknameOrUserId(call)).child("Profile").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Log.d("TAGFIRE", getRemoteNicknameOrUserId(call) + "onDataChange: " + snapshot.getValue());
+                    Log.d("TAGFIRE", getRemoteNicknameOrUserId(call) + "onDataChange: " + snapshot.child("name").getValue());
+                    String callerName = snapshot.child("name").getValue().toString();
+                    mTextViewUserId.setText(callerName);
+                    mTextViewStatus.setVisibility(View.VISIBLE);
+                    if (status != null) {
+                        mTextViewStatus.setText(status);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }else {
+            reference.child(AppConstants.USER_REF).child(getRemoteNicknameOrUserId(call)).child("Profile").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Log.d("TAGFIRE", getRemoteNicknameOrUserId(call) + "onDataChange: " + snapshot.getValue());
+                    Log.d("TAGFIRE", getRemoteNicknameOrUserId(call) + "onDataChange: " + snapshot.child("name").getValue());
+                    String callerName = snapshot.child("name").getValue().toString();
+                    mTextViewUserId.setText(callerName);
+                    mTextViewStatus.setVisibility(View.VISIBLE);
+                    if (status != null) {
+                        mTextViewStatus.setText(status);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
 
 
     }

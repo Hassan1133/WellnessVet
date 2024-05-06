@@ -51,7 +51,7 @@ class ShowDoctorProfileActivity : AppCompatActivity() {
             -1
         ) { _, which ->
             if (which == 0) {
-                setLocale("")
+                setLocale("en")
                 startActivity(Intent(this@ShowDoctorProfileActivity, SplashActivity::class.java))
                 finish()
             } else if (which == 1) {

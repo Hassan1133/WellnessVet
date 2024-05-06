@@ -1,12 +1,15 @@
 package com.wellness.vet.app.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.wellness.vet.app.R
+import com.wellness.vet.app.activities.user.UserAppointmentDetailsActivity
+import com.wellness.vet.app.activities.user.UserChatActivity
 import com.wellness.vet.app.models.ChatDataModel
 import com.wellness.vet.app.models.UserAppointmentListModel
 
@@ -36,9 +39,18 @@ class UserAppointmentListAdapter(
     }
 
     override fun onBindViewHolder(holder: UserAppointmentListViewHolder, position: Int) {
-        holder.txtDoctorName.text = appointmentList[position].name
-        holder.txtDate.text = appointmentList[position].date
-        holder.txtTime.text = appointmentList[position].time
+
+        val userAppointmentListModel = appointmentList[position]
+
+        holder.txtDoctorName.text = userAppointmentListModel.name
+        holder.txtDate.text = userAppointmentListModel.date
+        holder.txtTime.text = userAppointmentListModel.time
+
+        holder.itemView.setOnClickListener{
+            val intent = Intent(context, UserAppointmentDetailsActivity::class.java)
+            intent.putExtra("userAppointmentListModel", userAppointmentListModel)
+            context.startActivity(intent)
+        }
     }
 
     fun updateList(updateList: ArrayList<UserAppointmentListModel>) {

@@ -13,10 +13,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
-import com.wellness.vet.app.R
 import com.wellness.vet.app.adapters.UserAppointmentListAdapter
 import com.wellness.vet.app.databinding.FragmentDoctorAppointmentBinding
-import com.wellness.vet.app.databinding.FragmentUserAppointmentBinding
 import com.wellness.vet.app.main_utils.LoadingDialog
 import com.wellness.vet.app.models.UserAppointmentListModel
 

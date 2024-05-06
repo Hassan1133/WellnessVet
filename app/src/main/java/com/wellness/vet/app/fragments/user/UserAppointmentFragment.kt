@@ -3,7 +3,6 @@ package com.wellness.vet.app.fragments.user
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +17,9 @@ import com.google.firebase.database.database
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.user.FindDoctorFromListActivity
 import com.wellness.vet.app.adapters.UserAppointmentListAdapter
-import com.wellness.vet.app.adapters.UserChatListAdapter
 import com.wellness.vet.app.databinding.FragmentUserAppointmentBinding
 import com.wellness.vet.app.main_utils.LoadingDialog
 import com.wellness.vet.app.models.UserAppointmentListModel
-import com.wellness.vet.app.models.UserChatListModel
 
 
 class UserAppointmentFragment : Fragment() , View.OnClickListener {
@@ -86,7 +83,14 @@ class UserAppointmentFragment : Fragment() , View.OnClickListener {
                                         ds.children.forEach {
 
                                             val appointmentDetail = UserAppointmentListModel(
+                                                snapshot.child("id").value.toString(),
                                                 snapshot.child("name").value.toString(),
+                                                snapshot.child("startTime").value.toString(),
+                                                snapshot.child("endTime").value.toString(),
+                                                snapshot.child("clinicLocation").value.toString(),
+                                                snapshot.child("clinicLatitude").value.toString().toFloat(),
+                                                snapshot.child("clinicLongitude").value.toString().toFloat(),
+                                                it.key.toString(),
                                                 it.child("date").value.toString(),
                                                 it.child("time").value.toString()
                                             )

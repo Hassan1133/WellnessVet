@@ -52,7 +52,7 @@ class ShowUserProfileActivity : AppCompatActivity() {
             -1
         ) { _, which ->
             if (which == 0) {
-                setLocale("")
+                setLocale("en")
                 startActivity(Intent(this@ShowUserProfileActivity, SplashActivity::class.java))
                 finish()
             } else if (which == 1) {
@@ -86,7 +86,6 @@ class ShowUserProfileActivity : AppCompatActivity() {
         binding.city.text = appSharedPreferences.getString("userCity")
         binding.gender.text = appSharedPreferences.getString("userGender")
         binding.email.text = appSharedPreferences.getString("userEmail")
-        binding.accountNumber.text = appSharedPreferences.getString("userAccountNumber")
         Glide.with(applicationContext).load(appSharedPreferences.getString("userImgUrl"))
             .diskCacheStrategy(
                 DiskCacheStrategy.DATA
