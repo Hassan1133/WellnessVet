@@ -43,7 +43,10 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun setLanguage() {
-        val locale = Locale(appSharedPreferences.getString("app_lang")!!)
+        var locale = Locale(appSharedPreferences.getString("app_lang").toString())
+        if (locale == null) {
+            locale = Locale("en")
+        }
         Locale.setDefault(locale)
 
         val configuration = Configuration()

@@ -296,7 +296,7 @@ class UserChatActivity : AppCompatActivity() {
         val body: RequestBody = jsonObject.toString().toRequestBody(json)
         val request: Request = Request.Builder().url(url).post(body).header(
             "Authorization",
-            "Bearer AAAACUPVG6c:APA91bGNRoGWs-hbWTuUYz96UqpZNI2appZUTIIpf6L1of3PMNAcfCpHRaS-HkwohhXAOxAl1uzB0FXJVgURP1aOi9EnU1W5hLAv9gC0bbMsGlAiwL41z1SbqyWgQln8eE0GLEhTTD4z"
+            getString(R.string.bearer_token)
         ).build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {

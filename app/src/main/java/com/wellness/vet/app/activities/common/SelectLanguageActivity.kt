@@ -29,7 +29,7 @@ class SelectLanguageActivity : AppCompatActivity() {
 
             val radio: RadioButton = findViewById(binding.languageRadioGroup.checkedRadioButtonId)
             if (radio.text.equals(getString(R.string.english))) {
-                setLocale("")
+                setLocale("en")
             } else if (radio.text.equals(getString(R.string.urdu))) {
                 setLocale("ur")
             }

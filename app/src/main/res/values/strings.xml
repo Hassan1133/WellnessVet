@@ -211,4 +211,5 @@
     <string name="enter_card_expiry_date">Enter Card Expiry Date</string>
     <string name="card_cvc">Card CVC</string>
     <string name="enter_card_cvc">Enter Card CVC</string>
+    <string name="bearer_token" translatable="false">Bearer AAAAxumk8RE:APA91bEinKjn4CTiF9ckxoebnGRyhdn7MWXvDXlo-giPnE9JpDTMg5gEpqmp6UuVn_XTDy6yYngPrTUPLCKwYACGgaefIQkS0ckBl2nRXG3aNcO86IUjamfLkjecRgHUXsO4zJ1YckI7</string>
 </resources>
