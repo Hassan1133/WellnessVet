@@ -488,6 +488,7 @@ class DoctorSignUpActivity : AppCompatActivity(), OnClickListener {
         appSharedPreferences.put("doctorClinicLongitude", model.clinicLongitude.toFloat())
         appSharedPreferences.put("doctorLogin", true)
         appSharedPreferences.put("is_lang_set", true)
+        appSharedPreferences.put("userType", "doctor")
 
 
         if ((!appSharedPreferences.getString("doctorPhoneNo")
