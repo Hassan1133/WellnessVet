@@ -99,6 +99,7 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
             R.id.signUpBtn -> {
                 if (isValid()) {
                     signup()
+                    binding.signUpBtn.isEnabled = false
                 }
             }
 
@@ -177,6 +178,7 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
             } else {
                 // If sign-in fails, display error message
                 if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                    binding.signUpBtn.isEnabled = true
                     Toast.makeText(this, "Invalid OTP", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -194,6 +196,7 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
                             getString(R.string.users_exists),
                             Toast.LENGTH_SHORT
                         ).show()
+                        binding.signUpBtn.isEnabled = true
                     } else {
                         // Data doesn't exist
                         addDataToModel(userId, phoneNo)
@@ -366,16 +369,54 @@ class UserSignupActivity : AppCompatActivity(), OnClickListener {
         appSharedPreferences.put("userEmail", userProfileModel.email)
         appSharedPreferences.put("userLogin", true)
         appSharedPreferences.put("is_lang_set", true)
-        LoadingDialog.hideLoadingDialog(loadingDialog)
-        Toast.makeText(
-            this@UserSignupActivity, getString(R.string.signup_successfully), Toast.LENGTH_SHORT
-        ).show()
-        startActivity(
-            Intent(
-                this@UserSignupActivity, UserDashBoardActivity::class.java
+        appSharedPreferences.put("userType", "user")
+
+        if (!appSharedPreferences.getString("userPhoneNo")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userUid")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userName")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userCity")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userGender")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userImgUrl")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userEmail")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userType")
+                .isNullOrEmpty() && appSharedPreferences.getBoolean("userLogin") && appSharedPreferences.getBoolean(
+                "is_lang_set"
             )
-        )
-        finish()
+        ) {
+            LoadingDialog.hideLoadingDialog(loadingDialog)
+            Toast.makeText(
+                this@UserSignupActivity, getString(R.string.signup_successfully), Toast.LENGTH_SHORT
+            ).show()
+            startActivity(
+                Intent(
+                    this@UserSignupActivity, UserDashBoardActivity::class.java
+                )
+            )
+            finish()
+        } else {
+
+            appSharedPreferences.put("userPhoneNo", userProfileModel.phoneNo)
+            appSharedPreferences.put("userUid", userProfileModel.id)
+            appSharedPreferences.put("userName", userProfileModel.name)
+            appSharedPreferences.put("userCity", userProfileModel.city)
+            appSharedPreferences.put("userGender", userProfileModel.gender)
+            appSharedPreferences.put("userImgUrl", userProfileModel.imgUrl)
+            appSharedPreferences.put("userEmail", userProfileModel.email)
+            appSharedPreferences.put("userLogin", true)
+            appSharedPreferences.put("is_lang_set", true)
+            appSharedPreferences.put("userType", "user")
+
+            LoadingDialog.hideLoadingDialog(loadingDialog)
+            Toast.makeText(
+                this@UserSignupActivity, getString(R.string.signup_successfully), Toast.LENGTH_SHORT
+            ).show()
+            startActivity(
+                Intent(
+                    this@UserSignupActivity, UserDashBoardActivity::class.java
+                )
+            )
+            finish()
+        }
 
     }
 }

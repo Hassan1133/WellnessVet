@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    tools:context=".activities.doctor.DoctorAppointmentDetailsActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- TextView displaying header text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/appointment_details"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headerLayout"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="ScrollViewSize">
+
+            <RelativeLayout
+                android:id="@+id/nameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp">
+
+                <ImageView
+                    android:id="@+id/nameIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/user"
+                    app:tint="@color/black" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@+id/nameIcon">
+
+                    <TextView
+                        android:id="@+id/nameHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/user_name"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/nameHeading"
+                        android:padding="2dp"
+                        android:textColor="@color/hint_color"
+                        android:textSize="14sp" />
+
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/name"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="4dp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/appointTimeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nameLayout"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp">
+
+                <ImageView
+                    android:id="@+id/appointTimeIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/clock"
+                    app:tint="@color/black" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@+id/appointTimeIcon">
+
+                    <TextView
+                        android:id="@+id/appointTimeHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/appointment_time"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/appointTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/appointTimeHeading"
+                        android:padding="2dp"
+                        android:textColor="@color/hint_color"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/appointTime"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="4dp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/appointDateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/appointTimeLayout"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp">
+
+                <ImageView
+                    android:id="@+id/appointDateIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/calendar_clock"
+                    app:tint="@color/black" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@+id/appointDateIcon">
+
+                    <TextView
+                        android:id="@+id/appointDateHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/appointment_date"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/appointDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/appointDateHeading"
+                        android:padding="2dp"
+                        android:textColor="@color/hint_color"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/appointDate"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="4dp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/appointStatusLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/appointDateLayout"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp">
+
+                <ImageView
+                    android:id="@+id/appointStatusIcon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/clock"
+                    app:tint="@color/black" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@+id/appointStatusIcon">
+
+                    <TextView
+                        android:id="@+id/appointStatusHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/appointment_status"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/appointStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/appointStatusHeading"
+                        android:padding="2dp"
+                        android:textColor="@color/hint_color"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/appointStatus"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="4dp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -16,8 +16,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
@@ -36,6 +36,9 @@
         android:theme="@style/Theme.WellnessVet"
         tools:targetApi="31">
         <activity
+            android:name=".activities.doctor.DoctorAppointmentDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.user.UserAppointmentDetailsActivity"
             android:exported="false" />
         <activity
@@ -44,9 +47,7 @@
         <activity
             android:name=".activities.common.SelectLanguageActivity"
             android:exported="false" />
-        <activity
-            android:name=".PaymentActivity"
-            android:exported="false" />
+
         <activity
             android:name=".activities.common.ImageVideoViewerActivity"
             android:exported="false" />
@@ -68,9 +69,7 @@
         <activity
             android:name=".activities.user.ViewDoctorProfileActivity"
             android:exported="false" />
-        <activity
-            android:name=".activities.common.MainTestAuthActivity"
-            android:exported="true" />
+
         <activity
             android:name=".activities.doctor.EditDoctorProfileActivity"
             android:exported="false" />

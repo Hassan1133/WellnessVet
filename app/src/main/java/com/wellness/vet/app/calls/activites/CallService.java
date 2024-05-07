@@ -11,16 +11,25 @@ import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sendbird.calls.DirectCall;
 import com.sendbird.calls.SendBirdCall;
 import com.wellness.vet.app.R;
 import com.wellness.vet.app.calls.utils.ToastUtils;
 import com.wellness.vet.app.calls.utils.UserInfoUtils;
+import com.wellness.vet.app.main_utils.AppConstants;
+import com.wellness.vet.app.main_utils.AppSharedPreferences;
 
 public class CallService extends Service {
 
@@ -135,12 +144,12 @@ public class CallService extends Service {
         return intent;
     }
 
-    private Notification getNotification(@NonNull ServiceData serviceData) {
+    private Notification getNotification(@NonNull ServiceData serviceData,String callerName) {
         final String content;
         if (serviceData.isVideoCall) {
-            content = mContext.getString(R.string.calls_notification_video_calling_content, mContext.getString(R.string.calls_app_name));
+            content = mContext.getString(R.string.calls_notification_video_calling_content);
         } else {
-            content = mContext.getString(R.string.calls_notification_voice_calling_content, mContext.getString(R.string.calls_app_name));
+            content = mContext.getString(R.string.calls_notification_voice_calling_content);
         }
 
         final int currentTime = (int)System.currentTimeMillis();
@@ -166,10 +175,10 @@ public class CallService extends Service {
         PendingIntent endPendingIntent = PendingIntent.getActivity(mContext, (currentTime + 2), endIntent, pendingIntentFlag);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, channelId);
-        builder.setContentTitle(serviceData.remoteNicknameOrUserId)
+        builder.setContentTitle(callerName)
                 .setContentText(content)
-                .setSmallIcon(R.drawable.ic_sendbird)
-                .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon_push_oreo))
+                .setSmallIcon(R.drawable.ic_notification_main)
+                .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_notification_main))
                 .setPriority(serviceData.isHeadsUpNotification ? NotificationCompat.PRIORITY_HIGH : NotificationCompat.PRIORITY_LOW);
 
         if (SendBirdCall.getOngoingCallCount() > 0) {
@@ -252,6 +261,35 @@ public class CallService extends Service {
 
     public void updateNotification(@NonNull ServiceData serviceData) {
         mServiceData.set(serviceData);
-        startForeground(NOTIFICATION_ID, getNotification(mServiceData));
+        String callerUid = serviceData.remoteNicknameOrUserId;
+        AppSharedPreferences appSharedPreferences = new AppSharedPreferences(mContext);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        if (appSharedPreferences.getString("userType").equals("user")) {
+            reference.child(AppConstants.DOCTOR_REF).child(callerUid).child("Profile").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String callerName = snapshot.child("name").getValue().toString();
+                    startForeground(NOTIFICATION_ID, getNotification(mServiceData,callerName));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }else {
+            reference.child(AppConstants.USER_REF).child(callerUid).child("Profile").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String callerName = snapshot.child("name").getValue().toString();
+                    startForeground(NOTIFICATION_ID, getNotification(mServiceData,callerName));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
     }
 }

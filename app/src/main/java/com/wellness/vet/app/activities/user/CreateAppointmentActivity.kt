@@ -3,11 +3,9 @@ package com.wellness.vet.app.activities.user
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -15,6 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.wellness.vet.app.R
 import com.wellness.vet.app.adapters.TimeSlotAdapter
 import com.wellness.vet.app.databinding.ActivityCreateAppointmentBinding
 import com.wellness.vet.app.interfaces.TimeSlotSelectListener
@@ -80,7 +79,7 @@ class CreateAppointmentActivity : AppCompatActivity(), TimeSlotSelectListener {
             if (selectedDate!!.before(currentDate)) {
                 Toast.makeText(
                     this@CreateAppointmentActivity,
-                    "Please Select Today or any after today Date",
+                    getString(R.string.select_another_date),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@OnClickListener
@@ -100,7 +99,7 @@ class CreateAppointmentActivity : AppCompatActivity(), TimeSlotSelectListener {
                 } else {
                     Toast.makeText(
                         this@CreateAppointmentActivity,
-                        "Please Select a Time Slot",
+                        getString(R.string.select_time_slot),
                         Toast.LENGTH_SHORT
                     ).show()
                     return@OnClickListener

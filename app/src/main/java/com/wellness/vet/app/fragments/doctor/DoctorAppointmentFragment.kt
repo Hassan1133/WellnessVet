@@ -13,9 +13,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.wellness.vet.app.adapters.DoctorAppointmentListAdapter
 import com.wellness.vet.app.adapters.UserAppointmentListAdapter
 import com.wellness.vet.app.databinding.FragmentDoctorAppointmentBinding
 import com.wellness.vet.app.main_utils.LoadingDialog
+import com.wellness.vet.app.models.DoctorAppointmentListModel
 import com.wellness.vet.app.models.UserAppointmentListModel
 
 class DoctorAppointmentFragment : Fragment() {
@@ -43,8 +45,8 @@ class DoctorAppointmentFragment : Fragment() {
         val profileDbRef = dataBase.getReference("Users")
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
-        val appointmentList = ArrayList<UserAppointmentListModel>()
-        val appointmentListAdapter = UserAppointmentListAdapter(requireContext(), appointmentList)
+        val appointmentList = ArrayList<DoctorAppointmentListModel>()
+        val appointmentListAdapter = DoctorAppointmentListAdapter(requireContext(), appointmentList)
         binding.recyclerView.adapter = appointmentListAdapter
 
 
@@ -61,14 +63,22 @@ class DoctorAppointmentFragment : Fragment() {
                             profileDbRef.child(ds.key.toString()).child("Profile")
                                 .addValueEventListener(object : ValueEventListener {
                                     override fun onDataChange(snapshot: DataSnapshot) {
-                                        ds.children.forEach {
+                                        ds.children.forEach { it ->
 
-                                            val appointmentDetail = UserAppointmentListModel(
+                                            val appointmentDetail = DoctorAppointmentListModel(
+                                                snapshot.child("id").value.toString(),
                                                 snapshot.child("name").value.toString(),
                                                 it.child("date").value.toString(),
+                                                it.child("appointmentStatus").value.toString(),
                                                 it.child("time").value.toString()
                                             )
-                                            appointmentList.add(appointmentDetail)
+                                            if (appointmentList.any { it.time == appointmentDetail.time }) {
+                                                appointmentList[appointmentList.indexOfFirst { it.time == appointmentDetail.time }] =
+                                                    appointmentDetail
+                                            } else {
+                                                // If userProfile doesn't exist, add it to the list
+                                                appointmentList.add(appointmentDetail)
+                                            }
                                             appointmentListAdapter.updateList(appointmentList)
                                             LoadingDialog.hideLoadingDialog(loadingDialog)
                                         }
@@ -98,7 +108,7 @@ class DoctorAppointmentFragment : Fragment() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    val searchList = ArrayList<UserAppointmentListModel>()
+                    val searchList = ArrayList<DoctorAppointmentListModel>()
                     for (i in appointmentList) {
                         if (i.name.lowercase().contains(newText!!.lowercase())
                         ) {

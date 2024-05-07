@@ -119,6 +119,7 @@
     <string name="enter_valid_account_number">Please enter valid account number</string>
     <string name="phone_number_already_exists">Phone number already exists. Please choose a different one</string>
     <string name="login_successfully">Logged in successfully</string>
+    <string name="login_again">Please login again</string>
     <string name="signup_successfully">"Signed up successfully</string>
     <string name="enter_your_name">enter your name</string>
     <string name="enter_your_email_address">enter your email address</string>
@@ -145,7 +146,7 @@
 
 
     //call package strings
-    <string name="calls_app_name" translatable="false">Sendbird Calls</string>
+    <string name="calls_app_name" translatable="false">Call</string>
     <string name="api_key_current" translatable="false">bc3a9d133a874c329f561292</string>
     <string name="calls_quickstart_version" translatable="false">Quickstart %s</string>
     <string name="calls_sdk_version" translatable="false">SDK %s</string>
@@ -163,8 +164,8 @@
     <string name="calls_user_id_format" translatable="false">User ID: %s</string>
     <string name="calls_and_character" translatable="false">" · "</string>
 
-    <string name="calls_notification_voice_calling_content" translatable="false">Voice call from %s</string>
-    <string name="calls_notification_video_calling_content" translatable="false">Video call from %s</string>
+    <string name="calls_notification_voice_calling_content" translatable="false">Voice call</string>
+    <string name="calls_notification_video_calling_content" translatable="false">Video call</string>
     <string name="calls_notification_accept" translatable="false">Accept</string>
     <string name="calls_notification_decline" translatable="false">Decline</string>
     <string name="calls_notification_end" translatable="false">End</string>
@@ -216,4 +217,11 @@
     <string name="appointment_time">Appointment Time</string>
     <string name="appointment_date">Appointment Date</string>
     <string name="cancel_appointment">Cancel</string>
+    <string name="cancel_already_appointment">Appointment already cancelled</string>
+    <string name="appointment_cancelled">Appointment Cancelled</string>
+    <string name="user_name">User Name</string>
+    <string name="appointment_status">Appointment Status</string>
+    <string name="successful_scheduled">Successful Scheduled</string>
+    <string name="select_time_slot">Please Select a Time Slot</string>
+    <string name="select_another_date">Please select today or any after today Date</string>
 </resources>

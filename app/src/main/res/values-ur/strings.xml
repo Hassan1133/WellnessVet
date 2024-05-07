@@ -142,4 +142,16 @@
     <string name="enter_card_expiry_date">کارڈ کی میعاد ختم ہونے کی تاریخ درج کریں</string>
     <string name="card_cvc">کارڈ سی وی سی</string>
     <string name="enter_card_cvc">کارڈ CVC درج کریں</string>
+    <string name="appointment_details">ملاقات کی تفصیلات</string>
+    <string name="doctor_name_appointment">ڈاکٹر کا نام</string>
+    <string name="appointment_time">ملاقات کا وقت</string>
+    <string name="appointment_date">ملاقات کی تاریخ</string>
+    <string name="cancel_appointment">منسوخ کریں</string>
+    <string name="cancel_already_appointment">ملاقات پہلے ہی منسوخ کر دی گئی ہے</string>
+    <string name="appointment_cancelled">ملاقات منسوخ کر دی گئی</string>
+    <string name="user_name">صارف کا نام</string>
+    <string name="select_another_date">براہ کرم آج یا آج کے بعد کی کوئی بھی تاریخ منتخب کریں</string>
+    <string name="select_time_slot">براہ کرم ٹائم سلاٹ منتخب کریں</string>
+    <string name="appointment_status">ملاقات کی صورتحال</string>
+    <string name="successful_scheduled">کامیاب شیڈول</string>
 </resources>

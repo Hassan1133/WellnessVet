@@ -12,5 +12,6 @@ data class UserAppointmentListModel(
     var clinicLongitude: Float = 0.0f,
     var key: String = "",
     var date: String = "",
+    var appointmentStatus: String = "",
     var time: String = ""
 ) : Serializable

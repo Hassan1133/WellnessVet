@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -47,7 +46,17 @@
             android:layout_below="@+id/txtDoctorName"
             android:textColor="@color/hint_color"
             android:layout_marginTop="10dp"
+            android:layout_toStartOf="@+id/statusIcon"
             android:textSize="11sp"/>
+
+        <ImageView
+            android:id="@+id/statusIcon"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_below="@+id/txtDoctorName"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+           />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

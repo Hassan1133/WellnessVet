@@ -80,7 +80,7 @@ class UserAppointmentFragment : Fragment() , View.OnClickListener {
                             profileDbRef.child(ds.key.toString()).child("Profile")
                                 .addValueEventListener(object : ValueEventListener {
                                     override fun onDataChange(snapshot: DataSnapshot) {
-                                        ds.children.forEach {
+                                        ds.children.forEach { it ->
 
                                             val appointmentDetail = UserAppointmentListModel(
                                                 snapshot.child("id").value.toString(),
@@ -92,9 +92,16 @@ class UserAppointmentFragment : Fragment() , View.OnClickListener {
                                                 snapshot.child("clinicLongitude").value.toString().toFloat(),
                                                 it.key.toString(),
                                                 it.child("date").value.toString(),
+                                                it.child("appointmentStatus").value.toString(),
                                                 it.child("time").value.toString()
                                             )
-                                            appointmentList.add(appointmentDetail)
+                                            if (appointmentList.any { it.time == appointmentDetail.time }) {
+                                                appointmentList[appointmentList.indexOfFirst { it.time == appointmentDetail.time }] =
+                                                    appointmentDetail
+                                            } else {
+                                                // If userProfile doesn't exist, add it to the list
+                                                appointmentList.add(appointmentDetail)
+                                            }
                                             appointmentListAdapter.updateList(appointmentList)
                                             LoadingDialog.hideLoadingDialog(loadingDialog)
                                         }

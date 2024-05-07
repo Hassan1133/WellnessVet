@@ -9,16 +9,28 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.wellness.vet.app.R
 import com.wellness.vet.app.databinding.ActivityPaymentConfirmBinding
+import com.wellness.vet.app.main_utils.AppConstants
+import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.payments.client.ApiClient
 import com.wellness.vet.app.payments.model.AmountTransferRequestBody
 import com.wellness.vet.app.payments.model.FetchTokenModel
 import com.wellness.vet.app.payments.model.FetchTransferAmountModel
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.TimeZone
@@ -26,7 +38,9 @@ import java.util.TimeZone
 class PaymentConfirmActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPaymentConfirmBinding
-
+    private lateinit var doctorProfileDbRef: DatabaseReference
+    private lateinit var appSharedPreferences: AppSharedPreferences
+    private lateinit var doctorUid: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPaymentConfirmBinding.inflate(layoutInflater)
@@ -34,10 +48,10 @@ class PaymentConfirmActivity : AppCompatActivity() {
 
         val dataBase = Firebase.database
         val appointDbRef = dataBase.getReference("appointments")
-        val doctorProfileDbRef = dataBase.getReference("Doctors")
-
+        doctorProfileDbRef = dataBase.getReference("Doctors")
+        appSharedPreferences = AppSharedPreferences(this@PaymentConfirmActivity)
+        doctorUid = intent.getStringExtra("doctorUid").toString()
         val userUid = intent.getStringExtra("userUid").toString()
-        val doctorUid = intent.getStringExtra("doctorUid").toString()
         val slotDate = intent.getStringExtra("dateSlot").toString()
         val timeSlot = intent.getStringExtra("timeSlot").toString()
 
@@ -101,7 +115,7 @@ class PaymentConfirmActivity : AppCompatActivity() {
                 binding.cardCvc.error = "Please Enter Valid Card CVV"
                 Toast.makeText(
                     this@PaymentConfirmActivity,
-                    "Please Enter Valid Card CVV",
+                    "Please Enter Valid Card CVC",
                     Toast.LENGTH_SHORT
                 ).show()
                 return@OnClickListener
@@ -171,10 +185,12 @@ class PaymentConfirmActivity : AppCompatActivity() {
                                                                     .addOnCompleteListener(
                                                                         OnCompleteListener { slotAppoint ->
                                                                             if (slotAppoint.isSuccessful) {
-
+                                                                                getDoctorFCMToken(
+                                                                                    doctorUid
+                                                                                )
                                                                                 Toast.makeText(
                                                                                     this@PaymentConfirmActivity,
-                                                                                    "Successful Scheduled",
+                                                                                    getString(R.string.successful_scheduled),
                                                                                     Toast.LENGTH_SHORT
                                                                                 ).show()
                                                                                 finish()
@@ -253,5 +269,59 @@ class PaymentConfirmActivity : AppCompatActivity() {
             "Reserved for future", "4226811024113664", "ajiwkeh",
             cardHolder, "DE89370400440532013000"
         )
+    }
+
+    private fun getDoctorFCMToken(doctorId: String) {
+        doctorProfileDbRef.child(doctorId).child(AppConstants.PROFILE_REF).child("fcmToken").get()
+            .addOnCompleteListener { task -> sendNotification(task.result.value.toString()) }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    this@PaymentConfirmActivity, e.message, Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    private fun sendNotification(token: String) {
+        try {
+            val jsonObject = JSONObject().apply {
+                val dataObj = JSONObject().apply {
+                    put("title", appSharedPreferences.getString("userName"))
+                    put("body", "Scheduled an appointment.")
+                    put("userType", "userAppointment")
+                    put("uid", appSharedPreferences.getString("userUid"))
+                    put("name", appSharedPreferences.getString("userName"))
+                    put("imgUrl", appSharedPreferences.getString("userImgUrl"))
+                }
+                put("data", dataObj)
+                put("to", token)
+            }
+            callApi(jsonObject)
+        } catch (e: Exception) {
+            // Handle exception
+        }
+    }
+
+    private fun callApi(jsonObject: JSONObject) {
+        val json: MediaType = "application/json; charset=utf-8".toMediaType()
+        val client = OkHttpClient()
+        val url = "https://fcm.googleapis.com/fcm/send"
+        val body: RequestBody = jsonObject.toString().toRequestBody(json)
+        val request: Request = Request.Builder().url(url).post(body).header(
+            "Authorization", getString(R.string.bearer_token)
+        ).build()
+        client.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                // Handle failure
+                this@PaymentConfirmActivity.runOnUiThread {
+                    Toast.makeText(this@PaymentConfirmActivity, e.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            @Throws(IOException::class)
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+
+            }
+        })
     }
 }

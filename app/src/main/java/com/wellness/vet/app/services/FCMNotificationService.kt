@@ -18,6 +18,7 @@ import com.sendbird.calls.SendBirdException
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.common.LoginActivity
 import com.wellness.vet.app.activities.doctor.DoctorChatActivity
+import com.wellness.vet.app.activities.doctor.DoctorDashBoardActivity
 import com.wellness.vet.app.activities.user.UserChatActivity
 import com.wellness.vet.app.calls.BaseApplication
 import com.wellness.vet.app.calls.utils.PrefUtils
@@ -52,8 +53,6 @@ class FCMNotificationService : FirebaseMessagingService() {
             val name = message.getData()["name"]
             val imgUrl = message.getData()["imgUrl"]
 
-            Log.d("TAGservice", "onMessageReceived: ${userType}")
-
             // Send notification if user is authenticated
             sendNotification(title!!, body!!, userType!!, uid!!, name!!, imgUrl!!)
         }
@@ -69,44 +68,85 @@ class FCMNotificationService : FirebaseMessagingService() {
         name: String,
         imgUrl: String
     ) {
-        // Create an intent based on the user type to open the appropriate activity
-        val intent = Intent(this, getMainActivityClass(userType)).apply {
-            putExtra("uid", uid)
-            putExtra("name", name)
-            putExtra("imgUrl", imgUrl)
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        }
+        if (userType == "userAppointment") {
+// Create an intent based on the user type to open the appropriate activity
+            val intent = Intent(this, DoctorDashBoardActivity::class.java).apply {
+                putExtra("uid", uid)
+                putExtra("name", name)
+                putExtra("appointmentFragment", "DoctorAppointmentFragment")
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
 
-        // Create a PendingIntent to open the activity when notification is clicked
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        // Build the notification
-        val notificationBuilder = NotificationCompat.Builder(this, channelId).apply {
-            setPriority(NotificationCompat.PRIORITY_HIGH)
-            setSmallIcon(R.drawable.chat)
-            setContentTitle(title)
-            setContentText(messageBody)
-            setDefaults(Notification.DEFAULT_SOUND)
-            setAutoCancel(true)
-            setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            setContentIntent(pendingIntent)
-        }
-
-        // Get the system's NotificationManager service
-        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-
-        // Create notification channel for Android Oreo and above
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT
+            // Create a PendingIntent to open the activity when notification is clicked
+            val pendingIntent = PendingIntent.getActivity(
+                this, 0, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
             )
-            notificationManager.createNotificationChannel(channel)
-        }
 
-        // Show the notification
-        notificationManager.notify(0, notificationBuilder.build())
+            // Build the notification
+            val notificationBuilder = NotificationCompat.Builder(this, channelId).apply {
+                setPriority(NotificationCompat.PRIORITY_HIGH)
+                setSmallIcon(R.drawable.clock)
+                setContentTitle(title)
+                setContentText(messageBody)
+                setDefaults(Notification.DEFAULT_SOUND)
+                setAutoCancel(true)
+                setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                setContentIntent(pendingIntent)
+            }
+
+            // Get the system's NotificationManager service
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+            // Create notification channel for Android Oreo and above
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT
+                )
+                notificationManager.createNotificationChannel(channel)
+            }
+
+            // Show the notification
+            notificationManager.notify(0, notificationBuilder.build())
+        } else {
+            // Create an intent based on the user type to open the appropriate activity
+            val intent = Intent(this, getMainActivityClass(userType)).apply {
+                putExtra("uid", uid)
+                putExtra("name", name)
+                putExtra("imgUrl", imgUrl)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+
+            // Create a PendingIntent to open the activity when notification is clicked
+            val pendingIntent = PendingIntent.getActivity(
+                this, 0, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            // Build the notification
+            val notificationBuilder = NotificationCompat.Builder(this, channelId).apply {
+                setPriority(NotificationCompat.PRIORITY_HIGH)
+                setSmallIcon(R.drawable.chat)
+                setContentTitle(title)
+                setContentText(messageBody)
+                setDefaults(Notification.DEFAULT_SOUND)
+                setAutoCancel(true)
+                setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                setContentIntent(pendingIntent)
+            }
+
+            // Get the system's NotificationManager service
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+            // Create notification channel for Android Oreo and above
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT
+                )
+                notificationManager.createNotificationChannel(channel)
+            }
+
+            // Show the notification
+            notificationManager.notify(0, notificationBuilder.build())
+        }
     }
 
     // Function to get the appropriate MainActivity class based on user type

@@ -96,6 +96,7 @@ class DoctorLoginFragment : Fragment(), OnClickListener {
                         if (isValid()) {
                             // Perform sign in
                             signIn()
+                            binding.loginBtn.isEnabled = false
                         }
                     } else {
                         activity?.let {
@@ -158,6 +159,7 @@ class DoctorLoginFragment : Fragment(), OnClickListener {
                 } else {
                     // If sign-in fails, display error message
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                        binding.loginBtn.isEnabled = true
                         Toast.makeText(requireActivity(), "Invalid OTP", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -218,6 +220,7 @@ class DoctorLoginFragment : Fragment(), OnClickListener {
                             getString(R.string.account_not_exists),
                             Toast.LENGTH_SHORT
                         ).show()
+                        binding.loginBtn.isEnabled = true
                     }
                 }
 
@@ -279,12 +282,58 @@ class DoctorLoginFragment : Fragment(), OnClickListener {
         appSharedPreferences.put("doctorLogin", true)
         appSharedPreferences.put("is_lang_set", true)
         appSharedPreferences.put("userType", "doctor")
-        LoadingDialog.hideLoadingDialog(loadingDialog)
-        Toast.makeText(
-            requireActivity(), getString(R.string.login_successfully), Toast.LENGTH_SHORT
-        ).show()
-        startActivity(Intent(requireActivity(), DoctorDashBoardActivity::class.java))
-        requireActivity().finish()
+
+        if ((!appSharedPreferences.getString("doctorPhoneNo").isNullOrEmpty()
+                    && !appSharedPreferences.getString("doctorUid").isNullOrEmpty()
+                    && !appSharedPreferences.getString("doctorName").isNullOrEmpty()
+                    && !appSharedPreferences.getString("doctorEmail").isNullOrEmpty()
+                    && !appSharedPreferences.getString("doctorAccountNumber").isNullOrEmpty()
+                    && !appSharedPreferences.getString("doctorImgUrl").isNullOrEmpty()
+                    && !appSharedPreferences.getString("doctorCity").isNullOrEmpty()
+                    && !appSharedPreferences.getString("doctorGender").isNullOrEmpty()
+                    && !appSharedPreferences.getString("doctorClinicLocation").isNullOrEmpty()
+                    && !appSharedPreferences.getString("doctorStartTime").isNullOrEmpty()
+                    && !appSharedPreferences.getString("doctorEndTime").isNullOrEmpty()
+                    && !appSharedPreferences.getString("doctorFees").isNullOrEmpty()
+                    && appSharedPreferences.getFloat("doctorClinicLatitude").toDouble() != 0.0
+                    && appSharedPreferences.getFloat("doctorClinicLongitude").toDouble() != 0.0
+                    && !appSharedPreferences.getString("userType").isNullOrEmpty())
+            && appSharedPreferences.getBoolean("doctorLogin")
+            && appSharedPreferences.getBoolean("is_lang_set")
+        ) {
+            LoadingDialog.hideLoadingDialog(loadingDialog)
+            Toast.makeText(
+                requireActivity(), getString(R.string.login_successfully), Toast.LENGTH_SHORT
+            ).show()
+            startActivity(Intent(requireActivity(), DoctorDashBoardActivity::class.java))
+            requireActivity().finish()
+        } else {
+
+            appSharedPreferences.put("doctorPhoneNo", model.phoneNo)
+            appSharedPreferences.put("doctorUid", model.id)
+            appSharedPreferences.put("doctorName", model.name)
+            appSharedPreferences.put("doctorEmail", model.email)
+            appSharedPreferences.put("doctorAccountNumber", model.accountNumber)
+            appSharedPreferences.put("doctorImgUrl", model.imgUrl)
+            appSharedPreferences.put("doctorCity", model.city)
+            appSharedPreferences.put("doctorGender", model.gender)
+            appSharedPreferences.put("doctorClinicLocation", model.clinicLocation)
+            appSharedPreferences.put("doctorStartTime", model.startTime)
+            appSharedPreferences.put("doctorEndTime", model.endTime)
+            appSharedPreferences.put("doctorFees", model.fees)
+            appSharedPreferences.put("doctorClinicLatitude", model.clinicLatitude.toFloat())
+            appSharedPreferences.put("doctorClinicLongitude", model.clinicLongitude.toFloat())
+            appSharedPreferences.put("doctorLogin", true)
+            appSharedPreferences.put("is_lang_set", true)
+            appSharedPreferences.put("userType", "doctor")
+
+            LoadingDialog.hideLoadingDialog(loadingDialog)
+            Toast.makeText(
+                requireActivity(), getString(R.string.login_again), Toast.LENGTH_SHORT
+            ).show()
+            startActivity(Intent(requireActivity(), DoctorDashBoardActivity::class.java))
+            requireActivity().finish()
+        }
     }
 
 }

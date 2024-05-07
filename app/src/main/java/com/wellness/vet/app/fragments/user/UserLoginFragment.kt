@@ -95,6 +95,7 @@ class UserLoginFragment : Fragment(), OnClickListener {
                         if (isValid()) {
                             // Perform sign in
                             signIn()
+                            binding.loginBtn.isEnabled = false
                         }
                     } else {
                         activity?.let {
@@ -196,6 +197,7 @@ class UserLoginFragment : Fragment(), OnClickListener {
                 } else {
                     // If sign-in fails, display error message
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                        binding.loginBtn.isEnabled = true
                         Toast.makeText(requireActivity(), "Invalid OTP", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -217,6 +219,7 @@ class UserLoginFragment : Fragment(), OnClickListener {
                             getString(R.string.account_not_exists),
                             Toast.LENGTH_SHORT
                         ).show()
+                        binding.loginBtn.isEnabled = true
                     }
                 }
 
@@ -271,11 +274,43 @@ class UserLoginFragment : Fragment(), OnClickListener {
         appSharedPreferences.put("userLogin", true)
         appSharedPreferences.put("is_lang_set", true)
         appSharedPreferences.put("userType", "user")
-        LoadingDialog.hideLoadingDialog(loadingDialog)
-        Toast.makeText(
-            requireActivity(), getString(R.string.login_successfully), Toast.LENGTH_SHORT
-        ).show()
-        startActivity(Intent(requireActivity(), UserDashBoardActivity::class.java))
-        requireActivity().finish()
+
+        if (!appSharedPreferences.getString("userPhoneNo")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userUid")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userName")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userCity")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userGender")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userImgUrl")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userEmail")
+                .isNullOrEmpty() && !appSharedPreferences.getString("userType")
+                .isNullOrEmpty() && appSharedPreferences.getBoolean("userLogin")
+            && appSharedPreferences.getBoolean("is_lang_set")
+        ) {
+            LoadingDialog.hideLoadingDialog(loadingDialog)
+            Toast.makeText(
+                requireActivity(), getString(R.string.login_successfully), Toast.LENGTH_SHORT
+            ).show()
+            startActivity(Intent(requireActivity(), UserDashBoardActivity::class.java))
+            requireActivity().finish()
+        } else {
+
+            appSharedPreferences.put("userPhoneNo", userProfileModel.phoneNo)
+            appSharedPreferences.put("userUid", userProfileModel.id)
+            appSharedPreferences.put("userName", userProfileModel.name)
+            appSharedPreferences.put("userCity", userProfileModel.city)
+            appSharedPreferences.put("userGender", userProfileModel.gender)
+            appSharedPreferences.put("userImgUrl", userProfileModel.imgUrl)
+            appSharedPreferences.put("userEmail", userProfileModel.email)
+            appSharedPreferences.put("userLogin", true)
+            appSharedPreferences.put("is_lang_set", true)
+            appSharedPreferences.put("userType", "user")
+
+            LoadingDialog.hideLoadingDialog(loadingDialog)
+            Toast.makeText(
+                requireActivity(), getString(R.string.login_again), Toast.LENGTH_SHORT
+            ).show()
+            startActivity(Intent(requireActivity(), UserDashBoardActivity::class.java))
+            requireActivity().finish()
+        }
     }
 }

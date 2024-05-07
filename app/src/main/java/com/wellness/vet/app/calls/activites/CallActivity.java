@@ -369,20 +369,12 @@ public abstract class CallActivity extends AppCompatActivity {
             UserInfoUtils.setProfileImage(mContext, remoteUser, mImageViewProfile);
         }
 
-        mTextViewUserId.setText(getRemoteNicknameOrUserId(call));
-        mTextViewStatus.setVisibility(View.VISIBLE);
-        if (status != null) {
-            mTextViewStatus.setText(status);
-        }
-
         AppSharedPreferences appSharedPreferences = new AppSharedPreferences(mContext);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         if (appSharedPreferences.getString("userType").equals("user")) {
             reference.child(AppConstants.DOCTOR_REF).child(getRemoteNicknameOrUserId(call)).child("Profile").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Log.d("TAGFIRE", getRemoteNicknameOrUserId(call) + "onDataChange: " + snapshot.getValue());
-                    Log.d("TAGFIRE", getRemoteNicknameOrUserId(call) + "onDataChange: " + snapshot.child("name").getValue());
                     String callerName = snapshot.child("name").getValue().toString();
                     mTextViewUserId.setText(callerName);
                     mTextViewStatus.setVisibility(View.VISIBLE);

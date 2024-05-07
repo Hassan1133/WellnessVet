@@ -9,16 +9,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.wellness.vet.app.R
+import com.wellness.vet.app.activities.doctor.DoctorAppointmentDetailsActivity
 import com.wellness.vet.app.activities.user.UserAppointmentDetailsActivity
+import com.wellness.vet.app.models.DoctorAppointmentListModel
 import com.wellness.vet.app.models.UserAppointmentListModel
 
-class UserAppointmentListAdapter(
-    val context : Context,
-    private var appointmentList : ArrayList<UserAppointmentListModel>
-    ) : RecyclerView.Adapter<UserAppointmentListAdapter.UserAppointmentListViewHolder>(){
+class DoctorAppointmentListAdapter(
+    val context: Context,
+    private var appointmentList: ArrayList<DoctorAppointmentListModel>
+) : RecyclerView.Adapter<DoctorAppointmentListAdapter.DoctorAppointmentListViewHolder>() {
 
 
-    class UserAppointmentListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class DoctorAppointmentListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtDoctorName: TextView = itemView.findViewById(R.id.txtDoctorName)
         val txtDate: TextView = itemView.findViewById(R.id.txtDate)
         val txtTime: TextView = itemView.findViewById(R.id.txtTime)
@@ -28,38 +30,38 @@ class UserAppointmentListAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): UserAppointmentListViewHolder {
+    ): DoctorAppointmentListViewHolder {
         val view = LayoutInflater.from(context)
             .inflate(R.layout.single_appointment_layout, parent, false)
-        return UserAppointmentListViewHolder(view)
+        return DoctorAppointmentListViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return appointmentList.size
     }
 
-    override fun onBindViewHolder(holder: UserAppointmentListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DoctorAppointmentListViewHolder, position: Int) {
 
-        val userAppointmentListModel = appointmentList[position]
+        val doctorAppointmentListModel = appointmentList[position]
 
-        holder.txtDoctorName.text = userAppointmentListModel.name
-        holder.txtDate.text = userAppointmentListModel.date
-        holder.txtTime.text = userAppointmentListModel.time
+        holder.txtDoctorName.text = doctorAppointmentListModel.name
+        holder.txtDate.text = doctorAppointmentListModel.date
+        holder.txtTime.text = doctorAppointmentListModel.time
 
-        if (userAppointmentListModel.appointmentStatus == "booked") {
+        if (doctorAppointmentListModel.appointmentStatus == "booked") {
             holder.statusIcon.setImageResource(R.drawable.appoint_done)
-        } else if (userAppointmentListModel.appointmentStatus == "cancelled") {
+        } else if (doctorAppointmentListModel.appointmentStatus == "cancelled") {
             holder.statusIcon.setImageResource(R.drawable.cancelled)
         }
 
-        holder.itemView.setOnClickListener{
-            val intent = Intent(context, UserAppointmentDetailsActivity::class.java)
-            intent.putExtra("userAppointmentListModel", userAppointmentListModel)
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, DoctorAppointmentDetailsActivity::class.java)
+            intent.putExtra("doctorAppointmentListModel", doctorAppointmentListModel)
             context.startActivity(intent)
         }
     }
 
-    fun updateList(updateList: ArrayList<UserAppointmentListModel>) {
+    fun updateList(updateList: ArrayList<DoctorAppointmentListModel>) {
         appointmentList = updateList
         this.notifyDataSetChanged()
     }
