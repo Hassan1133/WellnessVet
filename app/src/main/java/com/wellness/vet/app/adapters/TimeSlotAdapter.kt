@@ -2,6 +2,7 @@ package com.wellness.vet.app.adapters
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,15 @@ import com.wellness.vet.app.R
 import com.wellness.vet.app.interfaces.TimeSlotSelectListener
 import com.wellness.vet.app.models.ChatDataModel
 import com.wellness.vet.app.models.TimeSlotModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class TimeSlotAdapter (
     private val context: Context,
     private var slotList: ArrayList<TimeSlotModel>,
+    private val slotDate: String,
     private val slotSelectListener: TimeSlotSelectListener
 ) : RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder>(){
 
@@ -49,10 +55,26 @@ class TimeSlotAdapter (
             holder.relativeBg.setBackgroundColor(Color.GREEN)
         }
         holder.relativeBg.setOnClickListener(View.OnClickListener {
+            val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            val currentTime = Calendar.getInstance().time
             if(slotList[position].status=="available"){
                 val fakeList = ArrayList<TimeSlotModel>()
                for (i in 0..<slotList.size){
                    if(i==position){
+                       var splitList = slotList[i].slot.split('-')
+
+                       val lastDate = dateFormat.parse(slotDate)
+                       val currentDate = dateFormat.parse(dateFormat.format(currentTime))
+                       val lastTime = timeFormat.parse(splitList[1].trim().toString())
+                       Log.d("TAGSLOT", "onBindViewHolder: ${timeFormat.format(currentTime)}")
+                       Log.d("TAGSLOT", "onBindViewHolder: $lastDate")
+                       Log.d("TAGSLOT", "onBindViewHolder: $currentDate")
+                       Log.d("TAGSLOT", "onBindViewHolder: ${timeFormat.format(lastTime)}")
+                       if(lastDate.equals(currentDate) && timeFormat.parse(timeFormat.format(lastTime)).before(timeFormat.parse(timeFormat.format(currentTime)))){
+                           Log.d("TAGSLOT", "onBindViewHolder: ")
+                           Toast.makeText(context,"selected slot time is over please select ",Toast.LENGTH_SHORT).show()
+                       }
                        if(slotList[i].isSelected){
                            fakeList.add(TimeSlotModel(slotList[i].slot,slotList[i].status,false))
                            slotSelectListener.OnTimeSlotSelected(slotList[i].slot,false)

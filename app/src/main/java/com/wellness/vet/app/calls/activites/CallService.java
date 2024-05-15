@@ -137,9 +137,7 @@ public class CallService extends Service {
         intent.putExtra(EXTRA_DO_DIAL, serviceData.doDial);
         intent.putExtra(EXTRA_DO_ACCEPT, serviceData.doAccept);
         intent.putExtra(EXTRA_DO_LOCAL_VIDEO_START, serviceData.doLocalVideoStart);
-
         intent.putExtra(EXTRA_DO_END, doEnd);
-
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         return intent;
     }

@@ -85,6 +85,8 @@ class CreateAppointmentActivity : AppCompatActivity(), TimeSlotSelectListener {
                 return@OnClickListener
             } else {
                 if (slotSelected) {
+
+
                     if (currentUser != null) {
 
                         val userUid = currentUser.uid
@@ -118,10 +120,10 @@ class CreateAppointmentActivity : AppCompatActivity(), TimeSlotSelectListener {
 
     override fun OnTimeSlotSelected(slot: String, selected: Boolean) {
         this.slotSelected = selected
-        if (selected) {
-            timeSlot = slot
+        timeSlot = if (selected) {
+            slot
         } else {
-            timeSlot = ""
+            ""
         }
     }
 
@@ -136,6 +138,7 @@ class CreateAppointmentActivity : AppCompatActivity(), TimeSlotSelectListener {
         val slotAdapter = TimeSlotAdapter(
             this@CreateAppointmentActivity,
             slotList,
+            slotDate,
             this@CreateAppointmentActivity
         )
         binding.recyclerSlot.adapter = slotAdapter

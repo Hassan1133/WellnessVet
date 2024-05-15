@@ -154,6 +154,12 @@
                 android:background="@drawable/selector_video_image_view"
                 android:layout_centerHorizontal="true" />
 
+            <ImageView
+                android:id="@+id/image_view_bluetooth"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/selector_bluetooth_image_view"
+                android:layout_alignParentRight="true" />
 
         </RelativeLayout>
 

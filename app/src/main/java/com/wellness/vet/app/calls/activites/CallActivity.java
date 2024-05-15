@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -82,21 +83,26 @@ public abstract class CallActivity extends AppCompatActivity {
 
     LinearLayout mLinearLayoutConnectingButtons;
     ImageView mImageViewAudioOff;
+//    ImageView mImageViewBluetooth;
     ImageView mImageViewEnd;
+    //- Views
 
+    //+ abstract methods
     protected abstract int getLayoutResourceId();
-
     protected abstract void setAudioDevice(AudioDevice currentAudioDevice, Set<AudioDevice> availableAudioDevices);
-
     protected abstract void startCall(boolean amICallee);
+    //- abstract methods
 
+    //+ CallService
     private CallService mCallService;
     private boolean mBound = false;
+    //- CallService
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
@@ -363,7 +369,6 @@ public abstract class CallActivity extends AppCompatActivity {
     }
 
     protected void setInfo(DirectCall call, String status) {
-
         DirectCallUser remoteUser = (call != null ? call.getRemoteUser() : null);
         if (remoteUser != null) {
             UserInfoUtils.setProfileImage(mContext, remoteUser, mImageViewProfile);
@@ -430,6 +435,10 @@ public abstract class CallActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     private void end() {
         if (mDirectCall != null) {
