@@ -7,5 +7,6 @@ class DoctorAppointmentListModel(
     var name: String = "",
     var date: String = "",
     var appointmentStatus: String = "",
-    var time: String = ""
+    var time: String = "",
+    var key: String = ""
 ) : Serializable

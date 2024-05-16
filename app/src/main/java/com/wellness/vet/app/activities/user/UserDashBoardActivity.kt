@@ -28,7 +28,6 @@ import com.wellness.vet.app.fragments.user.UserChatFragment
 import com.wellness.vet.app.fragments.user.UserFindDoctorFragment
 import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.main_utils.LocationPermissionUtils
-import java.util.Arrays
 
 class UserDashBoardActivity : AppCompatActivity(), OnClickListener {
     private lateinit var binding: ActivityUserDashBoardBinding
@@ -101,8 +100,20 @@ class UserDashBoardActivity : AppCompatActivity(), OnClickListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             checkNotificationPermission()
         }
+
+        loadFragmentOnNotificationOrOnCreate()
     }
 
+    private fun loadFragmentOnNotificationOrOnCreate() {
+        if (intent.hasExtra("appointmentFragment")) {
+            val fragmentName = intent.getStringExtra("appointmentFragment")!!
+            if (fragmentName == "UserAppointmentFragment") {
+                binding.bottomNavigation.selectedItemId = R.id.appointments
+            }
+        } else {
+            binding.bottomNavigation.selectedItemId = R.id.chats
+        }
+    }
     // Activity result launcher for permission request
     private val launcher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()

@@ -43,6 +43,7 @@
     <string name="doctor_name_hint">enter your name</string>
     <string name="doctor_city_hint">enter your city</string>
     <string name="logout_message">Are you sure you want to Logout ?</string>
+    <string name="cancel_appointment_message">Are you sure you want to cancel appointment ?</string>
     <string name="enter_start_time">enter start Time</string>
     <string name="enter_end_time">enter end time</string>
     <string name="user_profile">User Profile</string>
@@ -83,7 +84,9 @@
     <string name="appointment">Appointment</string>
     <string name="chat">Chat</string>
     <string name="schedule_appointment">Schedule Appointment</string>
+    <string name="reschedule_appointment">Reschedule Appointment</string>
     <string name="set_up_date_and_time">Select Date and Time to Schedule</string>
+    <string name="reset_up_date_and_time">Select Date and Time to Reschedule</string>
     <string name="date">Date</string>
     <string name="select_date">Select Date</string>
     <string name="time">Time</string>
@@ -218,10 +221,13 @@
     <string name="appointment_date">Appointment Date</string>
     <string name="cancel_appointment">Cancel</string>
     <string name="cancel_already_appointment">Appointment already cancelled</string>
+    <string name="appointment_cancelled_user">Appointment cancelled by user</string>
     <string name="appointment_cancelled">Appointment Cancelled</string>
     <string name="user_name">User Name</string>
     <string name="appointment_status">Appointment Status</string>
     <string name="successful_scheduled">Successful Scheduled</string>
+    <string name="successful_rescheduled">Successful Rescheduled</string>
     <string name="select_time_slot">Please Select a Time Slot</string>
     <string name="select_another_date">Please select today or any after today Date</string>
+    <string name="reschedule">Reschedule</string>
 </resources>

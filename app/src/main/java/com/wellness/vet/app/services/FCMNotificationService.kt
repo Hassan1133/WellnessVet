@@ -20,6 +20,7 @@ import com.wellness.vet.app.activities.common.LoginActivity
 import com.wellness.vet.app.activities.doctor.DoctorChatActivity
 import com.wellness.vet.app.activities.doctor.DoctorDashBoardActivity
 import com.wellness.vet.app.activities.user.UserChatActivity
+import com.wellness.vet.app.activities.user.UserDashBoardActivity
 import com.wellness.vet.app.calls.BaseApplication
 import com.wellness.vet.app.calls.utils.PrefUtils
 import com.wellness.vet.app.calls.utils.PushUtils
@@ -74,6 +75,44 @@ class FCMNotificationService : FirebaseMessagingService() {
                 putExtra("uid", uid)
                 putExtra("name", name)
                 putExtra("appointmentFragment", "DoctorAppointmentFragment")
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+
+            // Create a PendingIntent to open the activity when notification is clicked
+            val pendingIntent = PendingIntent.getActivity(
+                this, 0, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            // Build the notification
+            val notificationBuilder = NotificationCompat.Builder(this, channelId).apply {
+                setPriority(NotificationCompat.PRIORITY_HIGH)
+                setSmallIcon(R.drawable.clock)
+                setContentTitle(title)
+                setContentText(messageBody)
+                setDefaults(Notification.DEFAULT_SOUND)
+                setAutoCancel(true)
+                setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                setContentIntent(pendingIntent)
+            }
+
+            // Get the system's NotificationManager service
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+            // Create notification channel for Android Oreo and above
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT
+                )
+                notificationManager.createNotificationChannel(channel)
+            }
+
+            // Show the notification
+            notificationManager.notify(0, notificationBuilder.build())
+        } else if (userType == "doctorChangeAppointment") {
+            val intent = Intent(this, UserDashBoardActivity::class.java).apply {
+                putExtra("uid", uid)
+                putExtra("name", name)
+                putExtra("appointmentFragment", "UserAppointmentFragment")
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             }
 

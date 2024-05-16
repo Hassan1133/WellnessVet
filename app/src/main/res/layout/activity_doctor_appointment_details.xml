@@ -265,6 +265,27 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/appointStatusLayout"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/cancelAppointBtn"
+                    style="@style/Widget.MaterialComponents.Button.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:backgroundTint="@color/orange"
+                    android:text="@string/reschedule"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:icon="@drawable/rescheduling" />
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
     </ScrollView>

@@ -90,7 +90,7 @@ class CreateAppointmentActivity : AppCompatActivity(), TimeSlotSelectListener {
                     if (currentUser != null) {
 
                         val userUid = currentUser.uid
-                        startActivity(Intent(this@CreateAppointmentActivity,PaymentConfirmActivity::class.java)
+                        startActivity(Intent(this@CreateAppointmentActivity, PaymentConfirmActivity::class.java)
                             .putExtra("userUid",userUid)
                             .putExtra("doctorUid",doctorUid)
                             .putExtra("dateSlot",slotDate)

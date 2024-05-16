@@ -36,6 +36,9 @@
         android:theme="@style/Theme.WellnessVet"
         tools:targetApi="31">
         <activity
+            android:name=".activities.doctor.DoctorChangeAppointmentActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.doctor.DoctorAppointmentDetailsActivity"
             android:exported="false" />
         <activity
@@ -47,7 +50,6 @@
         <activity
             android:name=".activities.common.SelectLanguageActivity"
             android:exported="false" />
-
         <activity
             android:name=".activities.common.ImageVideoViewerActivity"
             android:exported="false" />
@@ -69,7 +71,6 @@
         <activity
             android:name=".activities.user.ViewDoctorProfileActivity"
             android:exported="false" />
-
         <activity
             android:name=".activities.doctor.EditDoctorProfileActivity"
             android:exported="false" />

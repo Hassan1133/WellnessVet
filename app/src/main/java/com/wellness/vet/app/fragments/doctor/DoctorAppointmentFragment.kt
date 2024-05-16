@@ -70,7 +70,8 @@ class DoctorAppointmentFragment : Fragment() {
                                                 snapshot.child("name").value.toString(),
                                                 it.child("date").value.toString(),
                                                 it.child("appointmentStatus").value.toString(),
-                                                it.child("time").value.toString()
+                                                it.child("time").value.toString(),
+                                                it.key.toString(),
                                             )
                                             if (appointmentList.any { it.time == appointmentDetail.time }) {
                                                 appointmentList[appointmentList.indexOfFirst { it.time == appointmentDetail.time }] =
