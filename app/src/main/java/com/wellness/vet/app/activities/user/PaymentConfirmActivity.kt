@@ -16,6 +16,7 @@ import com.wellness.vet.app.R
 import com.wellness.vet.app.databinding.ActivityPaymentConfirmBinding
 import com.wellness.vet.app.main_utils.AppConstants
 import com.wellness.vet.app.main_utils.AppSharedPreferences
+import com.wellness.vet.app.models.PayeeInfoModel
 import com.wellness.vet.app.payments.client.ApiClient
 import com.wellness.vet.app.payments.model.AmountTransferRequestBody
 import com.wellness.vet.app.payments.model.FetchTokenModel
@@ -86,148 +87,161 @@ class PaymentConfirmActivity : AppCompatActivity() {
 
         binding.confirmAppointment.setOnClickListener(View.OnClickListener {
 
+            val payeeInfoList :ArrayList<PayeeInfoModel> = ArrayList<PayeeInfoModel>()
+            payeeInfoList.add(
+                PayeeInfoModel(
+                    "Ahmed Hayyat",
+                "3528555323354911",
+                "11/2030",
+                    "021"
+            ))
+            payeeInfoList.add(
+                PayeeInfoModel(
+                    "Usman Abid",
+                    "7644098211112634",
+                    "07/2034",
+                    "044"
+                ))
+            payeeInfoList.add(
+                PayeeInfoModel(
+                    "Ammar Zia",
+                    "4100006781909213",
+                    "12/2029",
+                    "791"
+                ))
+            payeeInfoList.add(
+                PayeeInfoModel(
+                    "Waqar Yaseen",
+                    "8455183421099893",
+                    "04/2035",
+                    "126"
+                ))
+
             val cardHolder = binding.cardHolderName.text.toString().trim()
             val cardNo = binding.cardNumber.text.toString().replace("-", "").trim()
             val cardExpiryDate = binding.cardDate.text.toString().trim()
             val cardCVV = binding.cardCvc.text.toString().trim()
-            Log.d("TAGCARD", "onCreate: $cardNo")
-            if(cardNo != "3528555323354911"){
+
+            val payeeModel : PayeeInfoModel = PayeeInfoModel(cardHolder,cardNo,cardExpiryDate,cardCVV)
+            if(payeeInfoList.contains(payeeModel)){
+                val tokenCall = ApiClient.apiService.getAccessToken(
+                    "client_credentials",
+                    "1LinkApi",
+                    "82f0fbf555a1aa7c8a38662461ebcfa9",
+                    "029a10b09dd90e8bfe74b45e1956c916"
+                )
+
+
+                tokenCall.enqueue(object : Callback<FetchTokenModel> {
+
+                    override fun onResponse(
+                        call: Call<FetchTokenModel>,
+                        response: Response<FetchTokenModel>
+                    ) {
+                        if (response.code() == 200) {
+                            val transferCall = ApiClient.apiService.transferAmount(
+                                "Bearer ${response.body()?.access_token}",
+                                "82f0fbf555a1aa7c8a38662461ebcfa9",
+                                createAmountTransferRequestBody(
+                                    accountName,
+                                    accountNo,
+                                    preAmount,
+                                    cardHolder,
+                                    cardNo,
+                                    cardExpiryDate,
+                                    cardCVV
+                                )
+                            )
+
+                            transferCall.enqueue(object : Callback<FetchTransferAmountModel> {
+                                override fun onResponse(
+                                    call: Call<FetchTransferAmountModel>,
+                                    response: Response<FetchTransferAmountModel>
+                                ) {
+                                    if (response.code() == 200) {
+                                        if (response.body()?.responseCode == "00") {
+                                            val userDbRef = appointDbRef.child(userUid).child(doctorUid)
+                                            val doctorDbRef =
+                                                appointDbRef.child(doctorUid).child(userUid)
+                                            val pushIdRef = userDbRef.push()
+                                            val pushId = pushIdRef.key
+
+                                            val mMap = HashMap<String, Any>()
+                                            mMap["date"] = slotDate
+                                            mMap["time"] = timeSlot
+                                            mMap["appointmentStatus"] = "booked"
+
+                                            userDbRef.child("$pushId").setValue(mMap)
+                                                .addOnCompleteListener(OnCompleteListener { uAppoint ->
+                                                    if (uAppoint.isSuccessful) {
+                                                        doctorDbRef.child("$pushId").setValue(mMap)
+                                                            .addOnCompleteListener(OnCompleteListener { dAppoint ->
+                                                                if (dAppoint.isSuccessful) {
+                                                                    val slotMap = HashMap<String, Any>()
+                                                                    slotMap["time"] = timeSlot
+                                                                    doctorProfileDbRef.child(doctorUid)
+                                                                        .child("appointments")
+                                                                        .child(slotDate)
+                                                                        .child("$pushId")
+                                                                        .setValue(slotMap)
+                                                                        .addOnCompleteListener(
+                                                                            OnCompleteListener { slotAppoint ->
+                                                                                if (slotAppoint.isSuccessful) {
+                                                                                    getDoctorFCMToken(
+                                                                                        doctorUid
+                                                                                    )
+                                                                                    Toast.makeText(
+                                                                                        this@PaymentConfirmActivity,
+                                                                                        getString(R.string.successful_scheduled),
+                                                                                        Toast.LENGTH_SHORT
+                                                                                    ).show()
+                                                                                    finish()
+
+                                                                                }
+                                                                            })
+                                                                }
+                                                            })
+                                                    }
+                                                })
+                                        } else {
+                                            Toast.makeText(
+                                                this@PaymentConfirmActivity,
+                                                response.body()?.responseDetail,
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: Call<FetchTransferAmountModel>,
+                                    t: Throwable
+                                ) {
+                                    Log.d("TAGLINK", "onResponse: ${t.message}")
+                                }
+
+                            })
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<FetchTokenModel>, t: Throwable) {
+                        Log.d("TAGLINK", "onResponse: ${t.message}")
+                    }
+
+                })
+            }else{
+                binding.cardHolderName.error = "Please Enter Valid Card Holder Name"
                 binding.cardNumber.error = "Please Enter Valid Card Number"
-                Toast.makeText(
-                    this@PaymentConfirmActivity,
-                    "Please Enter Valid Card Number",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@OnClickListener
-            }
-
-            if(cardExpiryDate != "11/2030"){
                 binding.cardDate.error = "Please Enter Valid Card Expiry"
-                Toast.makeText(
-                    this@PaymentConfirmActivity,
-                    "Please Enter Valid Card Expiry",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@OnClickListener
-            }
-
-            if(cardCVV != "021"){
                 binding.cardCvc.error = "Please Enter Valid Card CVV"
                 Toast.makeText(
                     this@PaymentConfirmActivity,
-                    "Please Enter Valid Card CVC",
+                    "Please Enter Valid Card Details",
                     Toast.LENGTH_SHORT
                 ).show()
                 return@OnClickListener
             }
-
-
-            val tokenCall = ApiClient.apiService.getAccessToken(
-                "client_credentials",
-                "1LinkApi",
-                "82f0fbf555a1aa7c8a38662461ebcfa9",
-                "029a10b09dd90e8bfe74b45e1956c916"
-            )
-
-
-            tokenCall.enqueue(object : Callback<FetchTokenModel> {
-
-                override fun onResponse(
-                    call: Call<FetchTokenModel>,
-                    response: Response<FetchTokenModel>
-                ) {
-                    if (response.code() == 200) {
-                        val transferCall = ApiClient.apiService.transferAmount(
-                            "Bearer ${response.body()?.access_token}",
-                            "82f0fbf555a1aa7c8a38662461ebcfa9",
-                            createAmountTransferRequestBody(
-                                accountName,
-                                accountNo,
-                                preAmount,
-                                cardHolder,
-                                cardNo,
-                                cardExpiryDate,
-                                cardCVV
-                            )
-                        )
-
-                        transferCall.enqueue(object : Callback<FetchTransferAmountModel> {
-                            override fun onResponse(
-                                call: Call<FetchTransferAmountModel>,
-                                response: Response<FetchTransferAmountModel>
-                            ) {
-                                if (response.code() == 200) {
-                                    if (response.body()?.responseCode == "00") {
-                                        val userDbRef = appointDbRef.child(userUid).child(doctorUid)
-                                        val doctorDbRef =
-                                            appointDbRef.child(doctorUid).child(userUid)
-                                        val pushIdRef = userDbRef.push()
-                                        val pushId = pushIdRef.key
-
-                                        val mMap = HashMap<String, Any>()
-                                        mMap["date"] = slotDate
-                                        mMap["time"] = timeSlot
-                                        mMap["appointmentStatus"] = "booked"
-
-                                        userDbRef.child("$pushId").setValue(mMap)
-                                            .addOnCompleteListener(OnCompleteListener { uAppoint ->
-                                                if (uAppoint.isSuccessful) {
-                                                    doctorDbRef.child("$pushId").setValue(mMap)
-                                                        .addOnCompleteListener(OnCompleteListener { dAppoint ->
-                                                            if (dAppoint.isSuccessful) {
-                                                                val slotMap = HashMap<String, Any>()
-                                                                slotMap["time"] = timeSlot
-                                                                doctorProfileDbRef.child(doctorUid)
-                                                                    .child("appointments")
-                                                                    .child(slotDate)
-                                                                    .child("$pushId")
-                                                                    .setValue(slotMap)
-                                                                    .addOnCompleteListener(
-                                                                        OnCompleteListener { slotAppoint ->
-                                                                            if (slotAppoint.isSuccessful) {
-                                                                                getDoctorFCMToken(
-                                                                                    doctorUid
-                                                                                )
-                                                                                Toast.makeText(
-                                                                                    this@PaymentConfirmActivity,
-                                                                                    getString(R.string.successful_scheduled),
-                                                                                    Toast.LENGTH_SHORT
-                                                                                ).show()
-                                                                                finish()
-
-                                                                            }
-                                                                        })
-                                                            }
-                                                        })
-                                                }
-                                            })
-                                    } else {
-                                        Toast.makeText(
-                                            this@PaymentConfirmActivity,
-                                            response.body()?.responseDetail,
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                }
-                            }
-
-                            override fun onFailure(
-                                call: Call<FetchTransferAmountModel>,
-                                t: Throwable
-                            ) {
-                                Log.d("TAGLINK", "onResponse: ${t.message}")
-                            }
-
-                        })
-
-                    }
-                }
-
-                override fun onFailure(call: Call<FetchTokenModel>, t: Throwable) {
-                    Log.d("TAGLINK", "onResponse: ${t.message}")
-                }
-
-            })
         })
 
     }

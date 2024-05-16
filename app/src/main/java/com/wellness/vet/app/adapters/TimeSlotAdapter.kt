@@ -67,12 +67,8 @@ class TimeSlotAdapter (
                        val lastDate = dateFormat.parse(slotDate)
                        val currentDate = dateFormat.parse(dateFormat.format(currentTime))
                        val lastTime = timeFormat.parse(splitList[1].trim().toString())
-                       Log.d("TAGSLOT", "onBindViewHolder: ${timeFormat.format(currentTime)}")
-                       Log.d("TAGSLOT", "onBindViewHolder: $lastDate")
-                       Log.d("TAGSLOT", "onBindViewHolder: $currentDate")
-                       Log.d("TAGSLOT", "onBindViewHolder: ${timeFormat.format(lastTime)}")
+
                        if(lastDate.equals(currentDate) && timeFormat.parse(timeFormat.format(lastTime)).before(timeFormat.parse(timeFormat.format(currentTime)))){
-                           Log.d("TAGSLOT", "onBindViewHolder: ")
                            Toast.makeText(context,"selected slot time is over please select ",Toast.LENGTH_SHORT).show()
                        }
                        if(slotList[i].isSelected){
