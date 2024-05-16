@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -17,10 +18,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
+import com.sendbird.calls.SendBirdCall
+import com.sendbird.calls.SendBirdException
+import com.sendbird.calls.handler.CompletionHandler
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.common.LoginActivity
 import com.wellness.vet.app.adapters.ViewPagerAdapter
 import com.wellness.vet.app.calls.utils.AuthenticationUtils
+import com.wellness.vet.app.calls.utils.PrefUtils
 import com.wellness.vet.app.calls.utils.ToastUtils
 import com.wellness.vet.app.databinding.ActivityDoctorDashBoardBinding
 import com.wellness.vet.app.fragments.doctor.DoctorAppointmentFragment
@@ -165,6 +170,12 @@ class DoctorDashBoardActivity : AppCompatActivity(), OnClickListener {
     private fun logout() {
         FirebaseAuth.getInstance().signOut()
         appSharedPreferences.clear()
+
+//            PrefUtils.setUserId(this@DoctorDashBoardActivity, null)
+//            PrefUtils.setAccessToken(this@DoctorDashBoardActivity, null)
+//            PrefUtils.setCalleeId(this@DoctorDashBoardActivity, null)
+//            PrefUtils.setPushToken(this@DoctorDashBoardActivity, null)
+
         val intent = Intent(this@DoctorDashBoardActivity, LoginActivity::class.java)
         startActivity(intent)
         finish()

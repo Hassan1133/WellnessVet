@@ -209,7 +209,7 @@ public abstract class CallActivity extends AppCompatActivity {
         });
 
         mImageViewConvertVideo.setOnClickListener(view -> {
-            convertVideoCall();
+            convertVideoCall(getRemoteNicknameOrUserId(mDirectCall));
             end();
         });
     }
@@ -535,5 +535,5 @@ public abstract class CallActivity extends AppCompatActivity {
         }
     }
 
-    public abstract void convertVideoCall();
+    public abstract void convertVideoCall(String id);
 }

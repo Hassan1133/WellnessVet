@@ -30,6 +30,7 @@ public class VoiceCallActivity extends CallActivity {
     private ImageView mImageViewSpeakerphone;
 
     boolean convertToVideo = false;
+    String convertCallId = "";
 
 
     @Override
@@ -166,14 +167,15 @@ public class VoiceCallActivity extends CallActivity {
         cancelCallDurationTimer();
         if(convertToVideo) {
             overridePendingTransition(0,0);
-            CallService.dial(VoiceCallActivity.this, mCalleeIdToDial, true);
+            CallService.dial(VoiceCallActivity.this, convertCallId, true);
             overridePendingTransition(0,0);
-            PrefUtils.setCalleeId(VoiceCallActivity.this, mCalleeIdToDial);
+            PrefUtils.setCalleeId(VoiceCallActivity.this, convertCallId);
         }
     }
 
     @Override
-    public void convertVideoCall() {
+    public void convertVideoCall(String id) {
         convertToVideo = true;
+        this.convertCallId = id;
     }
 }

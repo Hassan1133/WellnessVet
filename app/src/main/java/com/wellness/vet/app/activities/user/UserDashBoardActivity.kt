@@ -17,10 +17,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
+import com.sendbird.calls.SendBirdCall.deauthenticate
+import com.sendbird.calls.SendBirdException
+import com.sendbird.calls.handler.CompletionHandler
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.common.LoginActivity
 import com.wellness.vet.app.adapters.ViewPagerAdapter
+import com.wellness.vet.app.calls.BaseApplication
 import com.wellness.vet.app.calls.utils.AuthenticationUtils
+import com.wellness.vet.app.calls.utils.PrefUtils
 import com.wellness.vet.app.calls.utils.ToastUtils
 import com.wellness.vet.app.databinding.ActivityUserDashBoardBinding
 import com.wellness.vet.app.fragments.user.UserAppointmentFragment
@@ -187,6 +192,12 @@ class UserDashBoardActivity : AppCompatActivity(), OnClickListener {
     private fun logout() {
         FirebaseAuth.getInstance().signOut()
         appSharedPreferences.clear()
+        deauthenticate(CompletionHandler { e: SendBirdException? ->
+            PrefUtils.setUserId(this, null)
+            PrefUtils.setAccessToken(this, null)
+            PrefUtils.setCalleeId(this, null)
+            PrefUtils.setPushToken(this, null)
+        })
         val intent = Intent(this@UserDashBoardActivity, LoginActivity::class.java)
         startActivity(intent)
         finish()

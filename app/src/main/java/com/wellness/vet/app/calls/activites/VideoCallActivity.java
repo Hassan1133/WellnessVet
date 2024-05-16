@@ -37,6 +37,7 @@ public class VideoCallActivity extends CallActivity {
     private ImageView mImageViewVideoOff;
 
     boolean convertToAudio= false;
+    String convertCallId = "";
     //- Views
 
     @Override
@@ -245,8 +246,9 @@ public class VideoCallActivity extends CallActivity {
     }
 
     @Override
-    public void convertVideoCall() {
+    public void convertVideoCall(String id) {
         convertToAudio = true;
+        this.convertCallId = id;
     }
 
     @Override
@@ -278,9 +280,9 @@ public class VideoCallActivity extends CallActivity {
         super.onDestroy();
         if(convertToAudio) {
             overridePendingTransition(0,0);
-            CallService.dial(VideoCallActivity.this, mCalleeIdToDial, false);
+            CallService.dial(VideoCallActivity.this, convertCallId, false);
             overridePendingTransition(0,0);
-            PrefUtils.setCalleeId(VideoCallActivity.this, mCalleeIdToDial);
+            PrefUtils.setCalleeId(VideoCallActivity.this, convertCallId);
         }
     }
 }
