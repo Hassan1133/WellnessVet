@@ -3,6 +3,7 @@ package com.wellness.vet.app.activities.user
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -162,10 +163,11 @@ class CreateAppointmentActivity : AppCompatActivity(), TimeSlotSelectListener {
                                         val snapList = ArrayList<String>()
                                         snapList.clear()
                                         for (ds in snapshot.children) {
-                                            snapList.add(ds.child("time").value.toString())
+                                            snapList.add(ds.child("time").value.toString().toLowerCase())
+                                            Log.d("TAGCHILD", "onDataChange: ${ds.child("time").value.toString()}")
                                         }
                                         val et = st + 1800000
-                                        if (snapList.contains("${getTime(st)} - ${getTime(et)}")) {
+                                        if (snapList.contains("${getTime(st)} - ${getTime(et)}".toLowerCase())) {
                                             slotList.add(
                                                 TimeSlotModel(
                                                     "${getTime(st)} - ${getTime(et)}",

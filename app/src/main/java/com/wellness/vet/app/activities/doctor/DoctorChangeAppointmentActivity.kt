@@ -2,6 +2,7 @@ package com.wellness.vet.app.activities.doctor
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -135,7 +136,10 @@ class DoctorChangeAppointmentActivity : AppCompatActivity(), TimeSlotSelectListe
     ) {
         val slotList = ArrayList<TimeSlotModel>()
         val slotAdapter = TimeSlotAdapter(
-            this@DoctorChangeAppointmentActivity, slotList, this@DoctorChangeAppointmentActivity
+            this@DoctorChangeAppointmentActivity,
+            slotList,
+            slotDate,
+            this@DoctorChangeAppointmentActivity
         )
         binding.recyclerSlot.adapter = slotAdapter
         doctorProfileDbRef.child(doctorUid).child("Profile")
@@ -157,10 +161,12 @@ class DoctorChangeAppointmentActivity : AppCompatActivity(), TimeSlotSelectListe
                                         val snapList = ArrayList<String>()
                                         snapList.clear()
                                         for (ds in snapshot.children) {
-                                            snapList.add(ds.child("time").value.toString())
+                                            snapList.add(ds.child("time").value.toString().toLowerCase())
+                                            Log.d("TAGCHILD", "onDataChange: ${ds.child("time").value.toString()}")
                                         }
                                         val et = st + 1800000
-                                        if (snapList.contains("${getTime(st)} - ${getTime(et)}")) {
+                                        Log.d("TAGCHILD", "onDataChange: ${getTime(st)} - ${getTime(et)}")
+                                        if (snapList.contains("${getTime(st)} - ${getTime(et)}".toLowerCase())) {
                                             slotList.add(
                                                 TimeSlotModel(
                                                     "${getTime(st)} - ${getTime(et)}",
