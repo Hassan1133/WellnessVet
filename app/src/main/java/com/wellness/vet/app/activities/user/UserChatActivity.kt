@@ -179,8 +179,10 @@ class UserChatActivity : AppCompatActivity() {
 
             binding.btnVoiceCall.setOnClickListener(View.OnClickListener {
                 Toast.makeText(this@UserChatActivity,"clicked",Toast.LENGTH_SHORT).show()
+                Log.d("TAGCALL", "setViews:-- $doctorUid")
                 CallService.dial(this@UserChatActivity, doctorUid, false)
                 PrefUtils.setCalleeId(this@UserChatActivity, doctorUid)
+
             })
 
             binding.btnVideoCall.setOnClickListener(View.OnClickListener {

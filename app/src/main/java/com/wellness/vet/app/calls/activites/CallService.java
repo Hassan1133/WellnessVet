@@ -209,7 +209,6 @@ public class CallService extends Service {
         serviceData.doLocalVideoStart = false;
 
         startService(context, serviceData);
-
         context.startActivity(getCallActivityIntent(context, serviceData, false));
     }
 

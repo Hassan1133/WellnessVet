@@ -14,6 +14,7 @@ import com.sendbird.calls.DirectCall;
 import com.sendbird.calls.SendBirdCall;
 import com.wellness.vet.app.R;
 import com.wellness.vet.app.calls.BaseApplication;
+import com.wellness.vet.app.calls.utils.PrefUtils;
 import com.wellness.vet.app.calls.utils.TimeUtils;
 import com.wellness.vet.app.calls.utils.ToastUtils;
 
@@ -27,6 +28,8 @@ public class VoiceCallActivity extends CallActivity {
 
 
     private ImageView mImageViewSpeakerphone;
+
+    boolean convertToVideo = false;
 
 
     @Override
@@ -161,5 +164,16 @@ public class VoiceCallActivity extends CallActivity {
     protected void onDestroy() {
         super.onDestroy();
         cancelCallDurationTimer();
+        if(convertToVideo) {
+            overridePendingTransition(0,0);
+            CallService.dial(VoiceCallActivity.this, mCalleeIdToDial, true);
+            overridePendingTransition(0,0);
+            PrefUtils.setCalleeId(VoiceCallActivity.this, mCalleeIdToDial);
+        }
+    }
+
+    @Override
+    public void convertVideoCall() {
+        convertToVideo = true;
     }
 }

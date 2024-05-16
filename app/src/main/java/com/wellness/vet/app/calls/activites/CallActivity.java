@@ -33,6 +33,7 @@ import com.wellness.vet.app.R;
 import com.wellness.vet.app.calls.utils.AuthenticationUtils;
 import com.wellness.vet.app.calls.utils.BroadcastUtils;
 import com.wellness.vet.app.calls.utils.EndResultUtils;
+import com.wellness.vet.app.calls.utils.PrefUtils;
 import com.wellness.vet.app.calls.utils.UserInfoUtils;
 import com.wellness.vet.app.main_utils.AppConstants;
 import com.wellness.vet.app.main_utils.AppSharedPreferences;
@@ -85,6 +86,7 @@ public abstract class CallActivity extends AppCompatActivity {
     ImageView mImageViewAudioOff;
 //    ImageView mImageViewBluetooth;
     ImageView mImageViewEnd;
+    ImageView mImageViewConvertVideo;
     //- Views
 
     //+ abstract methods
@@ -171,6 +173,7 @@ public abstract class CallActivity extends AppCompatActivity {
         mLinearLayoutConnectingButtons = findViewById(R.id.linear_layout_connecting_buttons);
         mImageViewAudioOff = findViewById(R.id.image_view_audio_off);
         mImageViewEnd = findViewById(R.id.image_view_end);
+        mImageViewConvertVideo = findViewById(R.id.image_view_videocall);
     }
 
     protected void setViews() {
@@ -202,6 +205,11 @@ public abstract class CallActivity extends AppCompatActivity {
             }
         });
         mImageViewEnd.setOnClickListener(view -> {
+            end();
+        });
+
+        mImageViewConvertVideo.setOnClickListener(view -> {
+            convertVideoCall();
             end();
         });
     }
@@ -466,7 +474,6 @@ public abstract class CallActivity extends AppCompatActivity {
                 public void run() {
                     runOnUiThread(() -> {
                         finish();
-
                         unbindCallService();
                         stopCallService();
                     });
@@ -488,7 +495,6 @@ public abstract class CallActivity extends AppCompatActivity {
             CallService.CallBinder callBinder = (CallService.CallBinder) iBinder;
             mCallService = callBinder.getService();
             mBound = true;
-
             updateCallService();
         }
 
@@ -525,8 +531,9 @@ public abstract class CallActivity extends AppCompatActivity {
             serviceData.doDial = mDoDial;
             serviceData.doAccept = mDoAccept;
             serviceData.doLocalVideoStart = mDoLocalVideoStart;
-
             mCallService.updateNotification(serviceData);
         }
     }
+
+    public abstract void convertVideoCall();
 }
