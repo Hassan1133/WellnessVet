@@ -154,4 +154,11 @@
     <string name="select_time_slot">براہ کرم ٹائم سلاٹ منتخب کریں</string>
     <string name="appointment_status">ملاقات کی صورتحال</string>
     <string name="successful_scheduled">کامیاب شیڈول</string>
+    <string name="appointment_cancelled_user">صارف کی طرف سے ملاقات منسوخ کر دی گئی۔</string>
+    <string name="successful_rescheduled">کامیابی کے ساتھ دوبارہ شیڈول کیا گیا۔</string>
+    <string name="reschedule">ری شیڈول کریں۔</string>
+    <string name="cancel_appointment_message">کیا آپ واقعی ملاقات کو منسوخ کرنا چاہتے ہیں؟</string>
+    <string name="reschedule_appointment">اپوائنٹمنٹ کو ری شیڈول کریں۔</string>
+    <string name="reset_up_date_and_time">ری شیڈول کرنے کے لیے تاریخ اور وقت منتخب کریں۔</string>
+    <string name="login_again">براہ کرم دوبارہ لاگ ان کریں۔</string>
 </resources>
