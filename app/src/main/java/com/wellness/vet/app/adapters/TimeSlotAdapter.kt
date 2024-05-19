@@ -70,13 +70,16 @@ class TimeSlotAdapter (
 
                        if(lastDate.equals(currentDate) && timeFormat.parse(timeFormat.format(lastTime)).before(timeFormat.parse(timeFormat.format(currentTime)))){
                            Toast.makeText(context,"selected slot time is over please select ",Toast.LENGTH_SHORT).show()
-                       }
-                       if(slotList[i].isSelected){
                            fakeList.add(TimeSlotModel(slotList[i].slot,slotList[i].status,false))
-                           slotSelectListener.OnTimeSlotSelected(slotList[i].slot,false)
-                       }else{
-                           fakeList.add(TimeSlotModel(slotList[i].slot,slotList[i].status,true))
-                           slotSelectListener.OnTimeSlotSelected(slotList[i].slot,true)
+                       }
+                       else{
+                           if(slotList[i].isSelected){
+                               fakeList.add(TimeSlotModel(slotList[i].slot,slotList[i].status,false))
+                               slotSelectListener.OnTimeSlotSelected(slotList[i].slot,false)
+                           }else{
+                               fakeList.add(TimeSlotModel(slotList[i].slot,slotList[i].status,true))
+                               slotSelectListener.OnTimeSlotSelected(slotList[i].slot,true)
+                           }
                        }
                    }else{
                        fakeList.add(TimeSlotModel(slotList[i].slot,slotList[i].status,false))
