@@ -1,14 +1,14 @@
 {
   "project_info": {
-    "project_number": "854323425553",
-    "firebase_url": "https://unipractice-bcd90-default-rtdb.firebaseio.com",
-    "project_id": "unipractice-bcd90",
-    "storage_bucket": "unipractice-bcd90.appspot.com"
+    "project_number": "234217468718",
+    "firebase_url": "https://wellnessvetproject1-default-rtdb.firebaseio.com",
+    "project_id": "wellnessvetproject1",
+    "storage_bucket": "wellnessvetproject1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:854323425553:android:cf2d7a062facc5a6e6dcb0",
+        "mobilesdk_app_id": "1:234217468718:android:d184c3d495e167d4ee00bf",
         "android_client_info": {
           "package_name": "com.wellness.vet.app"
         }
@@ -16,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD-sruZGAL91j7J448RHHJRs8Sc_OYL37E"
+          "current_key": "AIzaSyB5cyg_assDqS4shHoFVcDEbZJJZXeSQJk"
         }
       ],
       "services": {

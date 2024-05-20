@@ -223,5 +223,4 @@ class UserFindDoctorFragment : Fragment(), OnMapReadyCallback, View.OnClickListe
         assert(marker != null)
         marker!!.showInfoWindow()
     }
-
 }

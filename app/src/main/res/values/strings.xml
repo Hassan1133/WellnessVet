@@ -214,7 +214,7 @@
     <string name="enter_card_expiry_date">Enter Card Expiry Date</string>
     <string name="card_cvc">Card CVC</string>
     <string name="enter_card_cvc">Enter Card CVC</string>
-    <string name="bearer_token" translatable="false">Bearer AAAAxumk8RE:APA91bEinKjn4CTiF9ckxoebnGRyhdn7MWXvDXlo-giPnE9JpDTMg5gEpqmp6UuVn_XTDy6yYngPrTUPLCKwYACGgaefIQkS0ckBl2nRXG3aNcO86IUjamfLkjecRgHUXsO4zJ1YckI7</string>
+    <string name="bearer_token" translatable="false">Bearer AAAANohy8y4:APA91bEmhiI2NffQwqerfIveWjW7JfYB9FF2iwe8fSJyplFiXI6AD3BUWrL9tdDGCBit7Atr7yWwiXDyyK9iWeQg8JqTDotpIaePu_7LokziYoElnGCNlszWM0PGFVuaQGp0COwmnJLK</string>
     <string name="appointment_details">Appointment Details</string>
     <string name="doctor_name_appointment">Doctor Name</string>
     <string name="appointment_time">Appointment Time</string>
