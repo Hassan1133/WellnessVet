@@ -36,6 +36,9 @@
         android:theme="@style/Theme.WellnessVet"
         tools:targetApi="31">
         <activity
+            android:name=".activities.user.PetsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.doctor.DoctorChangeAppointmentActivity"
             android:exported="false" />
         <activity
