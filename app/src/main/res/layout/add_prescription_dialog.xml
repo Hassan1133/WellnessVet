@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_shape">
+
+    <ImageView
+        android:id="@+id/closeBtn"
+        android:layout_width="20sp"
+        android:layout_height="20sp"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/close"
+        app:tint="@color/orange" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/prescriptionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/closeBtn"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:boxStrokeColor="@color/hint_color"
+        app:hintEnabled="false"
+        app:hintTextColor="@color/hint_color">
+
+        <!-- TextInputEditText for entering name -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/prescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_txt_bg"
+            android:gravity="top"
+            android:hint="@string/enter_perscription_here"
+            android:inputType="textMultiLine"
+            android:maxLines="10"
+            android:minLines="5"
+            android:textColor="@color/black"
+            android:textColorHint="@color/hint_color"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ProgressBar
+        android:id="@+id/dialogProgressbar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/prescriptionLayout"
+        android:layout_centerHorizontal="true"
+        android:indeterminateTint="@color/orange"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/addPrescriptionBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:layout_below="@id/dialogProgressbar"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/orange"
+        android:text="@string/add_prescription"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:cornerRadius="10dp" />
+
+</RelativeLayout>

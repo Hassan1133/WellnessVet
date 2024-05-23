@@ -36,6 +36,15 @@
         android:theme="@style/Theme.WellnessVet"
         tools:targetApi="31">
         <activity
+            android:name=".activities.doctor.DoctorUserPetsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.doctor.DoctorUserPetsDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.user.UserPetDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.user.PetsActivity"
             android:exported="false" />
         <activity

@@ -42,6 +42,10 @@ class ShowUserProfileActivity : AppCompatActivity() {
         binding.languageBtn.setOnClickListener {
             showLanguageDialog()
         }
+
+        binding.pet.setOnClickListener{
+            startActivity(Intent(this@ShowUserProfileActivity, PetsActivity::class.java))
+        }
     }
 
     private fun showLanguageDialog() {
