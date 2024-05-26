@@ -22,6 +22,7 @@ import com.wellness.vet.app.databinding.AddPetDialogBinding
 import com.wellness.vet.app.main_utils.AppConstants
 import com.wellness.vet.app.main_utils.AppSharedPreferences
 import com.wellness.vet.app.main_utils.LoadingDialog
+import com.wellness.vet.app.models.FarmModel
 import com.wellness.vet.app.models.PetModel
 
 class PetsActivity : AppCompatActivity() {
@@ -34,18 +35,25 @@ class PetsActivity : AppCompatActivity() {
     private lateinit var addPetDialog: Dialog
     private lateinit var addPetDialogBinding: AddPetDialogBinding
     private lateinit var loadingDialog: Dialog
+    private lateinit var farmModel: FarmModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPetsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        init()
+    }
+
+    private fun init()
+    {
+        getDataFromIntent()
         appSharedPreferences = AppSharedPreferences(this@PetsActivity)
         userPetDatabaseRef =
             FirebaseDatabase.getInstance().getReference(AppConstants.USER_REF).child(
                 appSharedPreferences.getString("userUid")!!
-            ).child(AppConstants.PET_REF)
+            ).child(AppConstants.FARM_REF).child(farmModel.id).child(AppConstants.PET_REF)
 
-        petRecyclerAdapter = PetsListAdapter(this@PetsActivity, petsList)
+        petRecyclerAdapter = PetsListAdapter(this@PetsActivity, petsList, farmModel)
         binding.recyclerView.adapter = petRecyclerAdapter
 
         getPets()
@@ -75,6 +83,10 @@ class PetsActivity : AppCompatActivity() {
                 return true
             }
         })
+    }
+
+    private fun getDataFromIntent() {
+        farmModel = intent.getSerializableExtra("model") as FarmModel
     }
 
     private fun createPetDialog() {

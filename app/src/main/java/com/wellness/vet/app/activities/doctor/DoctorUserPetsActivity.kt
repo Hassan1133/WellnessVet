@@ -14,11 +14,13 @@ import com.wellness.vet.app.databinding.ActivityDoctorUserPetsBinding
 import com.wellness.vet.app.main_utils.AppConstants
 import com.wellness.vet.app.main_utils.LoadingDialog
 import com.wellness.vet.app.models.DoctorAppointmentListModel
+import com.wellness.vet.app.models.FarmModel
 import com.wellness.vet.app.models.PetModel
 
 class DoctorUserPetsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDoctorUserPetsBinding
-    private lateinit var model: DoctorAppointmentListModel
+    private lateinit var model: FarmModel
+    private lateinit var appointmentModel: DoctorAppointmentListModel
     private lateinit var userPetDatabaseRef: DatabaseReference
     private lateinit var loadingDialog: Dialog
     private lateinit var petRecyclerAdapter: DoctorUserPestsListAdp
@@ -35,11 +37,11 @@ class DoctorUserPetsActivity : AppCompatActivity() {
 
         userPetDatabaseRef =
             FirebaseDatabase.getInstance().getReference(AppConstants.USER_REF).child(
-                model.uId
-            ).child(AppConstants.PET_REF)
+                appointmentModel.uId
+            ).child(AppConstants.FARM_REF).child(model.id).child(AppConstants.PET_REF)
 
         petRecyclerAdapter =
-            DoctorUserPestsListAdp(this@DoctorUserPetsActivity, petsList, model.uId, model.date)
+            DoctorUserPestsListAdp(this@DoctorUserPetsActivity, petsList, appointmentModel.uId, appointmentModel.date, model)
         binding.recyclerView.adapter = petRecyclerAdapter
 
         getPets()
@@ -68,7 +70,8 @@ class DoctorUserPetsActivity : AppCompatActivity() {
     }
 
     private fun getDataFromIntent() {
-        model = intent.getSerializableExtra("model") as DoctorAppointmentListModel
+        model = intent.getSerializableExtra("model") as FarmModel
+        appointmentModel = intent.getSerializableExtra("appointmentModel") as DoctorAppointmentListModel
     }
 
     private fun getPets() {

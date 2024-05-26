@@ -294,7 +294,7 @@
                     android:layout_marginTop="20dp"
                     android:backgroundTint="@color/orange"
                     android:layout_below="@+id/cancelAppointBtn"
-                    android:text="@string/user_pets"
+                    android:text="@string/user_farms"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     app:icon="@drawable/breed" />

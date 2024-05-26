@@ -6,6 +6,7 @@ class AppConstants {
         const val DOCTOR_REF : String  = "Doctors"
         const val PROFILE_REF : String  = "Profile"
         const val PET_REF : String  = "Pets"
+        const val FARM_REF : String  = "Farms"
         const val PRESCRIPTION_REF : String  = "Prescriptions"
         const val CITY_NAMES : String  = "CityNames"
 

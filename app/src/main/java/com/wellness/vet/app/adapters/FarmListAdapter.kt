@@ -8,16 +8,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.wellness.vet.app.R
-import com.wellness.vet.app.activities.user.UserPetDetailsActivity
+import com.wellness.vet.app.activities.user.PetsActivity
 import com.wellness.vet.app.models.FarmModel
-import com.wellness.vet.app.models.PetModel
 
-class PetsListAdapter(
+class FarmListAdapter (
     private val context: Activity,
-    private var petsList: List<PetModel>,
-    private val farmModel: FarmModel
+    private var farmsList: List<FarmModel>
 ) :
-    RecyclerView.Adapter<PetsListAdapter.ViewHolder>() {
+    RecyclerView.Adapter<FarmListAdapter.ViewHolder>() {
 
     // Inflates the layout for each item in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,21 +26,20 @@ class PetsListAdapter(
 
     // Binds data to the views in each item
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val petModel = petsList[position]
-        holder.petName.text = petModel.name
-        holder.petBreed.text = petModel.breed
+        val farmModel = farmsList[position]
+        holder.petName.text = farmModel.name
+        holder.petBreed.text = farmModel.number
 
         holder.itemView.setOnClickListener{
-            val intent = Intent(context, UserPetDetailsActivity::class.java)
-            intent.putExtra("model", petModel)
-            intent.putExtra("farmModel", farmModel)
+            val intent = Intent(context, PetsActivity::class.java)
+            intent.putExtra("model", farmModel)
             context.startActivity(intent)
         }
     }
 
     // Returns the number of items in the list
     override fun getItemCount(): Int {
-        return petsList.size
+        return farmsList.size
     }
 
     // ViewHolder class to hold references to views in each item
@@ -51,8 +48,8 @@ class PetsListAdapter(
         val petBreed: TextView = itemView.findViewById(R.id.petBreed)
     }
 
-    fun updateList(updateList: ArrayList<PetModel>) {
-        petsList = updateList
+    fun updateList(updateList: ArrayList<FarmModel>) {
+        farmsList = updateList
         this.notifyDataSetChanged()
     }
 }

@@ -19,6 +19,7 @@ import com.wellness.vet.app.databinding.ActivityDoctorUserPetsDetailsBinding
 import com.wellness.vet.app.databinding.AddPrescriptionDialogBinding
 import com.wellness.vet.app.main_utils.AppConstants
 import com.wellness.vet.app.main_utils.AppSharedPreferences
+import com.wellness.vet.app.models.FarmModel
 import com.wellness.vet.app.models.PetModel
 import com.wellness.vet.app.models.PrescriptionModel
 
@@ -26,6 +27,7 @@ class DoctorUserPetsDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDoctorUserPetsDetailsBinding
     private lateinit var model: PetModel
+    private lateinit var farmModel: FarmModel
     private lateinit var userId: String
     private lateinit var date: String
     private lateinit var addPrescriptionDialog: Dialog
@@ -46,6 +48,7 @@ class DoctorUserPetsDetailsActivity : AppCompatActivity() {
         appSharedPreferences = AppSharedPreferences(this@DoctorUserPetsDetailsActivity)
         userProfilePetPrescriptionRef =
             FirebaseDatabase.getInstance().getReference(AppConstants.USER_REF).child(userId)
+                .child(AppConstants.FARM_REF).child(farmModel.id)
                 .child(AppConstants.PET_REF).child(model.id)
                 .child(AppConstants.PRESCRIPTION_REF)
         binding.addPerBtn.setOnClickListener {
@@ -138,6 +141,7 @@ class DoctorUserPetsDetailsActivity : AppCompatActivity() {
 
     private fun getDataFromIntent() {
         model = intent.getSerializableExtra("model") as PetModel
+        farmModel = intent.getSerializableExtra("farmModel") as FarmModel
         userId = intent.getStringExtra("userId")!!
         date = intent.getStringExtra("date")!!
         binding.petName.text = model.name

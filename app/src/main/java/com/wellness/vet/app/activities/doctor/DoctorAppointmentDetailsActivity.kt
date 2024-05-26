@@ -45,7 +45,7 @@ class DoctorAppointmentDetailsActivity : AppCompatActivity() {
 
         binding.userPetBtn.setOnClickListener {
             val intent = Intent(
-                this@DoctorAppointmentDetailsActivity, DoctorUserPetsActivity::class.java
+                this@DoctorAppointmentDetailsActivity, DoctorUserFarmsActivity::class.java
             )
             intent.putExtra("model", model)
             startActivity(intent)

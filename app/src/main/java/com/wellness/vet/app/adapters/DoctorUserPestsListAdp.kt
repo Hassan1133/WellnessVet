@@ -9,13 +9,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.wellness.vet.app.R
 import com.wellness.vet.app.activities.doctor.DoctorUserPetsDetailsActivity
+import com.wellness.vet.app.models.FarmModel
 import com.wellness.vet.app.models.PetModel
 
 class DoctorUserPestsListAdp(
     private val context: Activity,
     private var petsList: List<PetModel>,
     private var userId: String,
-    private var date: String
+    private var date: String,
+    private val farmModel: FarmModel
 ) :
     RecyclerView.Adapter<DoctorUserPestsListAdp.ViewHolder>() {
 
@@ -35,6 +37,7 @@ class DoctorUserPestsListAdp(
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DoctorUserPetsDetailsActivity::class.java)
             intent.putExtra("model", petModel)
+            intent.putExtra("farmModel", farmModel)
             intent.putExtra("userId", userId)
             intent.putExtra("date", date)
             context.startActivity(intent)

@@ -12,6 +12,7 @@ import com.wellness.vet.app.adapters.PrescriptionAdp
 import com.wellness.vet.app.databinding.ActivityUserPetDetailsBinding
 import com.wellness.vet.app.main_utils.AppConstants
 import com.wellness.vet.app.main_utils.AppSharedPreferences
+import com.wellness.vet.app.models.FarmModel
 import com.wellness.vet.app.models.PetModel
 import com.wellness.vet.app.models.PrescriptionModel
 
@@ -19,6 +20,7 @@ class UserPetDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserPetDetailsBinding
     private lateinit var model: PetModel
+    private lateinit var farmModel: FarmModel
     private lateinit var appSharedPreferences: AppSharedPreferences
     private lateinit var userProfilePetPrescriptionRef: DatabaseReference
     private lateinit var prescriptionRecyclerAdapter: PrescriptionAdp
@@ -38,8 +40,7 @@ class UserPetDetailsActivity : AppCompatActivity() {
         userProfilePetPrescriptionRef =
             FirebaseDatabase.getInstance().getReference(AppConstants.USER_REF).child(
                 appSharedPreferences.getString("userUid")!!
-            )
-                .child(AppConstants.PET_REF).child(model.id)
+            ).child(AppConstants.FARM_REF).child(farmModel.id).child(AppConstants.PET_REF).child(model.id)
                 .child(AppConstants.PRESCRIPTION_REF)
 
         prescriptionRecyclerAdapter =
@@ -51,6 +52,7 @@ class UserPetDetailsActivity : AppCompatActivity() {
 
     private fun getDataFromIntent() {
         model = intent.getSerializableExtra("model") as PetModel
+        farmModel = intent.getSerializableExtra("farmModel") as FarmModel
         binding.petName.text = model.name
         binding.petAge.text = model.age
         binding.petBreed.text = model.breed

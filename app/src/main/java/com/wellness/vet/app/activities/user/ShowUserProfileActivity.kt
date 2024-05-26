@@ -43,8 +43,8 @@ class ShowUserProfileActivity : AppCompatActivity() {
             showLanguageDialog()
         }
 
-        binding.pet.setOnClickListener{
-            startActivity(Intent(this@ShowUserProfileActivity, PetsActivity::class.java))
+        binding.farms.setOnClickListener{
+            startActivity(Intent(this@ShowUserProfileActivity, UserAddFarmActivity::class.java))
         }
     }
 
